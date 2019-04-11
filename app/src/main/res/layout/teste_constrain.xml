@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_bloco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00 - 05:30" />
+
+    <TextView
+        android:id="@+id/tv_relacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Relação: 30"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tv_fator_sensibilidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fator de Sensibilidade: 100"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bloco"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_alvo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alvo: 130"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_fator_sensibilidade"/>
+
+</android.support.constraint.ConstraintLayout>
