@@ -7,44 +7,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-/**
- * {@link ForecastAdapter} exposes a list of weather forecasts to a
- * {@link android.support.v7.widget.RecyclerView}
- */
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
+
 public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAdapter.BolusTimeBlockAdapterViewHolder> {
 	
 	BolusTimeBlockData[] mBolusTimeBlockData;
-	//TODO criar uma classe de nome BolusTimeBlockData contendo as propriedades abaixo:
-	/*
-		Date inicio;
-		Date fim;
-		int relacao;
-		int alvo;
-		int fatorDeSensibilidade;
-	*/
-	
-	public void BolusTimeBlockAdapter(){
+
+	public BolusTimeBlockAdapter() {
+
 	}
-	
-	public class BolusTimeBlockAdapterViewHolder extends RecyclerView.ViewHolder(){
+
+	public class BolusTimeBlockAdapterViewHolder extends RecyclerView.ViewHolder {
 		public final TextView mBlocoDeTempoTextView;
 		public final TextView mRelacaoTextView;
 		public final TextView mFatorDeSensibilidadeTextView;
 		public final TextView mAlvoTextView;
-		
-		public void BolusTimeBlockAdapterViewHolder(View view){
-			super(view);
-			mBlocoDeTempoTextView = (TextView) view.findViewById(R.id.tv_bloco_de_tempo);
-			TextView mRelacaoTextView = (TextView) view.findViewById(R.id.tv_relacao);
-			TextView mFatorDeSensibilidadeTextView = (TextView) view.findViewById(R.id.tv_fator_sensibilidade);
-			TextView mAlvoTextView = (TextView) view.findViewById(R.id.tv_alvo);
+
+		public BolusTimeBlockAdapterViewHolder(View itemView){
+			super(itemView);
+			mBlocoDeTempoTextView = (TextView) itemView.findViewById(R.id.tv_bloco_de_tempo);
+			mRelacaoTextView = (TextView) itemView.findViewById(R.id.tv_relacao);
+			mFatorDeSensibilidadeTextView = (TextView) itemView.findViewById(R.id.tv_fator_sensibilidade);
+			mAlvoTextView = (TextView) itemView.findViewById(R.id.tv_alvo);
 		}
-		
-		public void setData(BolusTimeBlockData){
-			mBlocoDeTempoTextView.setText(BolusTimeBlockData.inicio + "-" BolusTimeBlockData.fim);
-			mRelacaoTextView.setText(BolusTimeBlockData.relacao);
-			mFatorDeSensibilidadeTextView.setText(BolusTimeBlockData.fatorDeSensibilidade);
-			mAlvoTextView.setText(BolusTimeBlockData.alvo);
+
+		public void setData(BolusTimeBlockData bolusTimeBlockData){
+			mBlocoDeTempoTextView.setText(bolusTimeBlockData.start + "-" + bolusTimeBlockData.end);
+			mRelacaoTextView.setText(bolusTimeBlockData.relation);
+			mFatorDeSensibilidadeTextView.setText(bolusTimeBlockData.sensibilityFactor);
+			mAlvoTextView.setText(bolusTimeBlockData.tarjet);
 		}
 	}
 
@@ -55,14 +46,14 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 		LayoutInflater inflater = LayoutInflater.from(context);
 		boolean shouldAttachToParentImmediately = false;
 
-		View view = inflater.inflater(layoutIdFromListItem, viewGroup, shouldAttachToParentImmediately);
+		View view = inflater.inflate(layoutIdFromListItem, viewGroup, shouldAttachToParentImmediately);
 		return new BolusTimeBlockAdapterViewHolder(view);
 	}
 	
 	@Override
 	public void onBindViewHolder (BolusTimeBlockAdapterViewHolder bolusTimeBlockAdapterViewHolder, int position){
 		BolusTimeBlockData timeBlockData =  mBolusTimeBlockData[position];
-		BolusTimeBlockAdapterViewHolder.setData(timeBlockData);
+        bolusTimeBlockAdapterViewHolder.setData(timeBlockData);
 	}
 	
 	@Override
