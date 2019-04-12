@@ -32,6 +32,8 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
 
         mRecyclerView = findViewById(R.id.rv_dados_para_calculo);
         configureRecyclerView();
+
+        mCursor = getAllData();
         refreshRecyclerView();
     }
 
@@ -70,8 +72,6 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         // Configurando o banco de dados
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
         mDb = dbHelper.getWritableDatabase();
-        mCursor = getAllData();
-
     }
 
     private void configureRecyclerView(){
