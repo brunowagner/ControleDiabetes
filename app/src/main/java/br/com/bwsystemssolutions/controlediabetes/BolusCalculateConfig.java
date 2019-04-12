@@ -25,10 +25,10 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_calcular_bolus);
 
+        configureDB();
+
         mRecyclerView = findViewById(R.id.rv_dados_para_calculo);
         configureRecyclerView();
-
-        configureDB();
     }
 
     //implementação do BolusTimeBlockAdapterOnClickHandler
@@ -50,6 +50,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
         mDb = dbHelper.getWritableDatabase();
         mCursor = getAllData();
+
     }
 
     private void configureRecyclerView(){
