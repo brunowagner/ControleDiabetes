@@ -12,13 +12,18 @@ import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 
 public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAdapter.BolusTimeBlockAdapterViewHolder> {
 	
-	BolusTimeBlockData[] mBolusTimeBlockData;
+	private BolusTimeBlockData[] mBolusTimeBlockData;
+	private final BolusTimeBlockAdapterOnClickHandler mClickHandler;
 
-	public BolusTimeBlockAdapter() {
-
+	public BolusTimeBlockAdapter(BolusTimeBlockAdapterOnClickHandler clickHandler) {
+        mClickHandler = clickHandler;
 	}
 
-	public class BolusTimeBlockAdapterViewHolder extends RecyclerView.ViewHolder {
+	public interface BolusTimeBlockAdapterOnClickHandler{
+	    void onClick(BolusTimeBlockData bolusTimeBlockData);
+    }
+
+	public class BolusTimeBlockAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 		public final TextView mBlocoDeTempoTextView;
 		public final TextView mRelacaoTextView;
 		public final TextView mFatorDeSensibilidadeTextView;
@@ -38,7 +43,14 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 			mFatorDeSensibilidadeTextView.setText(bolusTimeBlockData.sensibilityFactor);
 			mAlvoTextView.setText(bolusTimeBlockData.tarjet);
 		}
-	}
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            BolusTimeBlockData bolusTimeBlockData = mBolusTimeBlockData[position];
+            mClickHandler.onClick(bolusTimeBlockData);
+        }
+    }
 
 	@Override
     public BolusTimeBlockAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {

@@ -8,11 +8,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTimeBlockAdapter;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
+import static br.com.bwsystemssolutions.controlediabetes.adapter.BolusTimeBlockAdapter.*;
 import static br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract.*;
 
-public class ConfigCalcularBolus extends AppCompatActivity {
+public class BolusCalculateConfig extends AppCompatActivity implements BolusTimeBlockAdapterOnClickHandler {
 
     SQLiteDatabase mDb;
     RecyclerView mRecyclerView;
@@ -23,17 +25,19 @@ public class ConfigCalcularBolus extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_calcular_bolus);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_dados_para_calculo);
+        mRecyclerView = findViewById(R.id.rv_dados_para_calculo);
         configureRecyclerView();
 
-
-
-
-        // Configurando o banco de dados
-        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mDb = dbHelper.getWritableDatabase();
-        mCursor = getAllData();
+        configureDB();
     }
+
+    //implementação do BolusTimeBlockAdapterOnClickHandler
+    @Override
+    public void onClick(BolusTimeBlockData bolusTimeBlockData) {
+        //TODO chamar activity para configurar o bloco de tempo
+    }
+
+
 
     private Cursor getAllData() {
         return mDb.query(TimeBlockEntry.TABLE_NAME,
@@ -41,8 +45,15 @@ public class ConfigCalcularBolus extends AppCompatActivity {
                 TimeBlockEntry.COLUMN_INITIAL_TIME_NAME);
     }
 
+    private void configureDB() {
+        // Configurando o banco de dados
+        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
+        mDb = dbHelper.getWritableDatabase();
+        mCursor = getAllData();
+    }
+
     private void configureRecyclerView(){
-        BolusTimeBlockAdapter bolusTimeBlockAdapter = new BolusTimeBlockAdapter();
+        BolusTimeBlockAdapter bolusTimeBlockAdapter = new BolusTimeBlockAdapter(this);
         mRecyclerView.setAdapter(bolusTimeBlockAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
@@ -54,5 +65,4 @@ public class ConfigCalcularBolus extends AppCompatActivity {
          */
         mRecyclerView.setHasFixedSize(true);
     }
-    
 }

@@ -18,7 +18,7 @@
         </activity>
         <activity android:name=".CalcularBolus" />
         <activity android:name=".Registros" />
-        <activity android:name=".ConfigCalcularBolus"></activity>
+        <activity android:name=".BolusCalculateConfig"></activity>
     </application>
 
 </manifest>
