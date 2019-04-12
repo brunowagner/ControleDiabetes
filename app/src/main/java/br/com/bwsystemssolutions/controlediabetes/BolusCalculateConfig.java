@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTimeBlockAdapter;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
@@ -16,6 +18,7 @@ import static br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusCont
 
 public class BolusCalculateConfig extends AppCompatActivity implements BolusTimeBlockAdapterOnClickHandler {
 
+    BolusTimeBlockAdapter mBolusTimeBlockAdapter;
     SQLiteDatabase mDb;
     RecyclerView mRecyclerView;
     Cursor mCursor;
@@ -29,6 +32,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
 
         mRecyclerView = findViewById(R.id.rv_dados_para_calculo);
         configureRecyclerView();
+        refreshRecyclerView();
     }
 
     //implementação do BolusTimeBlockAdapterOnClickHandler
@@ -37,7 +41,24 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         //TODO chamar activity para configurar o bloco de tempo
     }
 
+    private void refreshRecyclerView(){
+        ArrayList<BolusTimeBlockData> bolusTimeBlockDataAL = new ArrayList<BolusTimeBlockData>();
+        if (mCursor.moveToFirst()){
+            do {
+                BolusTimeBlockData bolusTimeBlockData = new BolusTimeBlockData();
+                bolusTimeBlockData.start = mCursor.getString(mCursor.getColumnIndex(TimeBlockEntry.COLUMN_INITIAL_TIME_NAME));
+                bolusTimeBlockData.end = mCursor.getString(mCursor.getColumnIndex(TimeBlockEntry.COLUMN_FINAL_TIME_NAME));
+                bolusTimeBlockData.start = mCursor.getString(mCursor.getColumnIndex(TimeBlockEntry.COLUMN_INITIAL_TIME_NAME));
+                bolusTimeBlockData.relation = mCursor.getInt(mCursor.getColumnIndex(TimeBlockEntry.COLUMN_RELATION_NAME));
+                bolusTimeBlockData.sensibilityFactor = mCursor.getInt(mCursor.getColumnIndex(TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME));
+                bolusTimeBlockData.tarjet = mCursor.getInt(mCursor.getColumnIndex(TimeBlockEntry.COLUMN_TARGET_NAME));
 
+                bolusTimeBlockDataAL.add(bolusTimeBlockData);
+            }while(mCursor.moveToNext());
+
+        }
+        mBolusTimeBlockAdapter.setBolusBlockTimeData(bolusTimeBlockDataAL);
+    }
 
     private Cursor getAllData() {
         return mDb.query(TimeBlockEntry.TABLE_NAME,
@@ -54,8 +75,8 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     }
 
     private void configureRecyclerView(){
-        BolusTimeBlockAdapter bolusTimeBlockAdapter = new BolusTimeBlockAdapter(this);
-        mRecyclerView.setAdapter(bolusTimeBlockAdapter);
+        mBolusTimeBlockAdapter = new BolusTimeBlockAdapter(this);
+        mRecyclerView.setAdapter(mBolusTimeBlockAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(linearLayoutManager);

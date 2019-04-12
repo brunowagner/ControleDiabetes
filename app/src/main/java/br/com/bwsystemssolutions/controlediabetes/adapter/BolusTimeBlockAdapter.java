@@ -7,13 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 
 public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAdapter.BolusTimeBlockAdapterViewHolder> {
 	
-	private BolusTimeBlockData[] mBolusTimeBlockData;
+	private ArrayList<BolusTimeBlockData> mBolusTimeBlockData;
 	private final BolusTimeBlockAdapterOnClickHandler mClickHandler;
+	//private int mCount;
 
 	public BolusTimeBlockAdapter(BolusTimeBlockAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
@@ -47,7 +50,7 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            BolusTimeBlockData bolusTimeBlockData = mBolusTimeBlockData[position];
+            BolusTimeBlockData bolusTimeBlockData = mBolusTimeBlockData.get(position);
             mClickHandler.onClick(bolusTimeBlockData);
         }
     }
@@ -65,17 +68,17 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 	
 	@Override
 	public void onBindViewHolder (BolusTimeBlockAdapterViewHolder bolusTimeBlockAdapterViewHolder, int position){
-		BolusTimeBlockData timeBlockData =  mBolusTimeBlockData[position];
+		BolusTimeBlockData timeBlockData =  mBolusTimeBlockData.get(position);
         bolusTimeBlockAdapterViewHolder.setData(timeBlockData);
 	}
 	
 	@Override
     public int getItemCount() {
         if (null == mBolusTimeBlockData) return 0;
-        return mBolusTimeBlockData.length;
+        return mBolusTimeBlockData.size();
     }
 	
-	public void setBolusBlockTimeData(BolusTimeBlockData[] bolusTimeBlockData){
+	public void setBolusBlockTimeData(ArrayList<BolusTimeBlockData> bolusTimeBlockData){
 		mBolusTimeBlockData = bolusTimeBlockData;
 		notifyDataSetChanged();
 	}
