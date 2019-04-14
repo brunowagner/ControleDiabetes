@@ -15,7 +15,6 @@ public class CalculoDeBolusContract {
         //COMPLETED (2) criar as strings finais que definem as colunas
         public static final String TABLE_NAME = "timeBlock";
         public static final String COLUMN_INITIAL_TIME_NAME = "initialTime";
-        public static final String COLUMN_FINAL_TIME_NAME = "finalTime";
         public static final String COLUMN_RELATION_NAME = "relation";
         public static final String COLUMN_SENSITIVITY_FACTOR_NAME = "sensitivityFactor";
         public static final String COLUMN_TARGET_NAME = "target";

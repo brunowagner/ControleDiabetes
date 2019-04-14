@@ -12,10 +12,10 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_bloco_de_tempo"
+            android:id="@+id/tv_inicio_do_bloco_de_tempo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00:00 - 05:30"/>
+            android:text="Iniciando às: 00:00"/>
 
         <View
             android:id="@+id/divider4"

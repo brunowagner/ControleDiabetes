@@ -34,14 +34,14 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 
 		public BolusTimeBlockAdapterViewHolder(View itemView){
 			super(itemView);
-			mBlocoDeTempoTextView = (TextView) itemView.findViewById(R.id.tv_bloco_de_tempo);
+			mBlocoDeTempoTextView = (TextView) itemView.findViewById(R.id.tv_inicio_do_bloco_de_tempo);
 			mRelacaoTextView = (TextView) itemView.findViewById(R.id.tv_relacao);
 			mFatorDeSensibilidadeTextView = (TextView) itemView.findViewById(R.id.tv_fator_sensibilidade);
 			mAlvoTextView = (TextView) itemView.findViewById(R.id.tv_alvo);
 		}
 
 		public void setData(BolusTimeBlockData bolusTimeBlockData){
-			mBlocoDeTempoTextView.setText(bolusTimeBlockData.start + "-" + bolusTimeBlockData.end);
+			mBlocoDeTempoTextView.setText(bolusTimeBlockData.start);
 			mRelacaoTextView.setText(bolusTimeBlockData.relation);
 			mFatorDeSensibilidadeTextView.setText(bolusTimeBlockData.sensibilityFactor);
 			mAlvoTextView.setText(bolusTimeBlockData.tarjet);

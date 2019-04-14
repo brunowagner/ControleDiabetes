@@ -33,7 +33,6 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 TimeBlockEntry.TABLE_NAME + "(" +
                 TimeBlockEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 TimeBlockEntry.COLUMN_INITIAL_TIME_NAME + "TIME NOT NULL," +
-                TimeBlockEntry.COLUMN_FINAL_TIME_NAME + " TIME NOT NULL," +
                 TimeBlockEntry.COLUMN_RELATION_NAME + " INTEGER NOT NULL," +
                 TimeBlockEntry.COLUMN_TARGET_NAME + " INTEGER NOT NULL," +
                 TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME + "INTEGER NOT NULL" +
