@@ -4,10 +4,14 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.EditText;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract.TimeBlockEntry;
+import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
 
 public class TimeBlockConfigActivity extends AppCompatActivity {
@@ -34,6 +38,13 @@ public class TimeBlockConfigActivity extends AppCompatActivity {
         //Carrega dados caso seja recebido pela Entity que criou a activity;
         loadData();
 
+        configureDb();
+
+    }
+
+    private void configureDb(){
+        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
+        mDb = dbHelper.getWritableDatabase();
     }
 
     private void loadData(){
@@ -47,7 +58,7 @@ public class TimeBlockConfigActivity extends AppCompatActivity {
 
     }
 
-    private void save(){
+    private void saveData(){
         if (!validateData()) { return;}
 
         if (mBolusTimeBlockData == null){
@@ -88,13 +99,28 @@ public class TimeBlockConfigActivity extends AppCompatActivity {
     }
 
 
-
     //TODO - criar um método que verifique se o time block já existe afim de evitar duplicidade no banco na hora de salvar.
-
-    //TODO - Criar metodo para criar menu e incluir um item para salvar
 
     //TODO - Criar metodo para confirmar saída sem salvar caso haja alguma alteração.
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_time_block_config, menu);
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_save){
+            saveData();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
