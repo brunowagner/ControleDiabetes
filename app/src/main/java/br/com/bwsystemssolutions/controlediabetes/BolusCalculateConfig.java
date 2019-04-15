@@ -1,5 +1,7 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +42,9 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     //implementação do BolusTimeBlockAdapterOnClickHandler
     @Override
     public void onClick(BolusTimeBlockData bolusTimeBlockData) {
-        //TODO chamar activity para configurar o bloco de tempo
+        Context context = this;
+        Intent intent = new Intent(context, TimeBlockConfigActivity.class);
+        startActivity(intent);
     }
 
     private void refreshRecyclerView(){
