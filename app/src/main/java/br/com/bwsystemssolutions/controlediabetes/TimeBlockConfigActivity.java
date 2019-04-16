@@ -1,5 +1,6 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,7 +9,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TimePicker;
 
 import java.io.Serializable;
 
@@ -17,12 +21,14 @@ import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract.Ti
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
 
-public class TimeBlockConfigActivity extends AppCompatActivity {
+public class TimeBlockConfigActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, View.OnClickListener {
 
     EditText mInicioEditText;
     EditText mRelacaoEditText;
     EditText mSensibilidadeEditText;
     EditText mAlvoEditText;
+    ImageButton mTimePickerImageButton;
+    TimePickerDialog mTimePickerDialog;
 
     BolusTimeBlockData mBolusTimeBlockData;
     SQLiteDatabase mDb;
@@ -37,6 +43,8 @@ public class TimeBlockConfigActivity extends AppCompatActivity {
         mRelacaoEditText = (EditText) findViewById(R.id.et_relacao);
         mSensibilidadeEditText = (EditText) findViewById(R.id.et_fator_de_sensibilidade);
         mAlvoEditText = (EditText) findViewById(R.id.et_alvo);
+        mTimePickerImageButton = (ImageButton) findViewById(R.id.btn_time_picker);
+        mTimePickerImageButton.setOnClickListener(this);
 
         Intent intentThatStartedThisActivity = getIntent();
 
@@ -49,7 +57,6 @@ public class TimeBlockConfigActivity extends AppCompatActivity {
         loadData();
 
         configureDb();
-
     }
 
     private void configureDb(){
@@ -113,6 +120,11 @@ public class TimeBlockConfigActivity extends AppCompatActivity {
 
     //TODO - Criar metodo para confirmar saída sem salvar caso haja alguma alteração.
 
+    private void callTimePiker(){
+        mTimePickerDialog = new TimePickerDialog(this,this,0,0,true);
+        mTimePickerDialog.show();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -132,5 +144,20 @@ public class TimeBlockConfigActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String timeSeted = hourOfDay + ":" + minute;
+        mInicioEditText.setText(timeSeted);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        if (id == R.id.btn_time_picker) {
+            callTimePiker();
+        }
     }
 }
