@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class BolusTimeBlockData implements Serializable {
 
-	public String start;
+	public int id;
+    public String start;
     public int relation;
     public int tarjet;
     public int sensibilityFactor;
@@ -17,6 +18,13 @@ public class BolusTimeBlockData implements Serializable {
     }
 
     public BolusTimeBlockData(String start, int relation, int tarjet, int sensibilityFactor) {
+        this.start = start;
+        this.relation = relation;
+        this.tarjet = tarjet;
+        this.sensibilityFactor = sensibilityFactor;
+    }
+
+    public BolusTimeBlockData(int id, String start, int relation, int tarjet, int sensibilityFactor) {
         this.start = start;
         this.relation = relation;
         this.tarjet = tarjet;

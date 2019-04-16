@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -77,7 +78,7 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
     }
 
     private boolean saveData(){
-        if (!validateData()) { return;}
+        if (!validateData()) { return false;}
         
         boolean executed = false;
 
@@ -124,7 +125,7 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
         cv.put(TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME, mSensibilidadeEditText.getText().toString());
         cv.put(TimeBlockEntry.COLUMN_TARGET_NAME, mAlvoEditText.getText().toString());
         
-        String where = TimeBlockEntry.ID + "=" + mBolusTimeBlockData.id;
+        String where = TimeBlockEntry._ID + "=" + mBolusTimeBlockData.id;
 
         return mDb.update(TimeBlockEntry.TABLE_NAME, cv, where, null);
     }
@@ -160,8 +161,8 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
             
             if (executed){
                 Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
-                return true;
                 finish();
+                return true;
             } else {
                 Toast.makeText(getApplicationContext(), "Não foi possível salvar!", Toast.LENGTH_SHORT).show();
             }
