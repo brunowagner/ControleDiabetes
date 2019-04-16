@@ -8,6 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 
@@ -29,6 +33,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_calcular_bolus);
+        Log.d("bwvm", "onCreate: Entrou");
 
         configureDB();
 
@@ -37,6 +42,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
 
         mCursor = getAllData();
         refreshRecyclerView();
+        Log.d("bwvm", "onCreate: Saiu");
     }
 
     //implementação do BolusTimeBlockAdapterOnClickHandler
@@ -96,5 +102,25 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
          * change the child layout size in the RecyclerView
          */
         mRecyclerView.setHasFixedSize(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.menu_only_new_item, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_new){
+            Intent intent = new Intent(BolusCalculateConfig.this, TimeBlockConfigActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
