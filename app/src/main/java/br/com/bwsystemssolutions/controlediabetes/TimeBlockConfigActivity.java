@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract.TimeBlockEntry;
@@ -121,7 +122,10 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
     //TODO - Criar metodo para confirmar saída sem salvar caso haja alguma alteração.
 
     private void callTimePiker(){
-        mTimePickerDialog = new TimePickerDialog(this,this,0,0,true);
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMin = calendar.get(Calendar.MINUTE);
+        mTimePickerDialog = new TimePickerDialog(this,this,currentHour,currentMin,true);
         mTimePickerDialog.show();
     }
 
@@ -148,7 +152,8 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String timeSeted = hourOfDay + ":" + minute;
+        String timeSeted = String.format("%02d:%02d", hourOfDay, minute);
+
         mInicioEditText.setText(timeSeted);
     }
 
