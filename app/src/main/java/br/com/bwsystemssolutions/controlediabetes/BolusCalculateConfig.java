@@ -44,6 +44,14 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     public void onClick(BolusTimeBlockData bolusTimeBlockData) {
         Context context = this;
         Intent intent = new Intent(context, TimeBlockConfigActivity.class);
+
+        //Empacotando o objeto
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BolusTimeBlockData.BUNDLE_STRING_KEY, bolusTimeBlockData);
+
+        //passando o objeto na Intent
+        intent.putExtras(bundle);
+
         startActivity(intent);
     }
 

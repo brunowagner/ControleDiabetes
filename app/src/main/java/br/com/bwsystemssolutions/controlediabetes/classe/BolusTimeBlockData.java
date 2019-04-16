@@ -1,11 +1,16 @@
 package br.com.bwsystemssolutions.controlediabetes.classe;
 
-public class BolusTimeBlockData {
+import java.io.Serializable;
+
+public class BolusTimeBlockData implements Serializable {
 
 	public String start;
     public int relation;
     public int tarjet;
     public int sensibilityFactor;
+
+    public static final String BUNDLE_STRING_KEY = BolusTimeBlockData.class.toString();
+
 
 	public BolusTimeBlockData(){
 

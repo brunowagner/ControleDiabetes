@@ -1,6 +1,7 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+
+import java.io.Serializable;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract.TimeBlockEntry;
@@ -34,6 +37,13 @@ public class TimeBlockConfigActivity extends AppCompatActivity {
         mRelacaoEditText = (EditText) findViewById(R.id.et_relacao);
         mSensibilidadeEditText = (EditText) findViewById(R.id.et_fator_de_sensibilidade);
         mAlvoEditText = (EditText) findViewById(R.id.et_alvo);
+
+        Intent intentThatStartedThisActivity = getIntent();
+
+        if (intentThatStartedThisActivity.hasExtra(BolusTimeBlockData.BUNDLE_STRING_KEY)){
+            Bundle bundle = intentThatStartedThisActivity.getExtras();
+            mBolusTimeBlockData = (BolusTimeBlockData) bundle.getSerializable(BolusTimeBlockData.BUNDLE_STRING_KEY);
+        }
 
         //Carrega dados caso seja recebido pela Entity que criou a activity;
         loadData();
