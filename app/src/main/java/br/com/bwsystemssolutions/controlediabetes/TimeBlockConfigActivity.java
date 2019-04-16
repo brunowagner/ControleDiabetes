@@ -76,15 +76,19 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
 
     }
 
-    private void saveData(){
+    private boolean saveData(){
         if (!validateData()) { return;}
+        
+        boolean executed = false;
 
         if (mBolusTimeBlockData == null){
-            addTimeBlock();
+            long add = addTimeBlock();
+            if (add > 0){ executed = true; }
         } else {
-            updateTimeBlock();
+            int update = updateTimeBlock();
+            if (update > 0){ executed = true; }
         }
-
+        return executed;
     }
 
     private boolean validateData(){
@@ -112,8 +116,17 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
         return mDb.insert(TimeBlockEntry.TABLE_NAME, null, cv);
     }
 
-    private void updateTimeBlock(){
+    private int updateTimeBlock(){
         //TODO - codificar o método para modificar o time block atual no banco.
+        ContentValues cv = new ContentValues();
+        cv.put(TimeBlockEntry.COLUMN_INITIAL_TIME_NAME, mInicioEditText.getText().toString());
+        cv.put(TimeBlockEntry.COLUMN_RELATION_NAME, mRelacaoEditText.getText().toString());
+        cv.put(TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME, mSensibilidadeEditText.getText().toString());
+        cv.put(TimeBlockEntry.COLUMN_TARGET_NAME, mAlvoEditText.getText().toString());
+        
+        String where = TimeBlockEntry.ID + "=" + mBolusTimeBlockData.id;
+
+        return mDb.update(TimeBlockEntry.TABLE_NAME, cv, where, null);
     }
 
 
@@ -143,10 +156,16 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
         int id = item.getItemId();
 
         if (id == R.id.action_save){
-            saveData();
-            return true;
+            boolean executed = saveData();
+            
+            if (executed){
+                Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
+                return true;
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "Não foi possível salvar!", Toast.LENGTH_SHORT).show();
+            }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
