@@ -1,59 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="@color/Gelo_Transparente"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
     android:paddingRight="10dp"
-    android:paddingLeft="10dp">
+    android:paddingBottom="10dp">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iniciando às: "
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tv_inicio_do_bloco_de_tempo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Iniciando às: 00:00"/>
+            android:text="00:00" />
 
         <View
             android:id="@+id/divider4"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="?android:attr/listDivider" />
+            android:background="?android:attr/listDivider"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Relação: " />
 
         <TextView
             android:id="@+id/tv_relacao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Relação: 30"/>
+            android:text="30" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Fator de Sensibilidade: " />
 
         <TextView
             android:id="@+id/tv_fator_sensibilidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fator de Sensibilidade: 100"/>
+            android:text="100" />
 
         <View
             android:id="@+id/divider5"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="?android:attr/listDivider" />
+            android:background="?android:attr/listDivider"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Alvo: " />
 
         <TextView
             android:id="@+id/tv_alvo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alvo: 130"/>
+            android:text="130" />
     </LinearLayout>
+
 
 </LinearLayout>
