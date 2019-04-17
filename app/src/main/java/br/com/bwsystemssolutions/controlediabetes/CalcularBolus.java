@@ -2,6 +2,9 @@ package br.com.bwsystemssolutions.controlediabetes;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -23,8 +26,8 @@ public class CalcularBolus extends AppCompatActivity {
         mCarboidratosEditText = (EditText) findViewById(R.id.et_carboidratos);
         mResultado = (TextView) findViewById(R.id.tv_resultado);
 
-        mGlicemiaEditText.setOnKeyListener(new onEditorListener());
-        mCarboidratosEditText.setOnKeyListener(new onEditorListener());
+        mGlicemiaEditText.addTextChangedListener(new OnTextEdit());
+        mCarboidratosEditText.addTextChangedListener(new OnTextEdit());
     }
 
     private void calcular(){
@@ -37,17 +40,28 @@ public class CalcularBolus extends AppCompatActivity {
         * [(glicemia - alvo) / fator de sensibilidade]   +   (carboidratos * relacao)
         *
         * */
+        Log.d("bwvm", "calcular: Entrou");
+        Log.d("bwvm", "calcular: Saiu");
 
     }
 
 
 
-    class onEditorListener implements View.OnKeyListener {
+    private class OnTextEdit implements TextWatcher {
+
 
         @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            Log.d("bwvm", "afterTextChanged: " + s);
             calcular();
-            return true;
         }
     }
 }
