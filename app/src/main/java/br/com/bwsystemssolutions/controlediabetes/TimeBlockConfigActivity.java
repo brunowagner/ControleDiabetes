@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -71,9 +72,9 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
         if (mBolusTimeBlockData == null){ return; }
 
         mInicioEditText.setText(mBolusTimeBlockData.start);
-        mRelacaoEditText.setText(mBolusTimeBlockData.relation);
-        mSensibilidadeEditText.setText(mBolusTimeBlockData.sensibilityFactor);
-        mAlvoEditText.setText(mBolusTimeBlockData.tarjet);
+        mRelacaoEditText.setText(String.valueOf(mBolusTimeBlockData.relation));
+        mSensibilidadeEditText.setText(String.valueOf(mBolusTimeBlockData.sensibilityFactor));
+        mAlvoEditText.setText(String.valueOf(mBolusTimeBlockData.tarjet));
 
     }
 
@@ -118,13 +119,17 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
     }
 
     private int updateTimeBlock(){
+        Log.d("bwvm", "updateTimeBlock: Iniciou");
         //TODO - codificar o método para modificar o time block atual no banco.
         ContentValues cv = new ContentValues();
         cv.put(TimeBlockEntry.COLUMN_INITIAL_TIME_NAME, mInicioEditText.getText().toString());
         cv.put(TimeBlockEntry.COLUMN_RELATION_NAME, mRelacaoEditText.getText().toString());
         cv.put(TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME, mSensibilidadeEditText.getText().toString());
         cv.put(TimeBlockEntry.COLUMN_TARGET_NAME, mAlvoEditText.getText().toString());
-        
+
+        Log.d("bwvm", "updateTimeBlock: TimeBlockEntry._ID: " + TimeBlockEntry._ID);
+        Log.d("bwvm", "updateTimeBlock: id: " + mBolusTimeBlockData.id);
+
         String where = TimeBlockEntry._ID + "=" + mBolusTimeBlockData.id;
 
         return mDb.update(TimeBlockEntry.TABLE_NAME, cv, where, null);

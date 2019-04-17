@@ -72,6 +72,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         if (mCursor.moveToFirst()){
             do {
                 BolusTimeBlockData bolusTimeBlockData = new BolusTimeBlockData();
+                bolusTimeBlockData.id = mCursor.getInt(mCursor.getColumnIndex(TimeBlockEntry._ID));
                 bolusTimeBlockData.start = mCursor.getString(mCursor.getColumnIndex(TimeBlockEntry.COLUMN_INITIAL_TIME_NAME));
                 bolusTimeBlockData.relation = mCursor.getInt(mCursor.getColumnIndex(TimeBlockEntry.COLUMN_RELATION_NAME));
                 bolusTimeBlockData.sensibilityFactor = mCursor.getInt(mCursor.getColumnIndex(TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME));

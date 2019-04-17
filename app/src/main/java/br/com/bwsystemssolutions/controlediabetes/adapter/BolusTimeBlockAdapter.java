@@ -2,6 +2,7 @@ package br.com.bwsystemssolutions.controlediabetes.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 			mRelacaoTextView = (TextView) itemView.findViewById(R.id.tv_relacao);
 			mFatorDeSensibilidadeTextView = (TextView) itemView.findViewById(R.id.tv_fator_sensibilidade);
 			mAlvoTextView = (TextView) itemView.findViewById(R.id.tv_alvo);
+			itemView.setOnClickListener(this);
 		}
 
 		public void setData(BolusTimeBlockData bolusTimeBlockData){
@@ -49,6 +51,7 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 
         @Override
         public void onClick(View v) {
+			Log.d("bwvm", "onClick: Item Clicado!");
             int position = getAdapterPosition();
             BolusTimeBlockData bolusTimeBlockData = mBolusTimeBlockData.get(position);
             mClickHandler.onClick(bolusTimeBlockData);
