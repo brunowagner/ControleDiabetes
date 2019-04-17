@@ -40,9 +40,15 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         mRecyclerView = findViewById(R.id.rv_dados_para_calculo);
         configureRecyclerView();
 
+        Log.d("bwvm", "onCreate: Saiu");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         mCursor = getAllData();
         refreshRecyclerView();
-        Log.d("bwvm", "onCreate: Saiu");
     }
 
     //implementação do BolusTimeBlockAdapterOnClickHandler
