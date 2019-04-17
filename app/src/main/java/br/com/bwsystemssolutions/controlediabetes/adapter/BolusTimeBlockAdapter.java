@@ -42,9 +42,9 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 
 		public void setData(BolusTimeBlockData bolusTimeBlockData){
 			mBlocoDeTempoTextView.setText(bolusTimeBlockData.start);
-			mRelacaoTextView.setText(bolusTimeBlockData.relation);
-			mFatorDeSensibilidadeTextView.setText(bolusTimeBlockData.sensibilityFactor);
-			mAlvoTextView.setText(bolusTimeBlockData.tarjet);
+			mRelacaoTextView.setText(String.valueOf(bolusTimeBlockData.relation));
+			mFatorDeSensibilidadeTextView.setText(String.valueOf(bolusTimeBlockData.sensibilityFactor));
+			mAlvoTextView.setText(String.valueOf(bolusTimeBlockData.tarjet));
 		}
 
         @Override

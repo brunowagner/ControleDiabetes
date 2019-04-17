@@ -35,7 +35,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 TimeBlockEntry.COLUMN_INITIAL_TIME_NAME + " STRING NOT NULL," +
                 TimeBlockEntry.COLUMN_RELATION_NAME + " INTEGER NOT NULL," +
                 TimeBlockEntry.COLUMN_TARGET_NAME + " INTEGER NOT NULL," +
-                TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME + "INTEGER NOT NULL" +
+                TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME + " INTEGER NOT NULL" +
                 ");";
 
         db.execSQL(SQL_CREATE_TIME_BLOCK_TABLE);
