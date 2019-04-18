@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DialogTitle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,11 +19,9 @@ import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.Calendar;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
-import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract.TimeBlockEntry;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
@@ -40,7 +37,6 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
 
     BolusTimeBlockData mBolusTimeBlockData;
     SQLiteDatabase mDb;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,19 +69,17 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
     }
 
     private void loadData(){
-
         if (mBolusTimeBlockData == null){ return; }
 
         mInicioEditText.setText(mBolusTimeBlockData.start);
         mRelacaoEditText.setText(String.valueOf(mBolusTimeBlockData.relation));
         mSensibilidadeEditText.setText(String.valueOf(mBolusTimeBlockData.sensibilityFactor));
         mAlvoEditText.setText(String.valueOf(mBolusTimeBlockData.tarjet));
-
     }
 
     private boolean saveData(){
         if (!validateData()) { return false;}
-        
+
         boolean executed = false;
 
         if (mBolusTimeBlockData == null){
@@ -111,7 +105,7 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
 
             //se o campo inicio foi preenchido e já existir o bloco de horas
         } else if (mInicioEditText.getText().toString().length() > 0 && existsRegister(mInicioEditText.getText().toString())){
-                message = "Hora de início já existe.\nO bloco não pôde ser salvo.";
+            message = "Hora de início já existe.\nO bloco não pôde ser salvo.";
         } else {
             validate = true;
         }
@@ -163,19 +157,14 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
 
 
     private boolean existsRegister(String time){
-
         String selection = TimeBlockEntry.COLUMN_INITIAL_TIME_NAME + "=?";
         String[] args = new String[] { time };
-
 
         Cursor cursor = mDb.query(TimeBlockEntry.TABLE_NAME, new String[]{TimeBlockEntry.COLUMN_INITIAL_TIME_NAME}, selection, args, null, null, null);
 
         Log.d("bwvm", "existsRegister: Tamanho do cursor: " + cursor.getCount());
         return cursor.getCount() > 0 ? true : false;
-
     }
-
-    //TODO - Criar metodo para confirmar saída sem salvar caso haja alguma alteração.
 
     private void callTimePiker(){
         Calendar calendar = Calendar.getInstance();
@@ -184,7 +173,6 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
         mTimePickerDialog = new TimePickerDialog(this,this,currentHour,currentMin,true);
         mTimePickerDialog.show();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -200,7 +188,7 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
 
         if (id == R.id.action_save){
             boolean executed = saveData();
-            
+
             if (executed){
                 Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
                 finish();
@@ -215,8 +203,6 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         String timeSeted = String.format("%02d:%02d", hourOfDay, minute);
-
-
 
         mInicioEditText.setText(timeSeted);
     }
