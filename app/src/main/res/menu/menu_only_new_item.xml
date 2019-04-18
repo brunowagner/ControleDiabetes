@@ -5,7 +5,7 @@
             android:id="@+id/action_new"
             android:orderInCategory="1"
             app:showAsAction="ifRoom"
-            android:icon="@android:drawable/ic_menu_save"
-            android:title="Novo"
+            android:icon="@drawable/ic_action_add"
+            android:title="Adicionar"
             />
 </menu>
