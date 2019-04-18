@@ -1,11 +1,15 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DialogTitle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +24,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
+import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract.TimeBlockEntry;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
@@ -84,6 +89,7 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
         boolean executed = false;
 
         if (mBolusTimeBlockData == null){
+
             long add = addTimeBlock();
             if (add > 0){ executed = true; }
         } else {
@@ -95,14 +101,34 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
 
     private boolean validateData(){
         boolean validate = false;
+        String message = "";
 
-        if (mInicioEditText.getText().length() == 0 ||
-                mRelacaoEditText.getText().length() == 0 ||
-                mSensibilidadeEditText.getText().length() == 0 ||
-                mAlvoEditText.getText().length() == 0) {
-            //TODO - exibir mensagem informado que todos os campos precisam ser preenchidos
+        // se algum campo não for preenchido
+        if (mInicioEditText.getText().length() == 0 || mRelacaoEditText.getText().length() == 0 ||
+                mSensibilidadeEditText.getText().length() == 0 || mAlvoEditText.getText().length() == 0) {
+
+            message = "Todos os campos dever ser preenchidos.";
+
+            //se o campo inicio foi preenchido e já existir o bloco de horas
+        } else if (mInicioEditText.getText().toString().length() > 0 && existsRegister(mInicioEditText.getText().toString())){
+                message = "Hora de início já existe.\nO bloco não pôde ser salvo.";
         } else {
             validate = true;
+        }
+
+        if (!validate) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(message)
+                    .setTitle("Atenção!")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //do nothing
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
         }
 
         return validate;
@@ -120,7 +146,7 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
 
     private int updateTimeBlock(){
         Log.d("bwvm", "updateTimeBlock: Iniciou");
-        //TODO - codificar o método para modificar o time block atual no banco.
+
         ContentValues cv = new ContentValues();
         cv.put(TimeBlockEntry.COLUMN_INITIAL_TIME_NAME, mInicioEditText.getText().toString());
         cv.put(TimeBlockEntry.COLUMN_RELATION_NAME, mRelacaoEditText.getText().toString());
@@ -136,7 +162,18 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
     }
 
 
-    //TODO - criar um método que verifique se o time block já existe afim de evitar duplicidade no banco na hora de salvar.
+    private boolean existsRegister(String time){
+
+        String selection = TimeBlockEntry.COLUMN_INITIAL_TIME_NAME + "=?";
+        String[] args = new String[] { time };
+
+
+        Cursor cursor = mDb.query(TimeBlockEntry.TABLE_NAME, new String[]{TimeBlockEntry.COLUMN_INITIAL_TIME_NAME}, selection, args, null, null, null);
+
+        Log.d("bwvm", "existsRegister: Tamanho do cursor: " + cursor.getCount());
+        return cursor.getCount() > 0 ? true : false;
+
+    }
 
     //TODO - Criar metodo para confirmar saída sem salvar caso haja alguma alteração.
 
@@ -178,6 +215,8 @@ public class TimeBlockConfigActivity extends AppCompatActivity implements TimePi
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         String timeSeted = String.format("%02d:%02d", hourOfDay, minute);
+
+
 
         mInicioEditText.setText(timeSeted);
     }
