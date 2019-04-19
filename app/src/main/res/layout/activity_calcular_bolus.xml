@@ -18,15 +18,15 @@
             android:text="Glicemia:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/et_glicemia"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:inputType="number"
-            android:numeric="integer"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:maxLength="3"/>
 
     </LinearLayout>
 
@@ -48,31 +48,38 @@
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:inputType="number"
-            android:numeric="integer"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:maxLength="3"/>
 
     </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calcular"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"/>
+
     <LinearLayout
-        android:layout_marginTop="40dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:paddingRight="10dp">
 
         <TextView
-            android:text="Resultado:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"/>
+            android:text="Resultado: "
+            android:textSize="30sp" />
+
         <TextView
             android:id="@+id/tv_resultado"
-            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"/>
-
+            android:text=""
+            android:textSize="30sp" />
 
     </LinearLayout>
 
