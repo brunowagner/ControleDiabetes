@@ -42,7 +42,8 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 			itemView.setOnClickListener(this);
 		}
 
-		public void setData(BolusTimeBlockData bolusTimeBlockData){
+		//Utilizado pelo onBind para deixá-lo mais limpo.
+		private void setData(BolusTimeBlockData bolusTimeBlockData){
 			mBlocoDeTempoTextView.setText(bolusTimeBlockData.start);
 			mRelacaoTextView.setText(String.valueOf(bolusTimeBlockData.relation));
 			mFatorDeSensibilidadeTextView.setText(String.valueOf(bolusTimeBlockData.sensibilityFactor));
@@ -72,6 +73,8 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 	@Override
 	public void onBindViewHolder (BolusTimeBlockAdapterViewHolder bolusTimeBlockAdapterViewHolder, int position){
 		BolusTimeBlockData timeBlockData =  mBolusTimeBlockData.get(position);
+		//armazena o id na tag do itemView a fim de utilizá-lo quando for necessário deletar o registro.
+		bolusTimeBlockAdapterViewHolder.itemView.setTag(timeBlockData.id);
         bolusTimeBlockAdapterViewHolder.setData(timeBlockData);
 	}
 	
