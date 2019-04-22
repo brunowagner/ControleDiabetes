@@ -7,20 +7,26 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
-public class CalcularBolus extends AppCompatActivity {
+public class CalcularBolus extends AppCompatActivity implements View.OnClickListener {
 
     EditText mGlicemiaEditText;
     EditText mCarboidratosEditText;
     TextView mResultado;
+    Button mCalcularButton;
     SQLiteDatabase mDb;
 
 
@@ -32,6 +38,8 @@ public class CalcularBolus extends AppCompatActivity {
         mGlicemiaEditText = (EditText) findViewById(R.id.et_glicemia);
         mCarboidratosEditText = (EditText) findViewById(R.id.et_carboidratos);
         mResultado = (TextView) findViewById(R.id.tv_resultado);
+        mCalcularButton = (Button) findViewById(R.id.btn_calcular);
+        mCalcularButton.setOnClickListener(this);
 
         mGlicemiaEditText.addTextChangedListener(new OnTextEdit());
         mCarboidratosEditText.addTextChangedListener(new OnTextEdit());
@@ -78,9 +86,20 @@ public class CalcularBolus extends AppCompatActivity {
             int relacao = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_RELATION_NAME));
             int fatorDeSensibilidade = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME));
 
-            final int resultado = ((glicemiaAtual - alvo) / (fatorDeSensibilidade)) + (carboidratos * 1 / relacao);
+            //Double d = (double) (glicemiaAtual - alvo) / (fatorDeSensibilidade);
 
-            mResultado.setText(resultado + "");
+            Log.d("bwvm", "calcular: ((glicemiaAtual - alvo) / (fatorDeSensibilidade)) + (carboidratos * 1 / relacao)" );
+            Log.d("bwvm", "calcular: " + "(( "+ glicemiaAtual + " - " + alvo + " ) / ( " + fatorDeSensibilidade + " )) + ( " + carboidratos + " * 1 / " + relacao + ")");
+
+            final double resultado =  (((double)glicemiaAtual - alvo) / (fatorDeSensibilidade)) + (double)(carboidratos * 1 / relacao);
+
+            Log.d("bwvm", "calcular: Resultado = " + resultado);
+
+            //TODO encontrar o ponte de arredondamento
+            //a solução abaixo foi encontrado em https://www.devmedia.com.br/forum/arredondar-numero-0-885650224-para-0-89/564800
+            BigDecimal velorExato = new BigDecimal(resultado).setScale(1, RoundingMode.HALF_DOWN);
+
+            mResultado.setText(velorExato + " U");
         }
 
 
@@ -99,6 +118,15 @@ public class CalcularBolus extends AppCompatActivity {
         return new SimpleDateFormat("HH:mm").format(new Date());
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        if (id == R.id.btn_calcular){
+            calcular();
+        }
+
+    }
 
 
     private class OnTextEdit implements TextWatcher {
@@ -115,7 +143,7 @@ public class CalcularBolus extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {
             Log.d("bwvm", "afterTextChanged: " + s);
-            calcular();
+            mResultado.setText("");
         }
     }
 }
