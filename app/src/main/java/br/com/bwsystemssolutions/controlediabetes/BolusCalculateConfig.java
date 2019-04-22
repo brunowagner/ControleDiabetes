@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,6 +28,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     SQLiteDatabase mDb;
     RecyclerView mRecyclerView;
     Cursor mCursor;
+    boolean enableActionDelete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     public void onClick(BolusTimeBlockData bolusTimeBlockData, int selectedItem) {
         if (selectedItem >= 0) {
             mBolusTimeBlockAdapter.setSelectedItem(mBolusTimeBlockAdapter.ITEN_SELECT_NONE);
+            setEnableActionDelete(false);
             return;
         }
 
@@ -75,7 +76,11 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
 
     @Override
     public void onLongClick(int selectedItem) {
-        Toast.makeText(this,"Long Clicked!",Toast.LENGTH_LONG).show();
+        if (selectedItem != mBolusTimeBlockAdapter.ITEN_SELECT_NONE){
+            setEnableActionDelete(true);
+        } else {
+            setEnableActionDelete(false);
+        }
     }
 
     private void refreshRecyclerView(){
@@ -123,11 +128,16 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         mRecyclerView.setHasFixedSize(true);
     }
 
+    private void setEnableActionDelete(boolean enable){
+        enableActionDelete = enable;
+        invalidateOptionsMenu();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.menu_only_new_item, menu);
+        inflater.inflate(R.menu.menu_time_block_operation, menu);
         return true;
     }
 
@@ -135,11 +145,18 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_new){
+        if (id == R.id.action_time_block_add){
             Intent intent = new Intent(BolusCalculateConfig.this, TimeBlockConfigActivity.class);
             startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_time_block_delete);
+        item.setEnabled(enableActionDelete);
+        return true;
     }
 }
