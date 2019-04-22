@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,12 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
 
     //implementação do BolusTimeBlockAdapterOnClickHandler
     @Override
-    public void onClick(BolusTimeBlockData bolusTimeBlockData) {
+    public void onClick(BolusTimeBlockData bolusTimeBlockData, int selectedItem) {
+        if (selectedItem >= 0) {
+            mBolusTimeBlockAdapter.setSelectedItem(mBolusTimeBlockAdapter.ITEN_SELECT_NONE);
+            return;
+        }
+
         Context context = this;
         Intent intent = new Intent(context, TimeBlockConfigActivity.class);
 
@@ -65,6 +71,11 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         intent.putExtras(bundle);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onLongClick(int selectedItem) {
+        Toast.makeText(this,"Long Clicked!",Toast.LENGTH_LONG).show();
     }
 
     private void refreshRecyclerView(){
@@ -82,6 +93,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
             }while(mCursor.moveToNext());
 
         }
+        mCursor.close();
         mBolusTimeBlockAdapter.setBolusBlockTimeData(bolusTimeBlockDataAL);
     }
 
