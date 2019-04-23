@@ -125,6 +125,11 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 		notifyDataSetChanged();
 	}
 
+	public BolusTimeBlockData getBolusTimeBlockData(int itemToDelete){
+		return mBolusTimeBlockData.get(itemToDelete);
+
+	}
+
 	public void setSelectedItem(int selectedItem){
 		mSelectedItem = selectedItem;
 		notifyDataSetChanged();

@@ -29,6 +29,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     RecyclerView mRecyclerView;
     Cursor mCursor;
     boolean enableActionDelete = false;
+    BolusTimeBlockData mBolusTimeBlockData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +79,15 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     public void onLongClick(int selectedItem) {
         if (selectedItem != mBolusTimeBlockAdapter.ITEN_SELECT_NONE){
             setEnableActionDelete(true);
+            mBolusTimeBlockData = mBolusTimeBlockAdapter.getBolusTimeBlockData(selectedItem);
         } else {
             setEnableActionDelete(false);
+            mBolusTimeBlockData = null;
         }
     }
 
     private void refreshRecyclerView(){
+        if(mCursor.isClosed()) mCursor = getAllData();
         ArrayList<BolusTimeBlockData> bolusTimeBlockDataAL = new ArrayList<BolusTimeBlockData>();
         if (mCursor.moveToFirst()){
             do {
@@ -141,14 +145,38 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_time_block_add:
+                Intent intent = new Intent(BolusCalculateConfig.this, TimeBlockConfigActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.action_time_block_delete:
+
+                int deleted = mDb.delete(TimeBlockEntry.TABLE_NAME, TimeBlockEntry._ID + "= ?", new String[]{mBolusTimeBlockData.id + ""});
+                if (deleted > 0 ) {
+                    mBolusTimeBlockAdapter.setSelectedItem(mBolusTimeBlockAdapter.ITEN_SELECT_NONE);
+                    setEnableActionDelete(false);
+                    refreshRecyclerView();
+                }
+                return true;
+
+            default:
+                super.onOptionsItemSelected(item);
+        }
 
         if (id == R.id.action_time_block_add){
             Intent intent = new Intent(BolusCalculateConfig.this, TimeBlockConfigActivity.class);
             startActivity(intent);
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
