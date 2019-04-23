@@ -1,6 +1,8 @@
 package br.com.bwsystemssolutions.controlediabetes.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,17 +15,24 @@ import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
+import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
+import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
 public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAdapter.BolusTimeBlockAdapterViewHolder> {
-	
+
+	private SQLiteDatabase mDb;
+	CalculoDeBolusDBHelper mDbHelper;
 	private ArrayList<BolusTimeBlockData> mBolusTimeBlockData;
 	private final BolusTimeBlockAdapterOnClickHandler mClickHandler;
-	public final int ITEN_SELECT_NONE = -1;
+	public static final int ITEN_SELECT_NONE = -1;
 	private int mSelectedItem = ITEN_SELECT_NONE;
 	//private int mCount;
 
-	public BolusTimeBlockAdapter(BolusTimeBlockAdapterOnClickHandler clickHandler) {
+	public BolusTimeBlockAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, BolusTimeBlockAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
+        mDbHelper = calculoDeBolusDBHelper;
+		mDb = mDbHelper.getWritableDatabase();
+        //configureDB();
 	}
 
 
@@ -130,9 +139,58 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 
 	}
 
+	public boolean deleteBolusTimeBlockData(int itemToDelete){
+		if (itemToDelete != mSelectedItem || itemToDelete == ITEN_SELECT_NONE) return false;
+
+		BolusTimeBlockData bolusTimeBlockData = mBolusTimeBlockData.get(mSelectedItem);
+
+		int deleted = mDb.delete(CalculoDeBolusContract.TimeBlockEntry.TABLE_NAME, CalculoDeBolusContract.TimeBlockEntry._ID + "= ?", new String[]{bolusTimeBlockData.id + ""});
+		Log.d("bwvm", "deleteBolusTimeBlockData: valor de delete: " + deleted);
+		if (deleted > 0 ) {
+			setSelectedItem(ITEN_SELECT_NONE);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public void setSelectedItem(int selectedItem){
 		mSelectedItem = selectedItem;
 		notifyDataSetChanged();
 	}
+
+
+	private void configureDB() {
+		// Configurando o banco de dados
+		mDb = mDbHelper.getWritableDatabase();
+	}
+
+	private Cursor getAllData() {
+		return mDb.query(CalculoDeBolusContract.TimeBlockEntry.TABLE_NAME,
+				null, null, null, null,null,
+				CalculoDeBolusContract.TimeBlockEntry.COLUMN_INITIAL_TIME_NAME);
+	}
+
+	public void refreshData(){
+		Cursor cursor = getAllData();
+		ArrayList<BolusTimeBlockData> bolusTimeBlockDataAL = new ArrayList<BolusTimeBlockData>();
+		if (cursor.moveToFirst()){
+			do {
+				BolusTimeBlockData bolusTimeBlockData = new BolusTimeBlockData();
+				bolusTimeBlockData.id = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry._ID));
+				bolusTimeBlockData.start = cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_INITIAL_TIME_NAME));
+				bolusTimeBlockData.relation = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_RELATION_NAME));
+				bolusTimeBlockData.sensibilityFactor = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME));
+				bolusTimeBlockData.tarjet = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_TARGET_NAME));
+
+				bolusTimeBlockDataAL.add(bolusTimeBlockData);
+			}while(cursor.moveToNext());
+
+		}
+		cursor.close();
+		setBolusBlockTimeData(bolusTimeBlockDataAL);
+	}
+
+
 	
 }
