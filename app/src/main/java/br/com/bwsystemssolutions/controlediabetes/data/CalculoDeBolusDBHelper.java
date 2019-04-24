@@ -43,7 +43,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 RecordEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 RecordEntry.COLUMN_DATE_TIME_NAME + " TEXT NOT NULL," +
                 RecordEntry.COLUMN_GLUCOSE_NAME + " INTEGER," +
-                RecordEntry.COLUMN_EVENTO_NAME + " TEXT NOT NULL," +
+                RecordEntry.COLUMN_EVENT_NAME + " TEXT NOT NULL," +
                 RecordEntry.COLUMN_CARBOHYDRATE_NAME + " INTEGER," +
                 RecordEntry.COLUMN_FAST_INSULIN_NAME + " REAL," +
                 RecordEntry.COLUMN_BASAL_INSULIN_NAME + " REAL," +
