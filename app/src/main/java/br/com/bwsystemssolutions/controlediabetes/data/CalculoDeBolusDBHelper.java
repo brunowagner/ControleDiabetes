@@ -37,14 +37,38 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 TimeBlockEntry.COLUMN_TARGET_NAME + " INTEGER NOT NULL," +
                 TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME + " INTEGER NOT NULL" +
                 ");";
+        
+        final String SQL_CREATE_RECORDS_TABLE = "CREATE TABLE " +
+                RecordEntry.TABLE_NAME + "(" +
+                RecordEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RecordEntry.COLUMN_DATE_TIME_NAME + " TEXT NOT NULL," +
+                RecordEntry.COLUMN_GLUCOSE_NAME + " INTEGER," +
+                RecordEntry.COLUMN_EVENTO_NAME + " TEXT NOT NULL," +
+                RecordEntry.COLUMN_CARBOHYDRATE_NAME + " INTEGER," +
+                RecordEntry.COLUMN_FAST_INSULIN_NAME + " REAL," +
+                RecordEntry.COLUMN_BASAL_INSULIN_NAME + " REAL," +
+                RecordEntry.COLUMN_SICK_NAME + " INTEGER," +
+                RecordEntry.COLUMN_MEDICAMENT_NAME + " INTEGER," +
+                RecordEntry.COLUMN_NOTE_NAME + " TEXT" +
+                ");";
+        
+        final String SQL_CREATE_EVENTS_TABLE = "CREATE TABLE " +
+                EventEntry.TABLE_NAME + "(" +
+                EventEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                EventEntry.COLUMN_EVENT_NAME + " TEXT NOT NULL" +
+                ");";
 
         db.execSQL(SQL_CREATE_TIME_BLOCK_TABLE);
+        db.execSQL(SQL_CREATE_RECORDS_TABLE);
+        db.execSQL(SQL_CREATE_EVENTS_TABLE);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TimeBlockEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + RecordEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
         onCreate(db);
     }
 }
