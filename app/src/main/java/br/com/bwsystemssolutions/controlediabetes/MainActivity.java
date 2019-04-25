@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity{
 
         void goToRegistros(){
             Context context = MainActivity.this;
-            Class destinationClass = Registros.class;
+            Class destinationClass = RegistrosActivity.class;
             Intent intent = new Intent(context, destinationClass);
 
             startActivity(intent);

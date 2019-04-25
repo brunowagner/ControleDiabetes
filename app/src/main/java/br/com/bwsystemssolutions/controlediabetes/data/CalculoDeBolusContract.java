@@ -24,7 +24,7 @@ public class CalculoDeBolusContract {
         public static final String TABLE_NAME = "records";
         public static final String COLUMN_DATE_TIME_NAME = "date_time";
         public static final String COLUMN_GLUCOSE_NAME = "glucose";
-        public static final String COLUMN_EVENTO_NAME = "event";
+        public static final String COLUMN_EVENT_NAME = "event";
         public static final String COLUMN_CARBOHYDRATE_NAME = "carbohydrate";
         public static final String COLUMN_FAST_INSULIN_NAME = "fast_insulin";
         public static final String COLUMN_BASAL_INSULIN_NAME = "basal_insulin";

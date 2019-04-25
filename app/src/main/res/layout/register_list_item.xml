@@ -2,7 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingLeft="10sp"
+    android:paddingRight="10sp"
+    android:paddingTop="7sp"
+    android:paddingBottom="7sp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -10,61 +14,109 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="01/01/0101 01:01 DOM"
-            android:id="@+id/tv_dateHora"
+            android:id="@+id/tv_data_hora_dia_semana"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="09/09/09 01:01 DOM"
+            android:textStyle="bold" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?android:attr/listDivider" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Evento: " />
+
+        <TextView
+            android:id="@+id/tv_evento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Após Glicemia Baixa" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Glic.:"
+            android:textIsSelectable="false" />
 
         <TextView
             android:id="@+id/tv_glicemia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Glic.: 120" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="Almoço"
-            android:id="@+id/tv_evento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="600" />
 
         <View
             android:id="@+id/divider2"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?android:attr/listDivider" />
+            android:layout_weight="1" />
 
         <TextView
-            android:text="Carb.: 60"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carb.:" />
+
+        <TextView
             android:id="@+id/tv_carboidrato"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="600" />
 
         <View
             android:id="@+id/divider3"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?android:attr/listDivider" />
+            android:layout_weight="1" />
 
         <TextView
-            android:text="Insul.: 2.0U"
-            android:id="@+id/tv_insulina"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="Rápida:" />
+
+        <TextView
+            android:id="@+id/tv_insulina_rapida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="22.5U" />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Basal:" />
+
+        <TextView
+            android:id="@+id/tv_insulina_basal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="22.5U" />
 
     </LinearLayout>
 

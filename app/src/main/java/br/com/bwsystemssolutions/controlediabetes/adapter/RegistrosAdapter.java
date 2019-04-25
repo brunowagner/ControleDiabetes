@@ -3,7 +3,6 @@ package br.com.bwsystemssolutions.controlediabetes.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,16 +13,25 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.R;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
+import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
+
 public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.RegistrosAdapterViewHolder> {
-	private ArrayList<Record> mRecord;
-	
+	private ArrayList<Record> mRecords;
+
+	private SQLiteDatabase mDb;
+	CalculoDeBolusDBHelper mDbHelper;
+
+	public RegistrosAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper) {
+		mDbHelper = calculoDeBolusDBHelper;
+		mDb = mDbHelper.getWritableDatabase();
+	}
+
 	public int getItemCount() {
-        if (null == mRecord) return 0;
-        return mRecord.size();
+        if (null == mRecords) return 0;
+        return mRecords.size();
     }
 	
 	private Cursor getAllData() {
@@ -34,76 +42,84 @@ public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.Regi
 	}
 
 	public void refreshData(){
+
 		Cursor cursor = getAllData();
-		ArrayList<BolusTimeBlockData> bolusTimeBlockDataAL = new ArrayList<BolusTimeBlockData>();
+		Log.d("bwvm", "refreshData: tamanho do cursor" + cursor.getCount());
+		if (cursor.getCount() <= 0) return;
+		ArrayList<Record> records = new ArrayList<Record>();
 		if (cursor.moveToFirst()){
 			do {
-				BolusTimeBlockData bolusTimeBlockData = new BolusTimeBlockData();
-				bolusTimeBlockData.id = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry._ID));
-				bolusTimeBlockData.start = cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_INITIAL_TIME_NAME));
-				bolusTimeBlockData.relation = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_RELATION_NAME));
-				bolusTimeBlockData.sensibilityFactor = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME));
-				bolusTimeBlockData.tarjet = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_TARGET_NAME));
+				Record record = new Record();
+				record.setId(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry._ID)));
+				record.setDateFromStringDateSqlite(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME)));
+				record.setCarbohydrate(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME)));
+				record.setGlucose(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME)));
+				record.setFastInsulin(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME)));
+				record.setBasalInsulin(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME)));
+				record.setEvent(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME)));
+				record.setNote(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME)));
+				record.setSick(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME))>0);
+				record.setMedicament(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME))>0);
 
-				bolusTimeBlockDataAL.add(bolusTimeBlockData);
+				records.add(record);
 			}while(cursor.moveToNext());
 
 		}
 		cursor.close();
-		setBolusBlockTimeData(bolusTimeBlockDataAL);
+		setRecords(records);
+	}
+
+	public void setRecords(ArrayList<Record> records){
+		mRecords = records;
+		notifyDataSetChanged();
 	}
 	
 	public class RegistrosAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 		public final TextView mDataHoraTextView;
-		//public final TextView mHora;
 		public final TextView mGlicemiaTextView;
 		public final TextView mEventoTextView;
 		public final TextView mCarboidratoTextView;
 		public final TextView mInsulinaRapidaTextView;
-		public final TextView mInsulinaBasal;
-		public final Checkbox mDoenteCheckbox;
-		public final Checkbox mMedicamentoCheckbox;
-		public final TextView mObservacaoTextView;
+		public final TextView mInsulinaBasalTextView;
 		
 		public RegistrosAdapterViewHolder (View itemView){
-			mDataHora = (TextView) itemView.findViewById(R.id.tv_dateHora);
-			//mHora;
+			super(itemView);
+			mDataHoraTextView = (TextView) itemView.findViewById(R.id.tv_data_hora_dia_semana);
 			mGlicemiaTextView = (TextView) itemView.findViewById(R.id.tv_glicemia);
 			mEventoTextView = (TextView) itemView.findViewById(R.id.tv_evento);
 			mCarboidratoTextView = (TextView) itemView.findViewById(R.id.tv_carboidrato);
 			mInsulinaRapidaTextView = (TextView) itemView.findViewById(R.id.tv_insulina_rapida);
 			mInsulinaBasalTextView = (TextView) itemView.findViewById(R.id.tv_insulina_basal);
-			mDoenteCheckbox = (Checkbox) itemView.findViewById(R.id.tv_doente);
-			mMedicamentoCheckbox = (Checkbox) itemView.findViewById(R.id.tv_medicamento);
-			mObservacaoTextView = (TextView) itemView.findViewById(R.id.tv_observacao);
 		}
-		
+
 		@Override
-		public RegistrosAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-			Context context = viewGroup.getContext();
-			LayoutInflater inflater = LayoutInflater.from(context);
-			int layoutIdFromListItem = R.layout.register_list_item;
-			boolean shouldAttachToParentImmediately = false;
-			
-			View view = inflater.inflate(layoutIdFromListItem, viewGroup, shouldAttachToParentImmediately);
-			return new RegistrosAdapterViewHolder(view);
+		public void onClick(View v) {
+
 		}
-		
-		@Override
-		public void onBindViewHolder (RegistrosAdapterViewHolder registrosAdapterViewHolder, int position){
-			Record record = mRecord.get(position)
-			
-			//TODO setar os views com os dados do objeto record.
-			registrosAdapterViewHolder.itemView.setTag(registro.id);
-			mGlicemiaTextView.setText();
-			mEventoTextView.setText();
-			mCarboidratoTextView.setText();
-			mInsulinaRapidaTextView.setText();
-			mInsulinaBasalTextView.setText();
-			mDoenteCheckbox.setText();
-			mMedicamentoCheckbox.setText();
-			mObservacaoTextView.setText();
-		}
+	}
+
+	@Override
+	public RegistrosAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+		Context context = viewGroup.getContext();
+		LayoutInflater inflater = LayoutInflater.from(context);
+		int layoutIdFromListItem = R.layout.register_list_item;
+		boolean shouldAttachToParentImmediately = false;
+
+		View view = inflater.inflate(layoutIdFromListItem, viewGroup, shouldAttachToParentImmediately);
+		return new RegistrosAdapterViewHolder(view);
+	}
+
+	@Override
+	public void onBindViewHolder (RegistrosAdapterViewHolder registrosAdapterViewHolder, int position){
+		Record record = mRecords.get(position);
+
+		//TODO fazer um cast melhor do double
+		registrosAdapterViewHolder.itemView.setTag(record.getId());
+		registrosAdapterViewHolder.mGlicemiaTextView.setText(record.getGlucose());
+		registrosAdapterViewHolder.mEventoTextView.setText(record.getEvent());
+		registrosAdapterViewHolder.mCarboidratoTextView.setText(record.getCarbohydrate());
+		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));
+		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
 	}
 	
 	
