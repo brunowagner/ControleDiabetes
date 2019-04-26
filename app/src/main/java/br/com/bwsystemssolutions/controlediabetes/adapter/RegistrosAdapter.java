@@ -23,10 +23,12 @@ public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.Regi
 
 	private SQLiteDatabase mDb;
 	CalculoDeBolusDBHelper mDbHelper;
+	private final RecordAdapterOnClickHandler mClickHandler;
 
-	public RegistrosAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper) {
+	public RegistrosAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, RecordAdapterOnClickHandler clickHandler) {
 		mDbHelper = calculoDeBolusDBHelper;
 		mDb = mDbHelper.getWritableDatabase();
+		mClickHandler = clickHandler;
 	}
 
 	public int getItemCount() {
@@ -94,7 +96,9 @@ public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.Regi
 
 		@Override
 		public void onClick(View v) {
-
+			 int position = getAdapterPosition();
+            Record record = mRecords.get(position);
+            mClickHandler.onClick(record);
 		}
 	}
 
@@ -122,5 +126,7 @@ public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.Regi
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
 	}
 	
-	
+	public interface RecordAdapterOnClickHandler{
+	    void onClick(Record record);
+    }
 }
