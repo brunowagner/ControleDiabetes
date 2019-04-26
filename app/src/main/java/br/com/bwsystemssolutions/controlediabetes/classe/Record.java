@@ -18,6 +18,8 @@ public class Record implements Serializable {
     private boolean medicament;
     private String note;
     
+    public static final String BUNDLE_STRING_KEY = Record.class.toString();
+    
     public Record(){
     }
 
