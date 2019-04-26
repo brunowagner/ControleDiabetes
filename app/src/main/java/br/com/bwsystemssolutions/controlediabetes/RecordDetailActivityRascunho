@@ -1,0 +1,9 @@
+package br.com.bwsystemssolutions.controlediabetes;
+
+public class RegistrosActivity extends AppCompatActivity implements RecordAdapterOnClickHandler{
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_record_detail);
+    }
