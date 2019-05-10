@@ -1,17 +1,22 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTimeBlockAdapter;
-import br.com.bwsystemssolutions.controlediabetes.adapter.RegistrosAdapter;
+import br.com.bwsystemssolutions.controlediabetes.adapter.RecordAdapter;
+import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
-public class RegistrosActivity extends AppCompatActivity implements RecordAdapterOnClickHandler{
+public class RegistrosActivity extends AppCompatActivity implements RecordAdapter.RecordAdapterOnClickHandler {
     RecyclerView mRegistrosRecyclerView;
-    RegistrosAdapter mRegistrosAdapter;
+    RecordAdapter mRegistrosAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +28,7 @@ public class RegistrosActivity extends AppCompatActivity implements RecordAdapte
         mRegistrosRecyclerView.setLayoutManager(linearLayoutManager);
 
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mRegistrosAdapter= new RegistrosAdapter(dbHelper);
+        mRegistrosAdapter= new RecordAdapter(dbHelper,this);
 
         mRegistrosRecyclerView.setAdapter(mRegistrosAdapter);
 

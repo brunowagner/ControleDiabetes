@@ -18,14 +18,14 @@ import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
 
-public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.RegistrosAdapterViewHolder> {
+public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdapterViewHolder> {
 	private ArrayList<Record> mRecords;
 
 	private SQLiteDatabase mDb;
 	CalculoDeBolusDBHelper mDbHelper;
 	private final RecordAdapterOnClickHandler mClickHandler;
 
-	public RegistrosAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, RecordAdapterOnClickHandler clickHandler) {
+	public RecordAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, RecordAdapterOnClickHandler clickHandler) {
 		mDbHelper = calculoDeBolusDBHelper;
 		mDb = mDbHelper.getWritableDatabase();
 		mClickHandler = clickHandler;
@@ -76,7 +76,7 @@ public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.Regi
 		notifyDataSetChanged();
 	}
 	
-	public class RegistrosAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+	public class RecordAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 		public final TextView mDataHoraTextView;
 		public final TextView mGlicemiaTextView;
 		public final TextView mEventoTextView;
@@ -84,7 +84,7 @@ public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.Regi
 		public final TextView mInsulinaRapidaTextView;
 		public final TextView mInsulinaBasalTextView;
 		
-		public RegistrosAdapterViewHolder (View itemView){
+		public RecordAdapterViewHolder(View itemView){
 			super(itemView);
 			mDataHoraTextView = (TextView) itemView.findViewById(R.id.tv_data_hora_dia_semana);
 			mGlicemiaTextView = (TextView) itemView.findViewById(R.id.tv_glicemia);
@@ -103,18 +103,18 @@ public class RegistrosAdapter extends RecyclerView.Adapter<RegistrosAdapter.Regi
 	}
 
 	@Override
-	public RegistrosAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+	public RecordAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 		Context context = viewGroup.getContext();
 		LayoutInflater inflater = LayoutInflater.from(context);
 		int layoutIdFromListItem = R.layout.register_list_item;
 		boolean shouldAttachToParentImmediately = false;
 
 		View view = inflater.inflate(layoutIdFromListItem, viewGroup, shouldAttachToParentImmediately);
-		return new RegistrosAdapterViewHolder(view);
+		return new RecordAdapterViewHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder (RegistrosAdapterViewHolder registrosAdapterViewHolder, int position){
+	public void onBindViewHolder (RecordAdapterViewHolder registrosAdapterViewHolder, int position){
 		Record record = mRecords.get(position);
 
 		//TODO fazer um cast melhor do double

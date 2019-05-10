@@ -19,7 +19,8 @@
         <activity android:name=".CalcularBolus" />
         <activity android:name=".RegistrosActivity" />
         <activity android:name=".BolusCalculateConfig" />
-        <activity android:name=".TimeBlockConfigActivity"></activity>
+        <activity android:name=".TimeBlockConfigActivity" />
+        <activity android:name=".RecordDetailActivity"></activity>
     </application>
 
 </manifest>
