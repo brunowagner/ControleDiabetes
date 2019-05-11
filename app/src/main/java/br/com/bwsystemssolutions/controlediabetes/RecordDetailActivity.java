@@ -1,11 +1,16 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +26,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
+import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
+import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
+import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
 public class RecordDetailActivity extends AppCompatActivity {
 
@@ -71,6 +79,124 @@ public class RecordDetailActivity extends AppCompatActivity {
             Bundle bundle = intentThatStartedThisActivity.getExtras();
             mRecord = (Record) bundle.getSerializable(Record.BUNDLE_STRING_KEY);
         }
+
+        loadData();
+
+        configureDb();
+    }
+
+    private void configureDb(){
+        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
+        mDb = dbHelper.getWritableDatabase();
+    }
+
+    private void loadData(){
+        if (mRecord == null){ return; }
+
+        mDataEditText.setText(Utilidades.convertDateToString(mRecord.getDate(), Utilidades.DEFAULT_DATE_FORMAT));
+        mHoraEditText.setText(Utilidades.convertTimeToString(mRecord.getDate(), Utilidades.DEFAULT_TIME_FORMAT));
+        mGlicemiaEditText.setText(mRecord.getGlucose());
+        mEventoEditText.setText(mRecord.getEvent());
+        mCarboidratoEditText.setText(mRecord.getCarbohydrate());
+        mInsulinaRapidaEditText.setText(String.valueOf(mRecord.getFastInsulin()));
+        mInsulinaBasalEditText.setText(String.valueOf(mRecord.getBasalInsulin()));
+        mDoenteCheckBox.setChecked(mRecord.isSick());
+        mMedicamentoCheckBox.setChecked(mRecord.isMedicament());
+        mObservacaoEditText.setText(mRecord.getNote());
+    }
+
+    private boolean saveData(){
+        if (!validateData()) { return false;}
+
+        boolean executed = false;
+
+        if (mRecord == null){
+
+            long add = addTimeBlock();
+            if (add > 0){ executed = true; }
+        } else {
+            int update = updateTimeBlock();
+            if (update > 0){ executed = true; }
+        }
+        return executed;
+    }
+
+    private boolean validateData(){
+        boolean validate = false;
+        String message = "";
+
+        // se algum campo não for preenchido
+        if (mDataEditText.getText().length() == 0 || mHoraEditText.getText().length() == 0 ||
+                mEventoEditText.getText().length() == 0) {
+
+            message = "A data, a hora ou o evento não foi preenchido!";
+
+            //se o campo inicio foi preenchido e já existir o bloco de horas
+        } else if (mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRegister(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )){
+            message = "Data e hora ja' existem.\nO registro não pôde ser salvo.";
+        } else {
+            validate = true;
+        }
+
+        if (!validate) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(message)
+                    .setTitle("Atenção!")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //do nothing
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        return validate;
+    }
+
+    private boolean existsRegister(String date, String time){
+        String selection = CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + "=?";
+        String[] args = new String[] { Utilidades.convertDateTimeToSQLiteFormat(date, time) };
+
+        Cursor cursor = mDb.query(CalculoDeBolusContract.RecordEntry.TABLE_NAME, new String[]{CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME}, selection, args, null, null, null);
+
+        Log.d("bwvm", "existsRegister: Tamanho do cursor: " + cursor.getCount());
+        return cursor.getCount() > 0 ? true : false;
+    }
+
+    private long addTimeBlock(){
+        ContentValues cv = new ContentValues();
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, mMedicamentoCheckBox.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, mObservacaoEditText.getText().toString());
+
+        return mDb.insert(CalculoDeBolusContract.RecordEntry.TABLE_NAME, null, cv);
+    }
+
+    private int updateTimeBlock(){
+        Log.d("bwvm", "updateTimeBlock: Iniciou");
+        ContentValues cv = new ContentValues();
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, mMedicamentoCheckBox.getText().toString());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, mObservacaoEditText.getText().toString());
+
+        String where = CalculoDeBolusContract.RecordEntry._ID + "=" + mRecord.getId();
+
+        return mDb.update(CalculoDeBolusContract.RecordEntry.TABLE_NAME, cv, where, null);
     }
 
     @Override
@@ -97,11 +223,6 @@ public class RecordDetailActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private boolean saveData() {
-        //TODO codificar metodo para salvar os dados.
-        return false;
     }
 
 
