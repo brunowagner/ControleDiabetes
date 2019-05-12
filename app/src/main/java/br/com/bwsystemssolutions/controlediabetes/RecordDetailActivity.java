@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -242,10 +243,18 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            Date date = new Date (year,month,dayOfMonth);
-            String formatedDate = String.format("dd/MM/yyyy", date);
+            String sDate = String.format("%02d/%02d/%04d", dayOfMonth, month, year);
 
-            mDataEditText.setText(formatedDate);
+//            Log.d("bwvm", "onDateSet: date" + date );
+//
+//            Log.d("bwvm", "onDateSet: dd" + dayOfMonth);
+//            Log.d("bwvm", "onDateSet: MM" + month);
+//            Log.d("bwvm", "onDateSet: yy" + year);
+//            SimpleDateFormat sdff = new SimpleDateFormat("dd/MM/yyyy");
+//
+//            String formatedDate = sdff.format(date);
+
+            mDataEditText.setText(sDate);
         }
 
         @Override
