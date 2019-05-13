@@ -11,8 +11,8 @@ import java.util.Date;
 
 public class Utilidades {
 
-    public static final String DEFAULT_DATE_FORMAT = "dd/mm/yyyy";
-    public static final String DEFAULT_TIME_FORMAT = "HH:MM";
+    public static final String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
+    public static final String DEFAULT_TIME_FORMAT = "HH:mm";
     public static final String SQLITE_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 

@@ -94,9 +94,9 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         mDataEditText.setText(Utilidades.convertDateToString(mRecord.getDate(), Utilidades.DEFAULT_DATE_FORMAT));
         mHoraEditText.setText(Utilidades.convertTimeToString(mRecord.getDate(), Utilidades.DEFAULT_TIME_FORMAT));
-        mGlicemiaEditText.setText(mRecord.getGlucose());
+        mGlicemiaEditText.setText(String.valueOf(mRecord.getGlucose()));
         mEventoEditText.setText(mRecord.getEvent());
-        mCarboidratoEditText.setText(mRecord.getCarbohydrate());
+        mCarboidratoEditText.setText(String.valueOf(mRecord.getCarbohydrate()));
         mInsulinaRapidaEditText.setText(String.valueOf(mRecord.getFastInsulin()));
         mInsulinaBasalEditText.setText(String.valueOf(mRecord.getBasalInsulin()));
         mDoenteCheckBox.setChecked(mRecord.isSick());

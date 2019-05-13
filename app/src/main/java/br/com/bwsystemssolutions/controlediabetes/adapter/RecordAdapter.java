@@ -92,6 +92,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 			mCarboidratoTextView = (TextView) itemView.findViewById(R.id.tv_carboidrato);
 			mInsulinaRapidaTextView = (TextView) itemView.findViewById(R.id.tv_insulina_rapida);
 			mInsulinaBasalTextView = (TextView) itemView.findViewById(R.id.tv_insulina_basal);
+
+			itemView.setOnClickListener(this);
 		}
 
 		@Override
@@ -128,7 +130,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		registrosAdapterViewHolder.mCarboidratoTextView.setText(String.valueOf(record.getCarbohydrate()));
 		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
-
 
 	}
 	
