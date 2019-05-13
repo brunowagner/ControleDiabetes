@@ -26,23 +26,22 @@ public class Utilidades {
 
     public static String convertDateTimeToSQLiteFormat(String date, String time){
 
-
-        SimpleDateFormat sdf = new SimpleDateFormat(SQLITE_DATETIME_FORMAT);
+        String dateTime = date + " " + time;
+        SimpleDateFormat in = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date data = null;
         try {
-            Date d  = sdf.parse(date + " " + time);
-            return converter(d, SQLITE_DATETIME_FORMAT);
-
-        } catch (ParseException ex) {
-            Log.d("BWVM", "convertDateTimeToSQLiteFormat: " + ex.getLocalizedMessage());
+            data = in.parse(dateTime);
+        } catch (ParseException e) {
+            Log.d("BWVM", "convertDateTimeToSQLiteFormat: " + e.getLocalizedMessage());
             return null;
         }
+        in.applyPattern(SQLITE_DATETIME_FORMAT);
+        String convertedDateTime = in.format(data);
+
+        Log.d("bwvm", "convertDateTimeToSQLiteFormat: Data Formatada  " + convertedDateTime);
+
+        return convertedDateTime;
     }
-
-
-
-
-
-
 
 
     private static String converter(Date date, String format){

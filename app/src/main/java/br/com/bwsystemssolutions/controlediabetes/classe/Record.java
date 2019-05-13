@@ -52,7 +52,7 @@ public class Record implements Serializable {
     }
 
     public void setDateFromStringDateSqlite(String dateString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         setDateFromStringDateSqlite(dateString, sdf);
     }
 
@@ -128,6 +128,17 @@ public class Record implements Serializable {
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("EE");
+
+        return sdf.format(date);
+    }
+
+    public String getDateTimeWeekDay(){
+        Date date = getDate();
+        if (date == null ){
+            return null;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm EE");
 
         return sdf.format(date);
     }

@@ -117,13 +117,19 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	public void onBindViewHolder (RecordAdapterViewHolder registrosAdapterViewHolder, int position){
 		Record record = mRecords.get(position);
 
+		String dateTimeDayOfWeek = record.getDateTimeWeekDay();
+
 		//TODO fazer um cast melhor do double
 		registrosAdapterViewHolder.itemView.setTag(record.getId());
-		registrosAdapterViewHolder.mGlicemiaTextView.setText(record.getGlucose());
+		registrosAdapterViewHolder.mDataHoraTextView.setText( dateTimeDayOfWeek );
+
+		registrosAdapterViewHolder.mGlicemiaTextView.setText(String.valueOf(record.getGlucose()));
 		registrosAdapterViewHolder.mEventoTextView.setText(record.getEvent());
-		registrosAdapterViewHolder.mCarboidratoTextView.setText(record.getCarbohydrate());
+		registrosAdapterViewHolder.mCarboidratoTextView.setText(String.valueOf(record.getCarbohydrate()));
 		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
+
+
 	}
 	
 	public interface RecordAdapterOnClickHandler{

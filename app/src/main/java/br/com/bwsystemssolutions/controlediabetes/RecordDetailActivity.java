@@ -22,9 +22,7 @@ import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
@@ -113,10 +111,10 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         if (mRecord == null){
 
-            long add = addTimeBlock();
+            long add = addRecord();
             if (add > 0){ executed = true; }
         } else {
-            int update = updateTimeBlock();
+            int update = updateRecord();
             if (update > 0){ executed = true; }
         }
         return executed;
@@ -167,7 +165,7 @@ public class RecordDetailActivity extends AppCompatActivity {
         return cursor.getCount() > 0 ? true : false;
     }
 
-    private long addTimeBlock(){
+    private long addRecord(){
         ContentValues cv = new ContentValues();
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
@@ -182,8 +180,8 @@ public class RecordDetailActivity extends AppCompatActivity {
         return mDb.insert(CalculoDeBolusContract.RecordEntry.TABLE_NAME, null, cv);
     }
 
-    private int updateTimeBlock(){
-        Log.d("bwvm", "updateTimeBlock: Iniciou");
+    private int updateRecord(){
+        Log.d("bwvm", "updateRecord: Iniciou");
         ContentValues cv = new ContentValues();
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
@@ -243,13 +241,14 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            String sDate = String.format("%02d/%02d/%04d", dayOfMonth, month, year);
+            int monthNumber = month + 1;
+            String sDate = String.format("%02d/%02d/%04d", dayOfMonth, monthNumber, year);
 
 //            Log.d("bwvm", "onDateSet: date" + date );
 //
-//            Log.d("bwvm", "onDateSet: dd" + dayOfMonth);
-//            Log.d("bwvm", "onDateSet: MM" + month);
-//            Log.d("bwvm", "onDateSet: yy" + year);
+            Log.d("bwvm", "onDateSet: dd  " + dayOfMonth);
+            Log.d("bwvm", "onDateSet: MM  " + month);
+            Log.d("bwvm", "onDateSet: yy  " + year);
 //            SimpleDateFormat sdff = new SimpleDateFormat("dd/MM/yyyy");
 //
 //            String formatedDate = sdff.format(date);
