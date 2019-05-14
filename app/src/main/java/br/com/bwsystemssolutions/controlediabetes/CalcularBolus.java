@@ -1,5 +1,8 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -100,6 +103,29 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             BigDecimal velorExato = new BigDecimal(resultado).setScale(1, RoundingMode.HALF_DOWN);
 
             mResultado.setText(velorExato + " U");
+        } else {
+
+            String message = "Não existe bloco de tempo configurado para realização do cálculo.\n" +
+                    "Deseja criar o bloco agora?";
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(message)
+                    .setTitle("Atenção!")
+                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            goToTimeBlockConfig();
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
         }
 
 
@@ -126,6 +152,11 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             calcular();
         }
 
+    }
+
+    private void goToTimeBlockConfig(){
+        Intent intent = new Intent(this,TimeBlockConfigActivity.class);
+        startActivity(intent);
     }
 
 

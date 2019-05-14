@@ -141,6 +141,7 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 
 	public boolean deleteBolusTimeBlockData(int itemToDelete){
 		if (itemToDelete != mSelectedItem || itemToDelete == ITEN_SELECT_NONE) return false;
+		if (mBolusTimeBlockData.size()==1) return false;
 
 		BolusTimeBlockData bolusTimeBlockData = mBolusTimeBlockData.get(mSelectedItem);
 
