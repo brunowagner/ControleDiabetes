@@ -50,6 +50,8 @@ public class RecordDetailActivity extends AppCompatActivity {
     Record mRecord;
     SQLiteDatabase mDb;
 
+    boolean isSaved = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,22 +107,26 @@ public class RecordDetailActivity extends AppCompatActivity {
     }
 
     private boolean saveData(){
-        if (!validateData()) { return false;}
-
+        isSaved = false;
         boolean executed = false;
 
         if (mRecord == null){
+            if (!validateFields(true)) { return false;}
 
-            long add = addRecord();
-            if (add > 0){ executed = true; }
+            addRecord();
+
         } else {
-            int update = updateRecord();
-            if (update > 0){ executed = true; }
+            if (!validateFields(false)) { return false;}
+
+            updateRecord();
         }
+
+        if (isSaved){ executed = true; }
+
         return executed;
     }
 
-    private boolean validateData(){
+    private boolean validateFields(boolean isToSave){
         boolean validate = false;
         String message = "";
 
@@ -130,9 +136,17 @@ public class RecordDetailActivity extends AppCompatActivity {
 
             message = "A data, a hora ou o evento não foi preenchido!";
 
-            //se o campo inicio foi preenchido e já existir o bloco de horas
-        } else if (mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRegister(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )){
+        } else if (mCarboidratoEditText.getText().length() == 0 && mGlicemiaEditText.getText().length() == 0 &&
+                mInsulinaBasalEditText.getText().length() == 0 && mInsulinaRapidaEditText.getText().length() == 0) {
+
+            message = "Preencha pelo menos um dos campos abaixo:\n" +
+                    "- Carbohidrato\n" +
+                    "- Glicemia\n" +
+                    "- Insulina Rápida\n" +
+                    "- Insulina Basal";
+        } else if (isToSave && mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRegister(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )){
             message = "Data e hora ja' existem.\nO registro não pôde ser salvo.";
+
         } else {
             validate = true;
         }
@@ -165,7 +179,8 @@ public class RecordDetailActivity extends AppCompatActivity {
         return cursor.getCount() > 0 ? true : false;
     }
 
-    private long addRecord(){
+    private void addRecord(){
+
         ContentValues cv = new ContentValues();
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
@@ -177,25 +192,59 @@ public class RecordDetailActivity extends AppCompatActivity {
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, mMedicamentoCheckBox.getText().toString());
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, mObservacaoEditText.getText().toString());
 
-        return mDb.insert(CalculoDeBolusContract.RecordEntry.TABLE_NAME, null, cv);
+        long saveds =  mDb.insert(CalculoDeBolusContract.RecordEntry.TABLE_NAME, null, cv);
+
+        if (saveds > 0) {
+            isSaved = true;
+            Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            isSaved = false;
+            Toast.makeText(getApplicationContext(), "Não foi possível salvar!", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private int updateRecord(){
-        Log.d("bwvm", "updateRecord: Iniciou");
-        ContentValues cv = new ContentValues();
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, mMedicamentoCheckBox.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, mObservacaoEditText.getText().toString());
+    private void updateRecord(){
 
-        String where = CalculoDeBolusContract.RecordEntry._ID + "=" + mRecord.getId();
+        final int updated[] = {0};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Deseja realmente alterar o registro?")
+                .setTitle("Atenção!")
+                .setNegativeButton("Cancelar", null)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("bwvm", "updateRecord: Iniciou");
+                        ContentValues cv = new ContentValues();
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, mMedicamentoCheckBox.getText().toString());
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, mObservacaoEditText.getText().toString());
 
-        return mDb.update(CalculoDeBolusContract.RecordEntry.TABLE_NAME, cv, where, null);
+                        String where = CalculoDeBolusContract.RecordEntry._ID + "=" + mRecord.getId();
+
+                        Log.d("bwvm", "onClick: fara o update!");
+                        int saveds = mDb.update(CalculoDeBolusContract.RecordEntry.TABLE_NAME, cv, where, null);
+
+                        if (saveds > 0) {
+                            isSaved = true;
+                            Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            isSaved = false;
+                            Toast.makeText(getApplicationContext(), "Não foi possível salvar!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
@@ -211,17 +260,11 @@ public class RecordDetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save){
-            boolean executed = saveData();
-
-            if (executed){
-                Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
-                finish();
-                return true;
-            } else {
-                Toast.makeText(getApplicationContext(), "Não foi possível salvar!", Toast.LENGTH_SHORT).show();
-            }
+            saveData();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
 
