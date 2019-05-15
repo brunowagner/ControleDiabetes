@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +24,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
@@ -29,6 +33,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     EditText mGlicemiaEditText;
     EditText mCarboidratosEditText;
     TextView mResultado;
+    TextView mUnitTextView;
     Button mCalcularButton;
     SQLiteDatabase mDb;
 
@@ -41,6 +46,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         mGlicemiaEditText = (EditText) findViewById(R.id.et_glicemia);
         mCarboidratosEditText = (EditText) findViewById(R.id.et_carboidratos);
         mResultado = (TextView) findViewById(R.id.tv_resultado);
+        mUnitTextView = findViewById(R.id.tv_unit);
         mCalcularButton = (Button) findViewById(R.id.btn_calcular);
         mCalcularButton.setOnClickListener(this);
 
@@ -49,8 +55,6 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     }
 
     private void calcular(){
-
-        //TODO implementar codigo para pegar os valores do banco.
 
         if (mGlicemiaEditText.length() == 0 || mCarboidratosEditText.length() == 0){
             return;
@@ -100,9 +104,10 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
             //TODO encontrar o ponte de arredondamento
             //a solução abaixo foi encontrado em https://www.devmedia.com.br/forum/arredondar-numero-0-885650224-para-0-89/564800
-            BigDecimal velorExato = new BigDecimal(resultado).setScale(1, RoundingMode.HALF_DOWN);
+            BigDecimal valorExato = new BigDecimal(resultado).setScale(1, RoundingMode.HALF_DOWN);
 
-            mResultado.setText(velorExato + " U");
+            mResultado.setText(valorExato + "");
+            mUnitTextView.setVisibility(View.VISIBLE);
         } else {
 
             String message = "Não existe bloco de tempo configurado para realização do cálculo.\n" +
@@ -127,17 +132,6 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             AlertDialog alert = builder.create();
             alert.show();
         }
-
-
-    //TODO implementar o código gara clcular o Bolus
-        /*Fómula:
-        *
-        * [(glicemia - alvo) / fator de sensibilidade]   +   (carboidratos * relacao)
-        *
-        * */
-        Log.d("bwvm", "calcular: Entrou");
-        Log.d("bwvm", "calcular: Saiu");
-
     }
 
     private String getHoraAtual(){
@@ -174,7 +168,53 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         @Override
         public void afterTextChanged(Editable s) {
             Log.d("bwvm", "afterTextChanged: " + s);
-            mResultado.setText("");
+            clearResult();
         }
     }
+
+    private void clearResult(){
+        mResultado.setText("");
+        mUnitTextView.setVisibility(View.INVISIBLE);
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_calculate_save, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_save){
+            saveCalculateAsRecord();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void saveCalculateAsRecord(){
+        Intent intent = new Intent(this,RecordDetailActivity.class);
+
+        Record record = new Record();
+        record.setDate(new Date());
+        record.setCarbohydrate(Integer.parseInt(mCarboidratosEditText.getText().toString()));
+        record.setGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()));
+        record.setFastInsulin(Double.parseDouble(mResultado.getText().toString()));
+
+        //Empacotando o objeto
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Record.BUNDLE_STRING_KEY, record);
+
+        //passando o objeto na Intent
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+    }
+
 }

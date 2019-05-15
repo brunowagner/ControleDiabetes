@@ -110,7 +110,9 @@ public class RecordDetailActivity extends AppCompatActivity {
         isSaved = false;
         boolean executed = false;
 
-        if (mRecord == null){
+        Log.d("bwvm", "saveData: getId" + mRecord.getId());
+
+        if (mRecord == null || mRecord.getId() == 0){
             if (!validateFields(true)) { return false;}
 
             addRecord();
@@ -206,7 +208,6 @@ public class RecordDetailActivity extends AppCompatActivity {
 
     private void updateRecord(){
 
-        final int updated[] = {0};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Deseja realmente alterar o registro?")
                 .setTitle("Atenção!")

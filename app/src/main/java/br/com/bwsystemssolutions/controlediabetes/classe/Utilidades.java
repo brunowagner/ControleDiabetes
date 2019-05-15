@@ -45,6 +45,7 @@ public class Utilidades {
 
 
     private static String converter(Date date, String format){
+        if (date == null) return "";
         DateFormat dateFormat = new SimpleDateFormat(format);
 
         //to convert Date to String, use format method of SimpleDateFormat class.
