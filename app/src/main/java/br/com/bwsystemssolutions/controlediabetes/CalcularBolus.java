@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -98,13 +99,17 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             Log.d("bwvm", "calcular: ((glicemiaAtual - alvo) / (fatorDeSensibilidade)) + (carboidratos * 1 / relacao)" );
             Log.d("bwvm", "calcular: " + "(( "+ glicemiaAtual + " - " + alvo + " ) / ( " + fatorDeSensibilidade + " )) + ( " + carboidratos + " * 1 / " + relacao + ")");
 
-            final double resultado =  (((double)glicemiaAtual - alvo) / (fatorDeSensibilidade)) + (double)(carboidratos * 1 / relacao);
+            final double resultado =  (((double)glicemiaAtual - alvo) / (fatorDeSensibilidade)) + (double)(carboidratos * 1.0 / relacao);
 
             Log.d("bwvm", "calcular: Resultado = " + resultado);
 
             //TODO encontrar o ponte de arredondamento
             //a solução abaixo foi encontrado em https://www.devmedia.com.br/forum/arredondar-numero-0-885650224-para-0-89/564800
             BigDecimal valorExato = new BigDecimal(resultado).setScale(1, RoundingMode.HALF_DOWN);
+            BigDecimal ve = BigDecimal.valueOf(resultado);
+            BigDecimal round = ve.round(new MathContext(2));
+            Log.d("bwvm" , "calcular: resultado: " + round);
+
 
             mResultado.setText(valorExato + "");
             mUnitTextView.setVisibility(View.VISIBLE);
