@@ -23,6 +23,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
@@ -92,7 +93,11 @@ public class RecordDetailActivity extends AppCompatActivity {
     }
 
     private void loadData(){
-        if (mRecord == null){ return; }
+        if (mRecord == null){
+            mDataEditText.setText(Utilidades.convertDateToString(new Date(), Utilidades.DEFAULT_DATE_FORMAT));
+            mHoraEditText.setText(Utilidades.convertTimeToString(new Date(), Utilidades.DEFAULT_TIME_FORMAT));
+            return;
+        }
 
         mDataEditText.setText(Utilidades.convertDateToString(mRecord.getDate(), Utilidades.DEFAULT_DATE_FORMAT));
         mHoraEditText.setText(Utilidades.convertTimeToString(mRecord.getDate(), Utilidades.DEFAULT_TIME_FORMAT));
