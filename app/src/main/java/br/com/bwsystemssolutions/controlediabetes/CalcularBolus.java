@@ -35,8 +35,11 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     EditText mCarboidratosEditText;
     TextView mResultado;
     TextView mUnitTextView;
+    TextView mWarningTextView;
     Button mCalcularButton;
     SQLiteDatabase mDb;
+
+    final double mGraduacao = 0.5;
 
 
     @Override
@@ -48,6 +51,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         mCarboidratosEditText = (EditText) findViewById(R.id.et_carboidratos);
         mResultado = (TextView) findViewById(R.id.tv_resultado);
         mUnitTextView = findViewById(R.id.tv_unit);
+        mWarningTextView = findViewById(R.id.tv_warning);
         mCalcularButton = (Button) findViewById(R.id.btn_calcular);
         mCalcularButton.setOnClickListener(this);
 
@@ -88,8 +92,8 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
             Log.d("bwvm", "calcular: Bloco de Hora encontrada " + cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_INITIAL_TIME_NAME)));
 
-            int glicemiaAtual = Integer.parseInt(mGlicemiaEditText.getText().toString());
-            int carboidratos = Integer.parseInt(mCarboidratosEditText.getText().toString());
+            int glicemiaAtual = mGlicemiaEditText.length() == 0 ? 0 : Integer.parseInt(mGlicemiaEditText.getText().toString());
+            int carboidratos = mCarboidratosEditText.length() == 0 ? 0 : Integer.parseInt(mCarboidratosEditText.getText().toString());
             int alvo = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_TARGET_NAME));
             int relacao = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_RELATION_NAME));
             int fatorDeSensibilidade = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME));
@@ -99,11 +103,25 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             Log.d("bwvm", "calcular: ((glicemiaAtual - alvo) / (fatorDeSensibilidade)) + (carboidratos * 1 / relacao)" );
             Log.d("bwvm", "calcular: " + "(( "+ glicemiaAtual + " - " + alvo + " ) / ( " + fatorDeSensibilidade + " )) + ( " + carboidratos + " * 1 / " + relacao + ")");
 
-            final double resultado =  (((double)glicemiaAtual - alvo) / (fatorDeSensibilidade)) + (double)(carboidratos * 1.0 / relacao);
+            double resultado;
+            if (glicemiaAtual == 0) {
+                resultado =  (carboidratos * 1.0 / relacao);
+                mWarningTextView.setText("Glicemia = 0 -> O valor do resultado é referente apenas para a correção");
+            } else {
+                resultado =  (((double)glicemiaAtual - alvo) / (fatorDeSensibilidade)) + (carboidratos * 1.0 / relacao);
+                mWarningTextView.setText("");
+            }
+
+            if (resultado < 0) resultado = 0.0;
+
 
             Log.d("bwvm", "calcular: Resultado = " + resultado);
 
             //TODO encontrar o ponte de arredondamento
+
+
+            double resultadoAjustado = adjustResult(resultado, mGraduacao);
+
             //a solução abaixo foi encontrado em https://www.devmedia.com.br/forum/arredondar-numero-0-885650224-para-0-89/564800
             BigDecimal valorExato = new BigDecimal(resultado).setScale(1, RoundingMode.HALF_DOWN);
             BigDecimal ve = BigDecimal.valueOf(resultado);
@@ -111,7 +129,8 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             Log.d("bwvm" , "calcular: resultado: " + round);
 
 
-            mResultado.setText(valorExato + "");
+            //mResultado.setText(valorExato + "");
+            mResultado.setText(resultadoAjustado + "");
             mUnitTextView.setVisibility(View.VISIBLE);
         } else {
 
@@ -137,6 +156,12 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             AlertDialog alert = builder.create();
             alert.show();
         }
+    }
+
+    private double adjustResult(double value, double graduation){
+        double graduationFactor = 1/graduation;
+
+        return Math.round(value * graduationFactor) / graduationFactor;
     }
 
     private String getHoraAtual(){
@@ -180,6 +205,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     private void clearResult(){
         mResultado.setText("");
         mUnitTextView.setVisibility(View.INVISIBLE);
+        mWarningTextView.setText("");
     }
 
 
