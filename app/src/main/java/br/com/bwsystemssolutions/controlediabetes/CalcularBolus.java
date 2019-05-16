@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -60,6 +61,8 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     }
 
     private void calcular(){
+
+        hideKeyboard();
 
         if (mGlicemiaEditText.length() == 0 || mCarboidratosEditText.length() == 0){
             return;
@@ -162,6 +165,14 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         double graduationFactor = 1/graduation;
 
         return Math.round(value * graduationFactor) / graduationFactor;
+    }
+
+    private void hideKeyboard(){
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private String getHoraAtual(){
