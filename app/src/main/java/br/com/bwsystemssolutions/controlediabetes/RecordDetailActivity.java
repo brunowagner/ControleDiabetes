@@ -115,8 +115,6 @@ public class RecordDetailActivity extends AppCompatActivity {
         isSaved = false;
         boolean executed = false;
 
-        Log.d("bwvm", "saveData: getId" + mRecord.getId());
-
         if (mRecord == null || mRecord.getId() == 0){
             if (!validateFields(true)) { return false;}
 

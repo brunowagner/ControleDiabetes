@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Record implements Serializable {
 
@@ -126,7 +127,8 @@ public class Record implements Serializable {
         if (date == null ){
             return null;
         }
-
+        //Locale brasil = new Locale("pt","BR");
+        //SimpleDateFormat sdf = new SimpleDateFormat("EE", brasil);
         SimpleDateFormat sdf = new SimpleDateFormat("EE");
 
         return sdf.format(date);
@@ -137,7 +139,8 @@ public class Record implements Serializable {
         if (date == null ){
             return null;
         }
-
+        //Locale brasil = new Locale("pt","BR");
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm EE", brasil);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm EE");
 
         return sdf.format(date);
