@@ -233,10 +233,13 @@
                     android:id="@+id/et_observacao_record"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
+                    android:ems="10"
+                    android:text="teste"
                     android:inputType="textMultiLine"
-                    android:lines="10" />
-
+                    android:lines="8"
+                    android:gravity="left|top"
+                    android:maxLines="10"
+                    android:maxLength="250"/>
             </LinearLayout>
 
         </LinearLayout>
