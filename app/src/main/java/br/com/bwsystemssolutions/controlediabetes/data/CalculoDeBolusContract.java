@@ -36,5 +36,6 @@ public class CalculoDeBolusContract {
     public static  final class EventEntry implements BaseColumns{
         public static final String TABLE_NAME = "events";
         public static final String COLUMN_EVENT_NAME = "event";
+        public static final String COLUMN_EVENT_SOURCE = "source";
     }
 }

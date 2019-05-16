@@ -20,7 +20,8 @@
         <activity android:name=".RegistrosActivity" />
         <activity android:name=".BolusCalculateConfig" />
         <activity android:name=".TimeBlockConfigActivity" />
-        <activity android:name=".RecordDetailActivity"></activity>
+        <activity android:name=".RecordDetailActivity" />
+        <activity android:name=".EventsActivity"></activity>
     </application>
 
 </manifest>
