@@ -91,7 +91,6 @@ public class RecordDetailActivity extends AppCompatActivity {
         configureDb();
 
         loadData();
-
     }
 
     private void configureDb(){
@@ -125,6 +124,7 @@ public class RecordDetailActivity extends AppCompatActivity {
         mMedicamentoCheckBox.setChecked(mRecord.isMedicament());
         mObservacaoEditText.setText(mRecord.getNote());
     }
+
 
     private Cursor fetchAllEvents(){
 

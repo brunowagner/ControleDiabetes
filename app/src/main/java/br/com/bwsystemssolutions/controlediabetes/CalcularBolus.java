@@ -42,6 +42,8 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
     final double mGraduacao = 0.5;
 
+    boolean enableActionSave = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +137,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             //mResultado.setText(valorExato + "");
             mResultado.setText(resultadoAjustado + "");
             mUnitTextView.setVisibility(View.VISIBLE);
+            setEnableActionSave(true);
         } else {
 
             String message = "Não existe bloco de tempo configurado para realização do cálculo.\n" +
@@ -217,6 +220,12 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         mResultado.setText("");
         mUnitTextView.setVisibility(View.INVISIBLE);
         mWarningTextView.setText("");
+        setEnableActionSave(false);
+    }
+
+    private void setEnableActionSave(boolean enable){
+        enableActionSave = enable;
+        invalidateOptionsMenu();
     }
 
 
@@ -240,7 +249,15 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_save);
+        item.setEnabled(enableActionSave);
+        return true;
+    }
+
     private void saveCalculateAsRecord(){
+
         Intent intent = new Intent(this,RecordDetailActivity.class);
 
         Record record = new Record();
