@@ -17,7 +17,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
     private static final String DATABESE_NAME = "calculoDeBolus.db";
 
     //Representa a versao do banco de dados atual
-    private static final int DATABASE_VERSION=1;
+    private static final int DATABASE_VERSION=2;
 
     public CalculoDeBolusDBHelper(Context context){
         super(context, DATABESE_NAME, null, DATABASE_VERSION);
@@ -55,12 +55,33 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_EVENTS_TABLE = "CREATE TABLE " +
                 EventEntry.TABLE_NAME + "(" +
                 EventEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                EventEntry.COLUMN_EVENT_NAME + " TEXT NOT NULL" +
+                EventEntry.COLUMN_EVENT_NAME + " TEXT NOT NULL," +
+                EventEntry.COLUMN_EVENT_SOURCE + " TEXT NOT NULL" +
                 ");";
+
+        final String SQL_POPULATE_EVENT_TABLE = "INSERT INTO " +
+                EventEntry.TABLE_NAME + " (" +
+                EventEntry.COLUMN_EVENT_NAME + "," + EventEntry.COLUMN_EVENT_SOURCE + ") VALUES " +
+                "('Antes do café da manhã','app')," +
+                "('Antes da colação','app')," +
+                "('Antes do almoço','app')," +
+                "('Antes do lanche','app'), " +
+                "('Antes do jantar','app'), " +
+                "('Antes da ceia','app'), " +
+                "('Após o café da manhã','app')," +
+                "('Após a colação','app')," +
+                "('Após o almoço','app')," +
+                "('Após o lanche','app'), " +
+                "('Após o jantar','app'), " +
+                "('Após a ceia','app'), " +
+                "('Medição Extra')," +
+                "('Outro','app');";
+
 
         db.execSQL(SQL_CREATE_TIME_BLOCK_TABLE);
         db.execSQL(SQL_CREATE_RECORDS_TABLE);
         db.execSQL(SQL_CREATE_EVENTS_TABLE);
+        db.execSQL(SQL_POPULATE_EVENT_TABLE);
 
     }
 
@@ -71,4 +92,14 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
         onCreate(db);
     }
+
+    /* --------------------------------------------------------------------------------------------
+    *                       Histório de mudança de versão
+    *  --------------------------------------------------------------------------------------------
+    *
+    *   - Versão 2:
+    *        - Foi adicionada a coluna 'EventEntry.COLUMN_EVENT_SOURCE' na tabela 'Events'
+    *        - Foi implementado o SQL_POPULATE_EVENT_TABLE para popular com valores padrões a tabela Events
+    *
+    * */
 }
