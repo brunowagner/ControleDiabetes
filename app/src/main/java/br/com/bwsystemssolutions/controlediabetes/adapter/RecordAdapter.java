@@ -40,7 +40,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		//TODO: modifcar a query para ordenar de forma descendente (do mais recente para o mais antigo)
 		return mDb.query(CalculoDeBolusContract.RecordEntry.TABLE_NAME,
 				null, null, null, null,null,
-				CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME);
+				CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + " DESC");
 	}
 
 	public void refreshData(){

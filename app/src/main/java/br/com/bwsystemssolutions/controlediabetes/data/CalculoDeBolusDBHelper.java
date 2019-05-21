@@ -74,7 +74,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 "('Após o lanche','app'), " +
                 "('Após o jantar','app'), " +
                 "('Após a ceia','app'), " +
-                "('Medição Extra')," +
+                "('Medição Extra','app')," +
                 "('Outro','app');";
 
 
