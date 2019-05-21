@@ -144,4 +144,28 @@ public class Record implements Serializable {
 
         return sdf.format(date);
     }
+
+    public String getDateWeekDayString(){
+        Date date = getDate();
+        if (date == null ){
+            return null;
+        }
+        //Locale brasil = new Locale("pt","BR");
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm EE", brasil);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy    EE");
+
+        return sdf.format(date);
+    }
+
+    public String getTime(){
+        Date date = getDate();
+        if (date == null ){
+            return null;
+        }
+        //Locale brasil = new Locale("pt","BR");
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm EE", brasil);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+        return sdf.format(date);
+    }
 }

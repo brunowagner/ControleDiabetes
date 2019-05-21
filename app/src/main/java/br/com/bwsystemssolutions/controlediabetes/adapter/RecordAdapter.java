@@ -3,6 +3,7 @@ package br.com.bwsystemssolutions.controlediabetes.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	private SQLiteDatabase mDb;
 	CalculoDeBolusDBHelper mDbHelper;
 	private final RecordAdapterOnClickHandler mClickHandler;
+	private String lastDay = "";
+	private boolean revert = false;
+	private String lastCollor = "white";
 
 	public RecordAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, RecordAdapterOnClickHandler clickHandler) {
 		mDbHelper = calculoDeBolusDBHelper;
@@ -77,7 +81,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	}
 	
 	public class RecordAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-		public final TextView mDataHoraTextView;
+		public final TextView mDataDiaSemanaTextView;
+		public final TextView mHoraTextView;
 		public final TextView mGlicemiaTextView;
 		public final TextView mEventoTextView;
 		public final TextView mCarboidratoTextView;
@@ -86,7 +91,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		
 		public RecordAdapterViewHolder(View itemView){
 			super(itemView);
-			mDataHoraTextView = (TextView) itemView.findViewById(R.id.tv_data_hora_dia_semana);
+			mDataDiaSemanaTextView = (TextView) itemView.findViewById(R.id.tv_data_dia_semana);
+			mHoraTextView = (TextView) itemView.findViewById(R.id.tv_hora);
 			mGlicemiaTextView = (TextView) itemView.findViewById(R.id.tv_glicemia);
 			mEventoTextView = (TextView) itemView.findViewById(R.id.tv_evento);
 			mCarboidratoTextView = (TextView) itemView.findViewById(R.id.tv_carboidrato);
@@ -119,17 +125,47 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	public void onBindViewHolder (RecordAdapterViewHolder registrosAdapterViewHolder, int position){
 		Record record = mRecords.get(position);
 
-		String dateTimeDayOfWeek = record.getDateTimeWeekDay();
-
 		//TODO fazer um cast melhor do double
 		registrosAdapterViewHolder.itemView.setTag(record.getId());
-		registrosAdapterViewHolder.mDataHoraTextView.setText( dateTimeDayOfWeek );
-
+		registrosAdapterViewHolder.mDataDiaSemanaTextView.setText( record.getDateWeekDayString() );
+		registrosAdapterViewHolder.mHoraTextView.setText( record.getTime() );
 		registrosAdapterViewHolder.mGlicemiaTextView.setText(String.valueOf(record.getGlucose()));
 		registrosAdapterViewHolder.mEventoTextView.setText(record.getEvent());
 		registrosAdapterViewHolder.mCarboidratoTextView.setText(String.valueOf(record.getCarbohydrate()));
 		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
+
+		registrosAdapterViewHolder.itemView.setBackgroundColor(Color.WHITE);
+
+//		long i = (record.getDate().getTime());
+//		Log.d("bwvm", "onBindViewHolder: i: " + i);
+//
+//		//if (lastDay == "") lastDay = registrosAdapterViewHolder.mDataDiaSemanaTextView.getText().toString();
+//
+//
+//		if (registrosAdapterViewHolder.mDataDiaSemanaTextView.getText().equals(lastDay)){
+//			if (lastCollor == "white"){
+//				registrosAdapterViewHolder.itemView.setBackgroundColor(Color.WHITE);
+//				Log.d("bwvm", "onBindViewHolder: =lastDay e =white" + lastDay + lastCollor);
+//			}
+//			if (lastCollor == "ltGray"){
+//				registrosAdapterViewHolder.itemView.setBackgroundColor(Color.LTGRAY);
+//				Log.d("bwvm", "onBindViewHolder: =lastDay e =white" + lastDay + lastCollor);
+//			}
+//		} else {
+//			if (lastCollor == "white"){
+//				lastCollor = "ltGray";
+//				registrosAdapterViewHolder.itemView.setBackgroundColor(Color.LTGRAY);
+//				Log.d("bwvm", "onBindViewHolder: <>lastDay e =white" + lastDay + lastCollor);
+//			} else if (lastCollor == "ltGray"){
+//				lastCollor = "white";
+//				registrosAdapterViewHolder.itemView.setBackgroundColor(Color.WHITE);
+//				Log.d("bwvm", "onBindViewHolder: <>lastDay e <>hite" + lastDay + lastCollor);
+//			}
+//			lastDay = registrosAdapterViewHolder.mDataDiaSemanaTextView.getText().toString();
+//			Log.d("bwvm", "onBindViewHolder: lastDay" + lastDay);
+//		}
+
 
 	}
 	
