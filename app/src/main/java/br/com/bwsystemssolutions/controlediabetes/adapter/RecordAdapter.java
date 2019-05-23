@@ -3,7 +3,6 @@ package br.com.bwsystemssolutions.controlediabetes.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +27,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	private String lastDay = "";
 	private boolean revert = false;
 	private int lastCollor;
+
+	private static final int COLOR_RESOURSE_ITEM_PRIMARY = R.color.geloTransparente;
+	private static final int COLOR_RESOURSE_ITEM_SECONDARY = R.color.white;
 
 	public RecordAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, RecordAdapterOnClickHandler clickHandler) {
 		mDbHelper = calculoDeBolusDBHelper;
@@ -125,7 +127,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	public void onBindViewHolder (RecordAdapterViewHolder registrosAdapterViewHolder, int position){
 		Record record = mRecords.get(position);
 
-		//TODO fazer um cast melhor do double
 		registrosAdapterViewHolder.itemView.setTag(record.getId());
 		registrosAdapterViewHolder.mDataDiaSemanaTextView.setText( record.getDateWeekDayString() );
 		registrosAdapterViewHolder.mHoraTextView.setText( record.getTime() );
@@ -134,20 +135,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		registrosAdapterViewHolder.mCarboidratoTextView.setText(String.valueOf(record.getCarbohydrate()));
 		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
-
-		if (position == 0){
-			lastDay = registrosAdapterViewHolder.mDataDiaSemanaTextView.getText().toString();
-			lastCollor = Color.LTGRAY;
-			registrosAdapterViewHolder.itemView.setBackgroundColor(lastCollor);
-		} else {
-			if (lastDay.equals(registrosAdapterViewHolder.mDataDiaSemanaTextView.getText().toString())){
-				registrosAdapterViewHolder.itemView.setBackgroundColor(lastCollor);
-			} else {
-				lastCollor = lastCollor == Color.WHITE ? Color.LTGRAY : Color.WHITE;
-				registrosAdapterViewHolder.itemView.setBackgroundColor(lastCollor);
-				lastDay = registrosAdapterViewHolder.mDataDiaSemanaTextView.getText().toString();
-			}
-		}
 	}
 	
 	public interface RecordAdapterOnClickHandler{
