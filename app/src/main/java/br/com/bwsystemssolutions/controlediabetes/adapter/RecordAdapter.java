@@ -90,6 +90,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		public final TextView mCarboidratoTextView;
 		public final TextView mInsulinaRapidaTextView;
 		public final TextView mInsulinaBasalTextView;
+		public final TextView mHeaderTextView;
 		
 		public RecordAdapterViewHolder(View itemView){
 			super(itemView);
@@ -100,6 +101,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 			mCarboidratoTextView = (TextView) itemView.findViewById(R.id.tv_carboidrato);
 			mInsulinaRapidaTextView = (TextView) itemView.findViewById(R.id.tv_insulina_rapida);
 			mInsulinaBasalTextView = (TextView) itemView.findViewById(R.id.tv_insulina_basal);
+			mHeaderTextView = itemView.findViewById(R.id.tv_header);
 
 			itemView.setOnClickListener(this);
 		}
@@ -135,6 +137,15 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		registrosAdapterViewHolder.mCarboidratoTextView.setText(String.valueOf(record.getCarbohydrate()));
 		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
+
+		// if not first item check if item above has the same header
+		if (position > 0 && mRecords.get(position - 1).getDateWeekDayString().substring(0, 17).equals(mRecords.get(position).getDateWeekDayString().substring(0, 17))) {
+			registrosAdapterViewHolder.mHeaderTextView.setVisibility(View.GONE);
+
+		} else {
+			registrosAdapterViewHolder.mHeaderTextView.setText(mRecords.get(position).getDateWeekDayString().substring(0, 17));
+			registrosAdapterViewHolder.mHeaderTextView.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	public interface RecordAdapterOnClickHandler{

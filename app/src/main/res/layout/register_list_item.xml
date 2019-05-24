@@ -10,6 +10,15 @@
     android:paddingBottom="5dp"
     android:layout_marginTop="2dp">
 
+    <TextView
+        android:id="@+id/tv_header"
+        android:text="Cabeçlho"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:paddingLeft="10sp"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
