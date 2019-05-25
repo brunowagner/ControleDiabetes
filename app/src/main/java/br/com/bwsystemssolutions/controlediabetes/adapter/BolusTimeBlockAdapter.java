@@ -115,7 +115,7 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 
         //noite
 		if (mSelectedItem == position){
-			bolusTimeBlockAdapterViewHolder.itemView.setBackgroundColor(Color.CYAN);
+			bolusTimeBlockAdapterViewHolder.itemView.setBackgroundColor(Color.LTGRAY);
 		} else {
 			bolusTimeBlockAdapterViewHolder.itemView.setBackgroundColor(Color.WHITE);
 		}
