@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +29,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	private String lastDay = "";
 	private boolean revert = false;
 	private int lastCollor;
+	private int mSelectedItem = ITEN_SELECT_NONE;
 
+	public static final int ITEN_SELECT_NONE = -1;
 	private static final int COLOR_RESOURSE_ITEM_PRIMARY = R.color.geloTransparente;
 	private static final int COLOR_RESOURSE_ITEM_SECONDARY = R.color.white;
 
@@ -85,8 +85,29 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		mRecords = records;
 		notifyDataSetChanged();
 	}
+
+	public boolean deleteRecord(int itemToDelete){
+		if (itemToDelete != mSelectedItem || itemToDelete == ITEN_SELECT_NONE) return false;
+		if (mRecords.size()==1) return false;
+
+		Record record = mRecords.get(mSelectedItem);
+
+		int deleted = mDb.delete(CalculoDeBolusContract.RecordEntry.TABLE_NAME, CalculoDeBolusContract.RecordEntry._ID + "= ?", new String[]{record.getId() + ""});
+		Log.d("bwvm", "deleteRecord: valor de delete: " + deleted);
+		if (deleted > 0 ) {
+			setSelectedItem(ITEN_SELECT_NONE);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void setSelectedItem(int selectedItem){
+		mSelectedItem = selectedItem;
+		notifyDataSetChanged();
+	}
 	
-	public class RecordAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+	public class RecordAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 		public final TextView mDataDiaSemanaTextView;
 		public final TextView mHoraTextView;
 		public final TextView mGlicemiaTextView;
@@ -112,13 +133,23 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 			mObsLinerLayout = itemView.findViewById(R.id.ll_obs);
 
 			itemView.setOnClickListener(this);
+			itemView.setOnLongClickListener(this);
 		}
 
 		@Override
 		public void onClick(View v) {
 			 int position = getAdapterPosition();
             Record record = mRecords.get(position);
-            mClickHandler.onClick(record);
+            mClickHandler.onClick(record, mSelectedItem);
+		}
+
+		@Override
+		public boolean onLongClick(View v) {
+			mSelectedItem = getAdapterPosition();
+			notifyDataSetChanged();
+			mClickHandler.onLongClick(mSelectedItem);
+
+			return true;
 		}
 	}
 
@@ -135,23 +166,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	}
 
 	@Override
-	public void onViewRecycled(@NonNull RecordAdapterViewHolder holder) {
-		super.onViewRecycled(holder);
-
-//		int g =  Integer.parseInt(holder.mGlicemiaTextView.getText().toString());
-//
-//		if (g == 0){
-//			holder.mGlicemiaTextView.setVisibility(View.GONE);
-//		} else if (g <= 60){
-//			holder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hipo);
-//		}  else if (g > 60 && g <= 139){
-//			holder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_normal);
-//		} else {
-//			holder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hiper);
-//		}
-	}
-
-	@Override
 	public void onBindViewHolder (RecordAdapterViewHolder registrosAdapterViewHolder, int position){
 		Record record = mRecords.get(position);
 
@@ -165,6 +179,13 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
 		registrosAdapterViewHolder.mObsTextView.setText(record.getNote());
 
+		//Bloco que seta a selecao do item
+		if (mSelectedItem == position){
+			registrosAdapterViewHolder.itemView.setBackgroundColor(Color.LTGRAY);
+		} else {
+			registrosAdapterViewHolder.itemView.setBackgroundColor(Color.WHITE);
+		}
+
 		int g = record.getGlucose();
 
 		if (g == 0){
@@ -173,9 +194,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 			registrosAdapterViewHolder.mGlicemiaTextView.setVisibility(View.VISIBLE);
 		}
 
-        if (g <= 60){
+        if (g <= 65){
 			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hipo);
-		}  else if (g > 60 && g <= 139){
+		}  else if (g > 65 && g <= 135){
 			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_normal);
 		} else {
 			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hiper);
@@ -200,6 +221,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	}
 	
 	public interface RecordAdapterOnClickHandler{
-	    void onClick(Record record);
+	    void onClick(Record record, int itemSelected);
+		void onLongClick(int selectedItem);
     }
 }

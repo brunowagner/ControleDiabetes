@@ -10,4 +10,13 @@
         android:title="Adicionar"
         />
 
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="2"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="ifRoom"
+        android:title="Delete"
+        android:enabled="false"
+        />
+
 </menu>

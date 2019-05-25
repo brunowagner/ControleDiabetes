@@ -80,11 +80,6 @@ public class BolusTimeBlockAdapter extends RecyclerView.Adapter<BolusTimeBlockAd
 
 		@Override
 		public boolean onLongClick(View v) {
-			Log.d("bwvm", "onLongClick: AdapterPosition = " + getAdapterPosition());
-			Log.d("bwvm", "onLongClick: getItemId = " + getItemId());
-			Log.d("bwvm", "onLongClick: getLayoutPosition = " + getLayoutPosition());
-			Log.d("bwvm", "onLongClick: getOldPosition = " + getOldPosition());
-
 			mSelectedItem = getAdapterPosition();
 			notifyDataSetChanged();
 			mClickHandler.onLongClick(mSelectedItem);

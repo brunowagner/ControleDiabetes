@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -18,6 +17,8 @@ import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 public class RegistrosActivity extends AppCompatActivity implements RecordAdapter.RecordAdapterOnClickHandler {
     RecyclerView mRegistrosRecyclerView;
     RecordAdapter mRegistrosAdapter;
+    boolean enableActionDelete = false;
+    int mSelectedItem = RecordAdapter.ITEN_SELECT_NONE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +51,17 @@ public class RegistrosActivity extends AppCompatActivity implements RecordAdapte
     private void refreshRecyclerView(){
         mRegistrosAdapter.refreshData();
     }
-	
-	
+
+    private void setEnableActionDelete(boolean enable){
+        enableActionDelete = enable;
+        invalidateOptionsMenu();
+    }
+
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.menu_records_operation, menu);
+        inflater.inflate(R.menu.menu_add_delete, menu);
         return true;
     }
 
@@ -65,11 +70,19 @@ public class RegistrosActivity extends AppCompatActivity implements RecordAdapte
         int id = item.getItemId();
 
         switch (id){
-            case R.id.action_record_add:
+            case R.id.action_add:
 				Context context = this;
                 Intent intent = new Intent(context, RecordDetailActivity.class);
                 startActivity(intent);
                 return true;
+
+            case R.id.action_delete:
+                boolean deleted = mRegistrosAdapter.deleteRecord(mSelectedItem);
+                if (deleted){
+                    setEnableActionDelete(false);
+                    refreshRecyclerView();
+                }
+                return deleted;
 
             default:
                 super.onOptionsItemSelected(item);
@@ -77,10 +90,24 @@ public class RegistrosActivity extends AppCompatActivity implements RecordAdapte
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_delete);
+        item.setEnabled(enableActionDelete);
+        return true;
+    }
 	
 	//implementação do RecordAdapterOnClickHandler
     @Override
-    public void onClick(Record record) {
+    public void onClick(Record record, int selectedItem) {
+        if (selectedItem >= 0) {
+            mRegistrosAdapter.setSelectedItem(RecordAdapter.ITEN_SELECT_NONE);
+            setEnableActionDelete(false);
+            return;
+        }
+
+
         Context context = this;
         Intent intent = new Intent(context, RecordDetailActivity.class);
 
@@ -92,5 +119,15 @@ public class RegistrosActivity extends AppCompatActivity implements RecordAdapte
         intent.putExtras(bundle);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onLongClick(int selectedItem) {
+        mSelectedItem = selectedItem;
+        if (selectedItem != RecordAdapter.ITEN_SELECT_NONE){
+            setEnableActionDelete(true);
+        } else {
+            setEnableActionDelete(false);
+        }
     }
 }

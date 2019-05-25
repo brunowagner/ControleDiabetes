@@ -42,7 +42,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     @Override
     public void onClick(BolusTimeBlockData bolusTimeBlockData, int selectedItem) {
         if (selectedItem >= 0) {
-            mBolusTimeBlockAdapter.setSelectedItem(mBolusTimeBlockAdapter.ITEN_SELECT_NONE);
+            mBolusTimeBlockAdapter.setSelectedItem(ITEN_SELECT_NONE);
             setEnableActionDelete(false);
             return;
         }
@@ -98,7 +98,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.menu_time_block_operation, menu);
+        inflater.inflate(R.menu.menu_add_delete, menu);
         return true;
     }
 
@@ -107,12 +107,12 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
         int id = item.getItemId();
 
         switch (id){
-            case R.id.action_time_block_add:
+            case R.id.action_add:
                 Intent intent = new Intent(BolusCalculateConfig.this, TimeBlockConfigActivity.class);
                 startActivity(intent);
                 return true;
 
-            case R.id.action_time_block_delete:
+            case R.id.action_delete:
                 boolean deleted = mBolusTimeBlockAdapter.deleteBolusTimeBlockData(mSelectedItem);
                 if (deleted){
                     setEnableActionDelete(false);
@@ -129,7 +129,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.action_time_block_delete);
+        MenuItem item = menu.findItem(R.id.action_delete);
         item.setEnabled(enableActionDelete);
         return true;
     }
