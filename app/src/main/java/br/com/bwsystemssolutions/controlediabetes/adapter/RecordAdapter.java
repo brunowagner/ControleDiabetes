@@ -3,11 +3,14 @@ package br.com.bwsystemssolutions.controlediabetes.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -91,6 +94,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		public final TextView mInsulinaRapidaTextView;
 		public final TextView mInsulinaBasalTextView;
 		public final TextView mHeaderTextView;
+		public final TextView mObsTextView;
+		public final LinearLayout mObsLinerLayout;
 		
 		public RecordAdapterViewHolder(View itemView){
 			super(itemView);
@@ -102,6 +107,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 			mInsulinaRapidaTextView = (TextView) itemView.findViewById(R.id.tv_insulina_rapida);
 			mInsulinaBasalTextView = (TextView) itemView.findViewById(R.id.tv_insulina_basal);
 			mHeaderTextView = itemView.findViewById(R.id.tv_header);
+			mObsTextView = itemView.findViewById(R.id.tv_obs);
+			mObsLinerLayout = itemView.findViewById(R.id.ll_obs);
 
 			itemView.setOnClickListener(this);
 		}
@@ -118,7 +125,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	public RecordAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 		Context context = viewGroup.getContext();
 		LayoutInflater inflater = LayoutInflater.from(context);
-		int layoutIdFromListItem = R.layout.register_list_item;
+		//int layoutIdFromListItem = R.layout.register_list_item;
+		int layoutIdFromListItem = R.layout.register_list_item_prototype;
 		boolean shouldAttachToParentImmediately = false;
 
 		View view = inflater.inflate(layoutIdFromListItem, viewGroup, shouldAttachToParentImmediately);
@@ -130,13 +138,43 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		Record record = mRecords.get(position);
 
 		registrosAdapterViewHolder.itemView.setTag(record.getId());
-		registrosAdapterViewHolder.mDataDiaSemanaTextView.setText( record.getDateWeekDayString() );
+		registrosAdapterViewHolder.mDataDiaSemanaTextView.setText(record.getDateWeekDayString() );
 		registrosAdapterViewHolder.mHoraTextView.setText( record.getTime() );
 		registrosAdapterViewHolder.mGlicemiaTextView.setText(String.valueOf(record.getGlucose()));
 		registrosAdapterViewHolder.mEventoTextView.setText(record.getEvent());
 		registrosAdapterViewHolder.mCarboidratoTextView.setText(String.valueOf(record.getCarbohydrate()));
 		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
+		registrosAdapterViewHolder.mObsTextView.setText(record.getNote());
+
+		int g = record.getGlucose();
+
+		if (g <= 60){
+			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorHipoglicemia);
+			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hipo);
+			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorHipoglicemia);
+
+		} else if (g > 60 && g <= 80){
+			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorGlicemiaNormal);
+			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_baixa);
+		}  else if (g > 80 && g <= 120){
+		//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorGlicemiaNormal);
+		registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_normal);
+		} else if (g > 120 && g <= 160) {
+			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorGlicemiaNormal);
+			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_alta);
+		} else {
+			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorHiperglicemia);
+			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hiper);
+		}
+
+
+
+		if (registrosAdapterViewHolder.mObsTextView.length() == 0 || registrosAdapterViewHolder.mObsTextView.getText().toString() == ""){
+			registrosAdapterViewHolder.mObsLinerLayout.setVisibility(View.GONE);
+		} else {
+			registrosAdapterViewHolder.mObsLinerLayout.setVisibility(View.VISIBLE);
+		}
 
 		// if not first item check if item above has the same header
 		if (position > 0 && mRecords.get(position - 1).getDateWeekDayString().substring(0, 17).equals(mRecords.get(position).getDateWeekDayString().substring(0, 17))) {

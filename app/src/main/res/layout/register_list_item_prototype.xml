@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:layout_marginTop="2dp">
+
+
+    <TextView
+        android:id="@+id/tv_header"
+        android:text="Cabeçlho"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:paddingLeft="10sp" />
+    <TextView
+        android:id="@+id/tv_data_dia_semana"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="09/09/2019    DOM"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_glicemia"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:gravity="center"
+            android:background="@drawable/circle_normal"
+            android:text="600"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10sp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_evento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="Após Glicemia Baixa" />
+
+                <TextView
+                    android:id="@+id/tv_hora"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="01:01"
+                    android:textStyle="bold"
+                    android:gravity="right"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Carb." />
+
+                    <TextView
+                        android:id="@+id/tv_carboidrato"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:text="600" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:text="Rápida" />
+
+                    <TextView
+                        android:id="@+id/tv_insulina_rapida"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:text="22.5U" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Basal" />
+
+                    <TextView
+                        android:id="@+id/tv_insulina_basal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:text="22.5U" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_obs"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Obs:"/>
+
+                <TextView
+                    android:id="@+id/tv_obs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:paddingLeft="5dp"
+                    android:text="Texto da observacao quando existir" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

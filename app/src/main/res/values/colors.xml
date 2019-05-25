@@ -5,4 +5,10 @@
     <color name="colorAccent">#d81b60</color>
     <color name="geloTransparente">#dadada</color>
     <color name="white">#ffffff</color>
+
+    <color name="colorHipoglicemia">#d100a4</color>  <!--<color name="colorHipoglicemia">#d1b500</color>     <color name="colorHipoglicemia">#d100a4</color>-->
+    <color name="colorHiperglicemia">#c40202</color> <!--#ff0000-->
+    <color name="colorGlicemiaNormal">#01d40b</color>
+    <color name="colorBaixa">#9b00e9</color>  <!-- <color name="colorBaixa">#4e02b3</color> -->
+    <color name="colorAlta">#d47f25</color>
 </resources>
