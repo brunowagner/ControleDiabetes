@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -134,6 +135,23 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	}
 
 	@Override
+	public void onViewRecycled(@NonNull RecordAdapterViewHolder holder) {
+		super.onViewRecycled(holder);
+
+//		int g =  Integer.parseInt(holder.mGlicemiaTextView.getText().toString());
+//
+//		if (g == 0){
+//			holder.mGlicemiaTextView.setVisibility(View.GONE);
+//		} else if (g <= 60){
+//			holder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hipo);
+//		}  else if (g > 60 && g <= 139){
+//			holder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_normal);
+//		} else {
+//			holder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hiper);
+//		}
+	}
+
+	@Override
 	public void onBindViewHolder (RecordAdapterViewHolder registrosAdapterViewHolder, int position){
 		Record record = mRecords.get(position);
 
@@ -149,22 +167,17 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 
 		int g = record.getGlucose();
 
-		if (g <= 60){
-			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorHipoglicemia);
-			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hipo);
-			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorHipoglicemia);
+		if (g == 0){
+            registrosAdapterViewHolder.mGlicemiaTextView.setVisibility(View.INVISIBLE);
+        } else {
+			registrosAdapterViewHolder.mGlicemiaTextView.setVisibility(View.VISIBLE);
+		}
 
-		} else if (g > 60 && g <= 80){
-			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorGlicemiaNormal);
-			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_baixa);
-		}  else if (g > 80 && g <= 120){
-		//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorGlicemiaNormal);
-		registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_normal);
-		} else if (g > 120 && g <= 160) {
-			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorGlicemiaNormal);
-			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_alta);
+        if (g <= 60){
+			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hipo);
+		}  else if (g > 60 && g <= 139){
+			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_normal);
 		} else {
-			//registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.color.colorHiperglicemia);
 			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hiper);
 		}
 
