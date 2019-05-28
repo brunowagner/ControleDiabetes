@@ -16,12 +16,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CalcularBolus" android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".RegistrosActivity" android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".BolusCalculateConfig" android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".TimeBlockConfigActivity" android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".RecordDetailActivity" android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".EventsActivity" android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".CalcularBolus"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".RegistrosActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".BolusCalculateConfig"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".TimeBlockConfigActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".RecordDetailActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".EventsActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>
