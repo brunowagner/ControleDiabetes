@@ -38,7 +38,8 @@
             android:id="@+id/btn_time_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_access_time_black_24dp" />
+            android:src="@drawable/ic_action_hour_light"
+            />
 
 
     </LinearLayout>
@@ -63,32 +64,9 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:maxLength="3" />
     </LinearLayout>
-
-
-    <!--               Fator de Sensibilidade              -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10sp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fator de Sensibilidade:"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/et_fator_de_sensibilidade"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:inputType="number"/>
-    </LinearLayout>
-
 
     <!--              Alvo              -->
     <LinearLayout
@@ -109,7 +87,31 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:maxLength="3"/>
+    </LinearLayout>
+
+    <!--               Fator de Sensibilidade              -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fator de Sensibilidade:"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/et_fator_de_sensibilidade"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:inputType="number"
+            android:maxLength="3"/>
     </LinearLayout>
 
 
