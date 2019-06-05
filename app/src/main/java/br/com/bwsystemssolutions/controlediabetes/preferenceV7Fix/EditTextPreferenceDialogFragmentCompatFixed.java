@@ -1,9 +1,11 @@
 package br.com.bwsystemssolutions.controlediabetes.preferenceV7Fix;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class EditTextPreferenceDialogFragmentCompatFixed extends android.support.v7.preference.EditTextPreferenceDialogFragmentCompat {
 
@@ -31,8 +33,16 @@ public class EditTextPreferenceDialogFragmentCompatFixed extends android.support
 
     @Override
     protected void onBindDialogView(View view) {
+        super.onBindDialogView(view);
         this.mEditText = view.findViewById(android.R.id.edit);
         mEditText.setInputType(mInputType);
-        super.onBindDialogView(view);
+
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        Toast.makeText(this.getContext(),"Cancelado!", Toast.LENGTH_LONG).show();
+        super.onCancel(dialog);
+
     }
 }

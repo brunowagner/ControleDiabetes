@@ -3,22 +3,18 @@
     android:iconSpaceReserved="false">
 
     <EditTextPreference
-        android:digits="0123456789"
-        android:defaultValue="135"
         android:inputType="number"
         android:key="glicemia_Baixa"
         android:summary="Valor de início da glicemia considerada alta."
         android:title="Glicemia Baixa (HiperGlicemia)" />
 
     <EditTextPreference
-        android:defaultValue="100"
         android:summary="Valor de glicemia considerada normal."
         android:key="glicemia_Normal"
         android:title="Glicemia Normal"
         android:inputType="number"/>
 
     <EditTextPreference
-        android:defaultValue="60"
         android:summary="Valor de início da glicemia considerada baixa."
         android:key="glicemia_Baixa"
         android:title="Glicemia Baixa (HipoGlicemia)"
