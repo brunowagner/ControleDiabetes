@@ -3,7 +3,7 @@
     android:iconSpaceReserved="false">
 
     <EditTextPreference
-        android:inputType="number"
+        android:inputType="numberSigned"
         android:key="glicemia_Baixa"
         android:summary="Valor de início da glicemia considerada alta."
         android:title="Glicemia Baixa (HiperGlicemia)" />
