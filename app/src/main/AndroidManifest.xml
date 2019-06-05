@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,23 +19,47 @@
         </activity>
         <activity
             android:name=".CalcularBolus"
-            android:windowSoftInputMode="stateHidden" />
+            android:label="@string/title_calcular_bolus"
+            android:windowSoftInputMode="stateVisible"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".RegistrosActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:label="@string/title_registros"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".BolusCalculateConfig"
+            android:label="@string/title_blocos_de_tempo"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".TimeBlockConfigActivity"
+            android:label="@string/title_bloco_de_tempo"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RecordDetailActivity"
+            android:label="@string/title_registro"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".EventsActivity"
+            android:label="@string/title_eventos"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".Settings"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_configuracao"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>
