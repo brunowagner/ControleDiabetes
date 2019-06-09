@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:inputType="number"
+        android:key="glicemia_Alta"
+        android:summary="Valor de início da glicemia considerada alta."
+        android:title="Glicemia Alta (HiperGlicemia)"
+        android:defaultValue="140"
+        android:imeOptions="actionDone"
+        android:iconSpaceReserved="false"/>
+
+    <EditTextPreference
+        android:summary="Valor de glicemia considerada normal."
+        android:key="glicemia_Normal"
+        android:title="Glicemia Normal"
+        android:defaultValue="100"
+        android:inputType=""/>
+
+    <EditTextPreference
+        android:summary="Valor de início da glicemia considerada baixa."
+        android:key="glicemia_Baixa"
+        android:title="Glicemia Baixa (HipoGlicemia)"
+        android:defaultValue="60"
+        android:inputType="number"/>
+</PreferenceScreen>
