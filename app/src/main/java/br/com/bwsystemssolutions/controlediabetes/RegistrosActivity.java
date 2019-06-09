@@ -2,6 +2,8 @@ package br.com.bwsystemssolutions.controlediabetes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +32,10 @@ public class RegistrosActivity extends AppCompatActivity implements RecordAdapte
         mRegistrosRecyclerView.setLayoutManager(linearLayoutManager);
 
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mRegistrosAdapter= new RecordAdapter(dbHelper,this);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+        mRegistrosAdapter= new RecordAdapter(dbHelper,this, sp);
 
         mRegistrosRecyclerView.setAdapter(mRegistrosAdapter);
 

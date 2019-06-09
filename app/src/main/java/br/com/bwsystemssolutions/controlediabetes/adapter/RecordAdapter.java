@@ -1,6 +1,7 @@
 package br.com.bwsystemssolutions.controlediabetes.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -18,6 +19,9 @@ import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
+import br.com.bwsystemssolutions.controlediabetes.data.Constants;
+
+import static br.com.bwsystemssolutions.controlediabetes.SettingsActivity.*;
 
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdapterViewHolder> {
@@ -35,10 +39,27 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	private static final int COLOR_RESOURSE_ITEM_PRIMARY = R.color.geloTransparente;
 	private static final int COLOR_RESOURSE_ITEM_SECONDARY = R.color.white;
 
-	public RecordAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, RecordAdapterOnClickHandler clickHandler) {
+	int mGlicemiaBaixa;
+	int mGlicemiaAlta;
+	int mGlicemiaNormal;
+
+
+	public RecordAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, RecordAdapterOnClickHandler clickHandler, SharedPreferences sharedPreferences) {
 		mDbHelper = calculoDeBolusDBHelper;
 		mDb = mDbHelper.getWritableDatabase();
 		mClickHandler = clickHandler;
+
+		SharedPreferences settings = sharedPreferences;
+
+
+
+		String sGb = settings.getString(Constants.Settings.KEY_GLICEMIA_BAIXA, "60");
+		String sGa = settings.getString(Constants.Settings.KEY_GLICEMIA_ALTA,"140");
+		String sGn = settings.getString(Constants.Settings.KEY_GLICEMIA_NORMAL,"100");
+
+		mGlicemiaBaixa = Integer.parseInt(sGb);
+		mGlicemiaAlta = Integer.parseInt(sGa);
+		mGlicemiaNormal = Integer.parseInt(sGn);
 	}
 
 	public int getItemCount() {
@@ -179,6 +200,10 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
 		registrosAdapterViewHolder.mObsTextView.setText(record.getNote());
 
+
+
+
+
 		//Bloco que seta a selecao do item
 		if (mSelectedItem == position){
 			registrosAdapterViewHolder.itemView.setBackgroundColor(Color.LTGRAY);
@@ -194,9 +219,10 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 			registrosAdapterViewHolder.mGlicemiaTextView.setVisibility(View.VISIBLE);
 		}
 
-        if (g <= 65){
+        //if (g <= 65){
+		if (g <= mGlicemiaBaixa){
 			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hipo);
-		}  else if (g > 65 && g <= 135){
+		}  else if (g > mGlicemiaBaixa && g < mGlicemiaAlta){
 			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_normal);
 		} else {
 			registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hiper);
