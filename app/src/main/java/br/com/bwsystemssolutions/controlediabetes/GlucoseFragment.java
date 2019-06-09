@@ -1,5 +1,7 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.Preference;
@@ -9,7 +11,7 @@ import android.widget.Toast;
 import com.takisoft.fix.support.v7.preference.EditTextPreference;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
-public class GlucoseFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+public class GlucoseFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private EditTextPreference mglicemiaBaixaEditText;
     private EditTextPreference mglicemiaAltaEditText;
@@ -31,11 +33,16 @@ public class GlucoseFragment extends PreferenceFragmentCompat implements Prefere
         mglicemiaAltaEditText.setOnPreferenceChangeListener(this);
         mglicemiaNormalEditText.setOnPreferenceChangeListener(this);
 
+        mglicemiaAltaEditText.setSummary(mglicemiaAltaEditText.getText() + " mg/dL");
+        mglicemiaBaixaEditText.setSummary(mglicemiaBaixaEditText.getText() + " mg/dL");
+        mglicemiaNormalEditText.setSummary(mglicemiaNormalEditText.getText() + " mg/dL");
+
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object o) {
         boolean modificacao = true;
+
         String key = preference.getKey();
 
         if (key.equals("glicemia_Baixa")){
@@ -71,4 +78,35 @@ public class GlucoseFragment extends PreferenceFragmentCompat implements Prefere
 
         return modificacao;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set up a listener whenever a key changes
+        getPreferenceScreen().getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Unregister the listener whenever a key changes
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Preference p = findPreference(key);
+        if (p instanceof EditTextPreference) {
+            EditTextPreference editTextPref = (EditTextPreference) p;
+            if (p.getTitle().toString().toLowerCase().contains("password"))
+            {
+                p.setSummary("******");
+            } else {
+                p.setSummary(editTextPref.getText() + " mg/dL");
+            }
+        }
+    }
+
 }
