@@ -35,7 +35,7 @@ public class RegistrosActivity extends AppCompatActivity implements RecordAdapte
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-        mRegistrosAdapter= new RecordAdapter(dbHelper,this, sp);
+        mRegistrosAdapter= new RecordAdapter(dbHelper,this, this, sp);
 
         mRegistrosRecyclerView.setAdapter(mRegistrosAdapter);
 

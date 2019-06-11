@@ -9,4 +9,33 @@
     <string name="title_eventos">Eventos</string>
     <string name="title_configuracao">Configuração</string>
     <string name="title_glicemias">Glicemias</string>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            Utilizado pela preferencias (SharePreferences)
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    
+    <string name="pref_glicemia_alta_title">Glicemia Alta (HiperGlicemia)</string>
+    <string name="pref_glicemia_baixa_title">Glicemia Baixa (HipoGlicemia)</string>
+    <string name="pref_glicemia_normal_title">Glicemia Normal</string>
+
+    <string name="pref_glicemia_alta_key" translatable="false">glicemia_Alta</string>
+    <string name="pref_glicemia_baixa_key" translatable="false">glicemia_Baixa</string>
+    <string name="pref_glicemia_normal_key" translatable="false">glicemia_Normal</string>
+
+    <string name="pref_glicemia_alta_default_value">140</string>
+    <string name="pref_glicemia_baixa_default_value">60</string>
+    <string name="pref_glicemia_normal_default_value">100</string>
+
+    <string name="pref_glicemia_alta_summary">Valor de início da glicemia considerada alta.</string>
+    <string name="pref_glicemia_baixa_summary">Valor de início da glicemia considerada baixa.</string>
+    <string name="pref_glicemia_normal_summary">Valor de glicemia considerada normal.</string>
+
+    <string name="pref_glicemias_key">glicemias</string>
+    <string name="pref_glicemias_title">Glicemias</string>
+    <string name="pref_glicemias_summary">Configura os níveis de glicemia (alta, normal e baixa)</string>
+
+    <string name="pref_bloco_de_tempo_key">blocos_de_tempo</string>
+    <string name="pref_bloco_de_tempo_title">Bloco de tempo</string>
+    <string name="pref_bloco_de_tempo_summary">Configuração de blocos de tempo para o cáculo de insulina rápida.</string>
+
 </resources>

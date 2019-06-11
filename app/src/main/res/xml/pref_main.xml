@@ -2,17 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        android:key="glicemias"
-        android:title="Glicemias"
-        android:summary="Configura os níveis de glicemia (alta, normal e baixa)">
+        android:key="@string/pref_glicemias_key"
+        android:title="@string/pref_glicemias_title"
+        android:summary="@string/pref_glicemias_summary">
     <intent android:targetPackage="br.com.bwsystemssolutions.controlediabetes"
         android:targetClass="br.com.bwsystemssolutions.controlediabetes.GlucoseActivity" />
     </Preference>
 
     <Preference
-        android:key="blocos_de_tempo"
-        android:title="Bloco de tempo"
-        android:summary="configuração de blocos de tempo para o cáculo de insulina rápida.">
+        android:key="@string/pref_bloco_de_tempo_key"
+        android:title="@string/pref_bloco_de_tempo_title"
+        android:summary="@string/pref_bloco_de_tempo_summary">
         <intent android:targetPackage="br.com.bwsystemssolutions.controlediabetes"
             android:targetClass="br.com.bwsystemssolutions.controlediabetes.BolusCalculateConfig" />
     </Preference>

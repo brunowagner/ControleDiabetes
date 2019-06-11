@@ -1,5 +1,6 @@
 package br.com.bwsystemssolutions.controlediabetes.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -43,23 +44,20 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	int mGlicemiaAlta;
 	int mGlicemiaNormal;
 
-
-	public RecordAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, RecordAdapterOnClickHandler clickHandler, SharedPreferences sharedPreferences) {
+	public RecordAdapter(CalculoDeBolusDBHelper calculoDeBolusDBHelper, RecordAdapterOnClickHandler clickHandler, Context context, SharedPreferences sharedPreferences) {
 		mDbHelper = calculoDeBolusDBHelper;
 		mDb = mDbHelper.getWritableDatabase();
 		mClickHandler = clickHandler;
 
 		SharedPreferences settings = sharedPreferences;
 
+		String sGlicemiaBaixa = settings.getString( context.getString(R.string.pref_glicemia_baixa_key), context.getString(R.string.pref_glicemia_baixa_default_value));
+		String sGlicemiaAlta = settings.getString( context.getString(R.string.pref_glicemia_alta_key), context.getString(R.string.pref_glicemia_alta_default_value));
+		String sGlicemiaNormal = settings.getString( context.getString(R.string.pref_glicemia_normal_key), context.getString(R.string.pref_glicemia_normal_default_value));
 
-
-		String sGb = settings.getString(Constants.Settings.KEY_GLICEMIA_BAIXA, "60");
-		String sGa = settings.getString(Constants.Settings.KEY_GLICEMIA_ALTA,"140");
-		String sGn = settings.getString(Constants.Settings.KEY_GLICEMIA_NORMAL,"100");
-
-		mGlicemiaBaixa = Integer.parseInt(sGb);
-		mGlicemiaAlta = Integer.parseInt(sGa);
-		mGlicemiaNormal = Integer.parseInt(sGn);
+		mGlicemiaBaixa = Integer.parseInt(sGlicemiaBaixa);
+		mGlicemiaAlta = Integer.parseInt(sGlicemiaAlta);
+		mGlicemiaNormal = Integer.parseInt(sGlicemiaNormal);
 	}
 
 	public int getItemCount() {

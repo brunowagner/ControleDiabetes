@@ -2,24 +2,24 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference
         android:inputType="number"
-        android:key="glicemia_Alta"
-        android:summary="Valor de início da glicemia considerada alta."
-        android:title="Glicemia Alta (HiperGlicemia)"
-        android:defaultValue="140"
+        android:key="@string/pref_glicemia_alta_key"
+        android:summary="@string/pref_glicemia_alta_summary"
+        android:title="@string/pref_glicemia_alta_title"
+        android:defaultValue="@string/pref_glicemia_alta_default_value"
         android:imeOptions="actionDone"
         android:iconSpaceReserved="false"/>
 
     <EditTextPreference
-        android:summary="Valor de glicemia considerada normal."
-        android:key="glicemia_Normal"
-        android:title="Glicemia Normal"
-        android:defaultValue="100"
-        android:inputType=""/>
+        android:summary="@string/pref_glicemia_baixa_summary"
+        android:key="@string/pref_glicemia_normal_key"
+        android:title="@string/pref_glicemia_normal_title"
+        android:defaultValue="@string/pref_glicemia_normal_default_value"
+        android:inputType="number"/>
 
     <EditTextPreference
-        android:summary="Valor de início da glicemia considerada baixa."
-        android:key="glicemia_Baixa"
-        android:title="Glicemia Baixa (HipoGlicemia)"
-        android:defaultValue="60"
+        android:summary="@string/pref_glicemia_baixa_summary"
+        android:key="@string/pref_glicemia_baixa_key"
+        android:title="@string/pref_glicemia_baixa_title"
+        android:defaultValue="@string/pref_glicemia_baixa_default_value"
         android:inputType="number"/>
 </PreferenceScreen>
