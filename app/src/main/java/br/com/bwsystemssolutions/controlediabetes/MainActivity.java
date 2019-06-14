@@ -3,13 +3,18 @@ package br.com.bwsystemssolutions.controlediabetes;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
@@ -33,6 +38,22 @@ public class MainActivity extends AppCompatActivity{
         // Configurando o banco de dados
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
         mDb = dbHelper.getWritableDatabase();
+
+        try {
+            dbHelper.exportDB(getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath() + "/bkp.db");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Backup Falhou!", Toast.LENGTH_SHORT)
+                    .show();
+        }
+
+        Log.d("bwvm", "onCreate: getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath() = "
+                + getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath());
+
+        Log.d("bwvm", "onCreate: Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath() = "
+                + Environment.getDataDirectory().getAbsolutePath());
+
+        Log.d("bwvm", "onCreate: getFilesDir() = " + getFilesDir());
 
 
     }
