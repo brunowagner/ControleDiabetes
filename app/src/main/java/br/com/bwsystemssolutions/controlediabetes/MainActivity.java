@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity{
 
     Button mCalculoDeBolusButton;
     Button mRegistrosButton;
+    Button mImportarDB;
     SQLiteDatabase mDb;
 
     @Override
@@ -31,9 +32,11 @@ public class MainActivity extends AppCompatActivity{
 
         mCalculoDeBolusButton = (Button) findViewById(R.id.btn_calculo_de_bolus);
         mRegistrosButton = (Button) findViewById(R.id.btn_registros);
+        mImportarDB = (Button) findViewById(R.id.btn_import_db);
 
         mCalculoDeBolusButton.setOnClickListener(new ListenerEvents());
         mRegistrosButton.setOnClickListener(new ListenerEvents());
+        mImportarDB.setOnClickListener(new ListenerEvents());
 
         // Configurando o banco de dados
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
@@ -54,6 +57,17 @@ public class MainActivity extends AppCompatActivity{
                 + Environment.getDataDirectory().getAbsolutePath());
 
         Log.d("bwvm", "onCreate: getFilesDir() = " + getFilesDir());
+
+        //TODO - Links para implementar backup
+        //TODO - https://respostas.guj.com.br/38618-criar-e-restaurar-backup-no-sqlite-como-fazer-
+        //TODO - https://pt.stackoverflow.com/questions/38385/backup-em-banco-de-dados-sqlite
+        //TODO - https://stackoverflow.com/questions/18322401/is-it-possible-backup-and-restore-a-database-file-in-android-non-root-devices/18322762#18322762
+        //TODO - https://stackoverflow.com/questions/2170031/backup-and-restore-sqlite-database-to-sdcard
+        //TODO - https://stackoverflow.com/questions/6540906/simple-export-and-import-of-a-sqlite-database-on-android (usei este)
+        //TODO - https://gist.github.com/granoeste/5574148 (explica as pastas)
+
+
+
 
 
     }
@@ -86,15 +100,31 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public void onClick(View v) {
+            int id = v.getId();
 
-            if (v.getId() == R.id.btn_calculo_de_bolus){
+            if (id == R.id.btn_calculo_de_bolus){
                 goToCalculoDeBolus();
             }
 
-            if (v.getId() == R.id.btn_registros){
+            if (id == R.id.btn_registros){
                 goToRegistros();
             }
+
+            if (id == R.id.btn_import_db){
+                CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(MainActivity.this);
+                try {
+                    dbHelper.importDB(getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath() + "/bkp.db");
+                    Toast.makeText(getApplicationContext(), "Importação Realizada!", Toast.LENGTH_SHORT)
+                            .show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Importação Falhou!", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
         }
+
+
 
         void goToCalculoDeBolus(){
             Context context = MainActivity.this;
