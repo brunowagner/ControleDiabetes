@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 import br.com.bwsystemssolutions.controlediabetes.util.FileUtils;
 
@@ -160,6 +161,43 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+
+
+    public static void importDataBase(String backupDBPath) throws IOException {
+        File sd = Environment.getExternalStorageDirectory();
+        File data = Environment.getDataDirectory();
+
+        if (sd.canWrite()) {
+            String currentDBPath = "//data//br.com.bwsystemssolutions.controlediabetes//databases//" + DATABASE_NAME;
+            File backupDB = new File(data, currentDBPath);
+            File currentDB = new File(sd, backupDBPath);
+
+            FileChannel src = new FileInputStream(currentDB).getChannel();
+            FileChannel dst = new FileOutputStream(backupDB).getChannel();
+            dst.transferFrom(src, 0, src.size());
+            src.close();
+            dst.close();
+        }
+
+    }
+
+    public static void exportDataBase(String backupDBPath) throws IOException {
+        File sd = Environment.getExternalStorageDirectory();
+        File data = Environment.getDataDirectory();
+
+        if (sd.canWrite()) {
+            String currentDBPath = "//data//br.com.bwsystemssolutions.controlediabetes//databases//" + DATABASE_NAME;
+            //String backupDBPath = "<backupDBPath>";
+            File currentDB = new File(data, currentDBPath);
+            File backupDB = new File(sd, backupDBPath);
+
+            FileChannel src = new FileInputStream(currentDB).getChannel();
+            FileChannel dst = new FileOutputStream(backupDB).getChannel();
+            dst.transferFrom(src, 0, src.size());
+            src.close();
+            dst.close();
+        }
     }
 
 }
