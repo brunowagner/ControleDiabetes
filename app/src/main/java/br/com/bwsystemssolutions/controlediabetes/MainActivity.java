@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity{
         //TODO - https://stackoverflow.com/questions/2170031/backup-and-restore-sqlite-database-to-sdcard
         //TODO - https://stackoverflow.com/questions/6540906/simple-export-and-import-of-a-sqlite-database-on-android (usei este)
         //TODO - https://gist.github.com/granoeste/5574148 (explica as pastas)
+        //TODO - https://code.google.com/archive/p/android-file-dialog/source/default/source (repositorio do google) ()encontrado pelo link abaixo
+        //TODO - https://stackoverflow.com/questions/8587325/how-to-select-folder-in-android/8883886 (me levou ao repositorio acima)
 
         testar_filedialog();
 
