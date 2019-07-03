@@ -71,7 +71,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".SettingsActivity" />
         </activity>
-        <activity android:name=".CustomFileExplorerActivity"></activity>
     </application>
 
 </manifest>
