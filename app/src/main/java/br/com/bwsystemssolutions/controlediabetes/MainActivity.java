@@ -18,13 +18,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
+import br.com.bwsystemssolutions.controlediabetes.data.customFileExplorer.MyListAdapter;
+import br.com.bwsystemssolutions.controlediabetes.data.directoryOrFileChoose.DialogChooseDirectory;
 import br.com.bwsystemssolutions.controlediabetes.data.directoryOrFileChoose.FileDialog;
 
 public class MainActivity extends AppCompatActivity{
@@ -36,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
     FileDialog mFileDialog;
 
     public final static int PICKFILE_REQUEST_CODE = 1111;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +89,35 @@ public class MainActivity extends AppCompatActivity{
         //TODO - https://code.google.com/archive/p/android-file-dialog/source/default/source (repositorio do google) ()encontrado pelo link abaixo
         //TODO - https://stackoverflow.com/questions/8587325/how-to-select-folder-in-android/8883886 (me levou ao repositorio acima)
 
-        testar_filedialog();
+        //testar_filedialog();
+        //testarDialogChooseDirectory();
+        testeCustomFileExplorer();
 
 
+
+    }
+
+    public void testeCustomFileExplorer(){
+        Intent intent = new Intent(MainActivity.this, CustomFileExplorerActivity.class);
+        startActivity(intent);
+    }
+
+
+
+
+
+
+    class MyOnChooseDialog implements DialogChooseDirectory.Result{
+
+        @Override
+        public void onChooseDirectory(String dir) {
+            Log.d("bwvm", "onChooseDirectory: Diretório escolhido = " + dir);
+        }
+    }
+
+    private void testarDialogChooseDirectory(){
+        MyOnChooseDialog res = new MyOnChooseDialog();
+        DialogChooseDirectory dcd = new DialogChooseDirectory(this, res, getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath());
     }
 
     private void testar_filedialog(){

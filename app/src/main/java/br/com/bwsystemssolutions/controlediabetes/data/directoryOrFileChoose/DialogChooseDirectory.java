@@ -47,14 +47,17 @@ public class DialogChooseDirectory implements AdapterView.OnItemClickListener, D
     {
         public DirAdapter( int resid )
         {
-            super( m_context, resid, m_entries );
+            super( m_context, resid, R.id.tv_tv1, m_entries );
+            //ArrayAdapter<File> a = new ArrayAdapter<>(m_context,resid,m_entries);
         }
 
         // This function is called to show each view item
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            TextView textview = (TextView) super.getView( position, convertView, parent );
+
+            //TextView textview = (TextView) super.getView( position, convertView, parent );
+            TextView textview = (TextView) convertView.findViewById(R.id.tv_tv1);
 
             if ( m_entries.get(position) == null )
             {

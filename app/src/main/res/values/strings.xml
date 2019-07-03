@@ -13,7 +13,7 @@
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             Utilizado pela preferencias (SharePreferences)
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    
+
     <string name="pref_glicemia_alta_title">Glicemia Alta (HiperGlicemia)</string>
     <string name="pref_glicemia_baixa_title">Glicemia Baixa (HipoGlicemia)</string>
     <string name="pref_glicemia_normal_title">Glicemia Normal</string>
