@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import br.com.bwsystemssolutions.controlediabetes.androidFileAndDirectoryPicker.PickerByDialog;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -141,6 +142,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void performFileSearch() {
+            PickerByDialog picker = new PickerByDialog(MainActivity.this, getExternalFilesDir(null).getAbsolutePath());
+            picker.setOnResponseListener(new PickerByDialog.OnResponseListener() {
+                @Override
+                public void onResponse(boolean canceled, String response) {
+                    if (canceled){
+                        Log.d("bwvm", "onResponse: Canceled!");
+                    } else {
+                        Log.d("bwvm", "onResponse: Selected: " + response);
+                    }
+                }
+            });
+            picker.show();
         }
 
         void goToCalculoDeBolus() {

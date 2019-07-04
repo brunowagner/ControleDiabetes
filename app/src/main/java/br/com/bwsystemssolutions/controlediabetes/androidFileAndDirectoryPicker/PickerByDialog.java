@@ -155,7 +155,7 @@ public class PickerByDialog implements DialogInterface.OnClickListener, DialogIn
 
 
     //get directories and files from selected path
-    public void getDirFromRoot(String p_rootPath)
+    private void getDirFromRoot(String p_rootPath)
     {
         m_item = new ArrayList<String>();
 
@@ -260,6 +260,7 @@ public class PickerByDialog implements DialogInterface.OnClickListener, DialogIn
     }
 
     private void select(){
+        if (m_onResponseListener == null) return;
         String response = "";
         switch (m_selectType){
             case SELECT_TYPE_FOLDER:
@@ -292,6 +293,7 @@ public class PickerByDialog implements DialogInterface.OnClickListener, DialogIn
     }
 
     private void cancel(){
+        if (m_onResponseListener == null) return;
         m_onResponseListener.onResponse(true, "");
     }
 
@@ -403,8 +405,7 @@ public class PickerByDialog implements DialogInterface.OnClickListener, DialogIn
         }
     }
 
-    interface OnResponseListener {
+    public interface OnResponseListener {
         void onResponse(boolean canceled, String response);
     }
-
 }
