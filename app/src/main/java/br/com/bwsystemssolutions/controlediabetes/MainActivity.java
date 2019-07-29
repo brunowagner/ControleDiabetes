@@ -1,12 +1,19 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -111,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Internal class to click handler --------------------------
-    class ListenerEvents implements View.OnClickListener {
+    class ListenerEvents extends Activity implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
@@ -142,7 +149,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void performFileSearch() {
-            PickerByDialog picker = new PickerByDialog(MainActivity.this, getExternalFilesDir(null).getAbsolutePath());
+//            String path = getExternalFilesDir(null).getAbsolutePath();
+//            String path = getFilesDir().getParent();
+//            String path = "//data//data//br.com.bwsystemssolutions.controlediabetes";
+
+            if (hasExternalStorageReadPermission()){
+                //continue
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1001);
+            }
+
+            String path = Environment.getExternalStorageDirectory().toString();
+
+
+            PickerByDialog picker = new PickerByDialog(MainActivity.this, path);
+            picker.setSelectType(PickerByDialog.SELECT_TYPE_ANY);
             picker.setOnResponseListener(new PickerByDialog.OnResponseListener() {
                 @Override
                 public void onResponse(boolean canceled, String response) {
@@ -170,6 +191,22 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(context, destinationClass);
 
             startActivity(intent);
+        }
+    }
+
+    private boolean hasExternalStorageWritePermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean hasExternalStorageReadPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            return false;
         }
     }
 }
