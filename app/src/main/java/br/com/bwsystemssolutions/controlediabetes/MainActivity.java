@@ -25,12 +25,13 @@ import android.widget.Button;
 import br.com.bwsystemssolutions.controlediabetes.androidFileAndDirectoryPicker.PickerByDialog;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     Button mCalculoDeBolusButton;
     Button mRegistrosButton;
     Button mImportarDB;
     SQLiteDatabase mDb;
+    Context mContextMain = MainActivity.this;
 
 
     @Override
@@ -42,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
         mRegistrosButton = (Button) findViewById(R.id.btn_registros);
         mImportarDB = (Button) findViewById(R.id.btn_import_db);
 
-        mCalculoDeBolusButton.setOnClickListener(new ListenerEvents());
-        mRegistrosButton.setOnClickListener(new ListenerEvents());
-        mImportarDB.setOnClickListener(new ListenerEvents());
+        mCalculoDeBolusButton.setOnClickListener(this);//new ListenerEvents());
+        mRegistrosButton.setOnClickListener(this);//new ListenerEvents());
+        mImportarDB.setOnClickListener(this);//new ListenerEvents());
 
         // Configurando o banco de dados
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
@@ -103,22 +104,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String Fpath = data.getDataString();
-        //TODO handle your request here
-
-
-        Uri uri = data.getData();
-
-        Log.d("bwvm", "onActivityResult: retorno: " + uri);
-        Log.d("bwvm", "onActivityResult: retorno: " + uri.getPath());
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        String Fpath = data.getDataString();
+//        //TODO handle your request here
+//
+//
+//        Uri uri = data.getData();
+//
+//        Log.d("bwvm", "onActivityResult: retorno: " + uri);
+//        Log.d("bwvm", "onActivityResult: retorno: " + uri.getPath());
+//
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
 
     // Internal class to click handler --------------------------
-    class ListenerEvents extends Activity implements View.OnClickListener {
+    //class ListenerEvents extends Activity implements View.OnClickListener {   com a classe interna, o intent não funciona
 
         @Override
         public void onClick(View v) {
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         void goToCalculoDeBolus() {
-            Context context = MainActivity.this;
+            Context context = mContextMain;//MainActivity.this;
             Class destinationClass = CalcularBolus.class;
             Intent intent = new Intent(context, destinationClass);
 
@@ -186,13 +187,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         void goToRegistros() {
-            Context context = MainActivity.this;
+            Context context = mContextMain;//MainActivity.this;
             Class destinationClass = RegistrosActivity.class;
             Intent intent = new Intent(context, destinationClass);
 
             startActivity(intent);
         }
-    }
+    //}
 
     private boolean hasExternalStorageWritePermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
