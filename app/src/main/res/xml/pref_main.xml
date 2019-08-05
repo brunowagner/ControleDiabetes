@@ -17,4 +17,12 @@
             android:targetClass="br.com.bwsystemssolutions.controlediabetes.BolusCalculateConfig" />
     </Preference>
 
+    <Preference
+        android:key="@string/pref_backup_key"
+        android:title="@string/pref_backup_title"
+        android:summary="@string/pref_backup_summary">
+        <intent android:targetPackage="br.com.bwsystemssolutions.controlediabetes"
+            android:targetClass="br.com.bwsystemssolutions.controlediabetes.BackupActivity" />
+    </Preference>
+
 </PreferenceScreen>

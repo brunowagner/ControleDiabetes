@@ -38,4 +38,8 @@
     <string name="pref_bloco_de_tempo_title">Bloco de tempo</string>
     <string name="pref_bloco_de_tempo_summary">Configuração de blocos de tempo para o cáculo de insulina rápida.</string>
 
+    <string name="pref_backup_key">backup</string>
+    <string name="pref_backup_title">Backup</string>
+    <string name="pref_backup_summary">Cria e restaura backups dos dados do Aplicativo.</string>
+
 </resources>
