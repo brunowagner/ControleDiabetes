@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ControleDiabetes</string>
     <string name="title_calcular_bolus">Calcular Bolus</string>
     <string name="title_controle_de_diabetes">Controle de Diabetes</string>
