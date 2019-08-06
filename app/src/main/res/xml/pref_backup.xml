@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="@string/pref_backup_autobackup_category_key"
+        android:title="@string/pref_backup_autobackup_category_title">
+        <SwitchPreference
+            android:key="@string/pref_backup_autobackup_key"
+            android:title="@string/pref_backup_autobackup_title" />
+        <ListPreference
+            android:key="@string/pref_backup_list_peri_key"
+            android:title="@string/pref_backup_list_peri_title"
+            android:summary="@string/pref_backup_list_peri_summary"
+            android:entries="@array/backup_peri_names_array"
+            android:entryValues="@array/backup_peri_values_array"
+            android:defaultValue="1"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/pref_backup_adm_category_key"
+        android:title="@string/pref_backup_adm_title">
+        <Preference
+            android:key="@string/pref_backup_create_key"
+            android:title="@string/pref_backup_create_title"
+            android:summary="@string/pref_backup_create_summary">
+        </Preference>
+
+        <Preference
+            android:key="@string/pref_backup_restore_key"
+            android:title="@string/pref_backup_restore_title"
+            android:summary="@string/pref_backup_restore_summary">
+        </Preference>
+    </PreferenceCategory>
+
+
+
+
+</PreferenceScreen>

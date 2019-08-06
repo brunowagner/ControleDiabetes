@@ -42,4 +42,24 @@
     <string name="pref_backup_title">Backup</string>
     <string name="pref_backup_summary">Cria e restaura backups dos dados do Aplicativo.</string>
 
+    <string name="pref_backup_autobackup_category_key">backup_autobackup_category_key</string>
+    <string name="pref_backup_autobackup_category_title">Backup Automatico</string>
+    <string name="pref_backup_autobackup_key">pref_backup_autobackup_key</string>
+    <string name="pref_backup_autobackup_title">Ativar Backup Automatico</string>
+    <string name="pref_backup_list_peri_key">pref_backup_list_peri_key</string>
+    <string name="pref_backup_list_peri_title">Periodo</string>
+    <string name="pref_backup_list_peri_summary">Selecione de quanto em quanto tempo o backup sera criado.</string>
+
+    <string name="pref_backup_adm_category_key">backup_adm_category_key</string>
+    <string name="pref_backup_adm_title">Administracao de Backup</string>
+
+    <string name="pref_backup_create_key">backup_create_key</string>
+    <string name="pref_backup_create_title">Criar Backup</string>
+    <string name="pref_backup_create_summary">Fazer um Backup de todos os dados.</string>
+
+    <string name="pref_backup_restore_key">backup_restore_key</string>
+    <string name="pref_backup_restore_title">Recuperar Dados</string>
+    <string name="pref_backup_restore_summary">Recuperar os dados apartir de um backup criado anteriormente.</string>
+
+
 </resources>
