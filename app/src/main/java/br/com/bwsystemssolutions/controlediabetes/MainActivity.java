@@ -21,6 +21,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import br.com.bwsystemssolutions.controlediabetes.androidFileAndDirectoryPicker.PickerByDialog;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
@@ -59,6 +65,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            Toast.makeText(getApplicationContext(), "Backup Falhou!", Toast.LENGTH_SHORT)
 //                    .show();
 //        }
+
+        if (hasExternalStorageReadPermission()){
+            //continue
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1001);
+        }
+
+        if (hasExternalStorageWritePermission()){
+            //continue
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1002);
+        }
+
+        Date date = new Date();
+        SimpleDateFormat formataData = new SimpleDateFormat("yyyy-MM-dd_HHmm");
+        String dataFormatada = formataData.format(date);
+
+        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "//ControleDeDiabetes//Backup");
+        if (!f.exists()){ f.mkdirs(); }
+
+        try {
+            Log.d("bwvm", "onCreate: Tentou criar backup!");
+            dbHelper.exportDB(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                    "//ControleDeDiabetes//Backup//BackupDB_" + dataFormatada + ".db");
+            //CalculoDeBolusDBHelper.exportDataBase(Environment.getExternalStorageDirectory().getAbsolutePath() +
+            //        "//ControleDeDiabetes//Backup//BackupDB_" + dataFormatada + ".db");
+            Toast.makeText(this,"Backup Realizado com sucesso.", Toast.LENGTH_LONG);
+
+        } catch (IOException e) {
+            Log.d("bwvm", "onCreate: excessão ao criar backup.");
+            e.printStackTrace();
+            Toast.makeText(this,"Falha ao criar o backup.", Toast.LENGTH_LONG);
+
+        }
 
         Log.d("bwvm", "onCreate: getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath() = "
                 + getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath());
