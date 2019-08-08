@@ -91,12 +91,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     "//ControleDeDiabetes//Backup//BackupDB_" + dataFormatada + ".db");
             //CalculoDeBolusDBHelper.exportDataBase(Environment.getExternalStorageDirectory().getAbsolutePath() +
             //        "//ControleDeDiabetes//Backup//BackupDB_" + dataFormatada + ".db");
-            Toast.makeText(this,"Backup Realizado com sucesso.", Toast.LENGTH_LONG);
+            Toast.makeText(this,"Backup Realizado com sucesso.", Toast.LENGTH_LONG).show();
 
         } catch (IOException e) {
             Log.d("bwvm", "onCreate: excessão ao criar backup.");
             e.printStackTrace();
-            Toast.makeText(this,"Falha ao criar o backup.", Toast.LENGTH_LONG);
+            Toast.makeText(this,"Falha ao criar o backup.", Toast.LENGTH_LONG).show();
 
         }
 
