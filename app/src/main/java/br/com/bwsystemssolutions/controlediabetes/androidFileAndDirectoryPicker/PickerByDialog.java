@@ -219,7 +219,7 @@ public class PickerByDialog implements DialogInterface.OnClickListener, DialogIn
                 }
                 else
                 {
-                    Toast.makeText(mContext, "This is File", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "This is File", Toast.LENGTH_SHORT).show();
                     if (m_listAdapter.m_selectedItem.contains(position) ) {
                         m_listAdapter.m_selectedItem.clear();
                         if (m_selectType == SELECT_TYPE_FILE) {

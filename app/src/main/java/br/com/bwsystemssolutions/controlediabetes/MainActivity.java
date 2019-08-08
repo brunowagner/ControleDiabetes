@@ -210,7 +210,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
             PickerByDialog picker = new PickerByDialog(MainActivity.this, path);
-            picker.setSelectType(PickerByDialog.SELECT_TYPE_ANY);
+            picker.setItemBackgroundColor(getResources().getColor(R.color.colorDefaultBackgroudListView),getResources().getColor(R.color.colorSelectedBackgroundItem));
+            picker.setSelectType(PickerByDialog.SELECT_TYPE_FILE);
             picker.setOnResponseListener(new PickerByDialog.OnResponseListener() {
                 @Override
                 public void onResponse(boolean canceled, String response) {
@@ -218,6 +219,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.d("bwvm", "onResponse: Canceled!");
                     } else {
                         Log.d("bwvm", "onResponse: Selected: " + response);
+
+                        try {
+                            Log.d("bwvm", "onCreate: Tentou recuperar backup!");
+                            // Configurando o banco de dados
+                            CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(MainActivity.this);
+                            dbHelper.importDB(response);
+                            //CalculoDeBolusDBHelper.exportDataBase(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                            //        "//ControleDeDiabetes//Backup//BackupDB_" + dataFormatada + ".db");
+                            Toast.makeText(MainActivity.this,"Backup Realizado com sucesso.", Toast.LENGTH_LONG).show();
+
+                        } catch (IOException e) {
+                            Log.d("bwvm", "onCreate: excessão ao criar backup.");
+                            e.printStackTrace();
+                            Toast.makeText(MainActivity.this,"Falha ao criar o backup.", Toast.LENGTH_LONG).show();
+
+                        }
+
                     }
                 }
             });
