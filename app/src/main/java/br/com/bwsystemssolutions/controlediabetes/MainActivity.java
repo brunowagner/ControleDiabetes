@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button mCalculoDeBolusButton;
     Button mRegistrosButton;
     Button mImportarDB;
+    Button mCreateBK;
     SQLiteDatabase mDb;
     Context mContextMain = MainActivity.this;
 
@@ -48,13 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCalculoDeBolusButton = (Button) findViewById(R.id.btn_calculo_de_bolus);
         mRegistrosButton = (Button) findViewById(R.id.btn_registros);
         mImportarDB = (Button) findViewById(R.id.btn_import_db);
+        mCreateBK = (Button) findViewById(R.id.btn_create_db);
 
         mCalculoDeBolusButton.setOnClickListener(this);//new ListenerEvents());
         mRegistrosButton.setOnClickListener(this);//new ListenerEvents());
         mImportarDB.setOnClickListener(this);//new ListenerEvents());
+        mCreateBK.setOnClickListener(this);
 
-        // Configurando o banco de dados
-        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
+
         //mDb = dbHelper.getWritableDatabase();
 
 //        try {
@@ -76,28 +78,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //continue
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1002);
-        }
-
-        Date date = new Date();
-        SimpleDateFormat formataData = new SimpleDateFormat("yyyy-MM-dd_HHmm");
-        String dataFormatada = formataData.format(date);
-
-        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "//ControleDeDiabetes//Backup");
-        if (!f.exists()){ f.mkdirs(); }
-
-        try {
-            Log.d("bwvm", "onCreate: Tentou criar backup!");
-            dbHelper.exportDB(Environment.getExternalStorageDirectory().getAbsolutePath() +
-                    "//ControleDeDiabetes//Backup//BackupDB_" + dataFormatada + ".db");
-            //CalculoDeBolusDBHelper.exportDataBase(Environment.getExternalStorageDirectory().getAbsolutePath() +
-            //        "//ControleDeDiabetes//Backup//BackupDB_" + dataFormatada + ".db");
-            Toast.makeText(this,"Backup Realizado com sucesso.", Toast.LENGTH_LONG).show();
-
-        } catch (IOException e) {
-            Log.d("bwvm", "onCreate: excessão ao criar backup.");
-            e.printStackTrace();
-            Toast.makeText(this,"Falha ao criar o backup.", Toast.LENGTH_LONG).show();
-
         }
 
         Log.d("bwvm", "onCreate: getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath() = "
@@ -186,6 +166,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    Toast.makeText(getApplicationContext(), "Importação Falhou!", Toast.LENGTH_SHORT)
 //                            .show();
 //                }
+            }
+
+            if (id == R.id.btn_create_db) {
+                Date date = new Date();
+                SimpleDateFormat formataData = new SimpleDateFormat("yyyy-MM-dd_HHmm");
+                String dataFormatada = formataData.format(date);
+
+                File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "//ControleDeDiabetes//Backup");
+                if (!f.exists()){ f.mkdirs(); }
+
+                try {
+                    Log.d("bwvm", "onCreate: Tentou criar backup!");
+                    // Configurando o banco de dados
+                    CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
+                    dbHelper.exportDB(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                            "//ControleDeDiabetes//Backup//BackupDB_" + dataFormatada + ".db");
+                    //CalculoDeBolusDBHelper.exportDataBase(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                    //        "//ControleDeDiabetes//Backup//BackupDB_" + dataFormatada + ".db");
+                    Toast.makeText(this,"Backup Realizado com sucesso.", Toast.LENGTH_LONG).show();
+
+                } catch (IOException e) {
+                    Log.d("bwvm", "onCreate: excessão ao criar backup.");
+                    e.printStackTrace();
+                    Toast.makeText(this,"Falha ao criar o backup.", Toast.LENGTH_LONG).show();
+
+                }
             }
         }
 
