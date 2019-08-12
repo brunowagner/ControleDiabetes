@@ -7,10 +7,10 @@
         <item>Mensal</item> <!--<item>30</item>-->
     </string-array>
 
-    <integer-array name="backup_peri_values_array">
+    <string-array name="backup_peri_values_array">
         <item>1</item> <!--<item>Diario</item>-->
         <item>7</item> <!--<item>Semanal</item>-->
         <item>30</item> <!--<item>Mensal</item>-->
-    </integer-array>
+    </string-array>
 
 </resources>
