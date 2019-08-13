@@ -109,18 +109,20 @@ public class MyListAdapter extends BaseAdapter {
             return R.drawable.ic_icons8_folder_48px_afadp;
         else
         {
-            if(m_filepath.substring(m_lastIndex).equalsIgnoreCase(".png"))
-            {
-                return R.drawable.ic_icons8_file_48px_afadp;
-            }
-            else if(m_filepath.substring(m_lastIndex).equalsIgnoreCase(".jpg"))
-            {
-                return R.drawable.ic_icons8_file_48px_afadp;
-            }
-            else
-            {
-                return R.drawable.ic_icons8_file_48px_afadp;
-            }
+
+            return R.drawable.ic_icons8_file_48px_afadp;
+//            if(m_filepath.substring(m_lastIndex).equalsIgnoreCase(".png"))
+//            {
+//                return R.drawable.ic_icons8_file_48px_afadp;
+//            }
+//            else if(m_filepath.substring(m_lastIndex).equalsIgnoreCase(".jpg"))
+//            {
+//                return R.drawable.ic_icons8_file_48px_afadp;
+//            }
+//            else
+//            {
+//                return R.drawable.ic_icons8_file_48px_afadp;
+//            }
         }
     }
 

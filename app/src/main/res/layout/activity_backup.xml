@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_backup"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="br.com.bwsystemssolutions.controlediabetes.BackupFragment">
-</fragment>
+    android:orientation="vertical"
+    >
+    <FrameLayout
+        android:id="@+id/activity_backup_content_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></FrameLayout>
+</LinearLayout>
+
+<!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:id="@+id/activity_backup"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+    <!--&gt;-->
+<!--&lt;!&ndash;android:name="br.com.bwsystemssolutions.controlediabetes.BackupFragment"&ndash;&gt;-->
+<!--</fragment>-->
+
