@@ -2,6 +2,7 @@ package br.com.bwsystemssolutions.controlediabetes;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.support.v7.preference.Preference;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.takisoft.fix.support.v7.preference.EditTextPreference;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import java.io.File;
@@ -37,7 +39,7 @@ public class BackupActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public static class BackupFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
+    public static class BackupFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
         Context mContext;
         Preference mCriarBackupPreference;
@@ -59,6 +61,7 @@ public class BackupActivity extends AppCompatActivity {
             mAutoBackupSwitchPreference.setOnPreferenceChangeListener(this);
 
             mPeriodoListPreference.setEnabled(mAutoBackupSwitchPreference.isChecked());
+            mPeriodoListPreference.setSummary(mPeriodoListPreference.getEntry());
         }
 
         @Override
@@ -171,11 +174,36 @@ public class BackupActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onResume() {
+            super.onResume();
+            // Set up a listener whenever a key changes
+            getPreferenceScreen().getSharedPreferences()
+                    .registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            // Unregister the listener whenever a key changes
+            getPreferenceScreen().getSharedPreferences()
+                    .unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
         public boolean onPreferenceChange(Preference preference, Object o) {
 
             mPeriodoListPreference.setEnabled((boolean) o);
 
             return true;
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            Preference p = findPreference(key);
+            if (p instanceof ListPreference) {
+                ListPreference listPref = (ListPreference) p;
+                p.setSummary(listPref.getEntry());
+            }
         }
     }
 

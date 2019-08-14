@@ -6,7 +6,7 @@
         <SwitchPreference
             android:key="@string/pref_backup_autobackup_key"
             android:title="@string/pref_backup_autobackup_title"
-            android:summaryOn="Backup automatico a cada X dias."/>
+            />
         <ListPreference
             android:key="@string/pref_backup_list_peri_key"
             android:title="@string/pref_backup_list_peri_title"
