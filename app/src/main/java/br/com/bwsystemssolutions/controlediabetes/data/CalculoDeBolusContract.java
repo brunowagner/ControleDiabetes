@@ -24,6 +24,8 @@ public class CalculoDeBolusContract {
         public static final String TABLE_NAME = "records";
         public static final String COLUMN_DATE_TIME_NAME = "date_time";
         public static final String COLUMN_GLUCOSE_NAME = "glucose";
+        public static final String COLUMN_MEAL_NAME = "meal";
+        public static final String COLUMN_MEAL_TIME_NAME = "meal_time";
         public static final String COLUMN_EVENT_NAME = "event";
         public static final String COLUMN_CARBOHYDRATE_NAME = "carbohydrate";
         public static final String COLUMN_FAST_INSULIN_NAME = "fast_insulin";
@@ -36,6 +38,14 @@ public class CalculoDeBolusContract {
     public static  final class EventEntry implements BaseColumns{
         public static final String TABLE_NAME = "events";
         public static final String COLUMN_EVENT_NAME = "event";
+        public static final String COLUMN_SORT_NAME = "sort";
         public static final String COLUMN_EVENT_SOURCE = "source";
+    }
+
+    public static  final class MealEntry implements BaseColumns{
+        public static final String TABLE_NAME = "meals";
+        public static final String COLUMN_MEAL_NAME = "meal";
+        public static final String COLUMN_SORT_NAME = "sort";
+        public static final String COLUMN_MEAL_SOURCE = "source";
     }
 }
