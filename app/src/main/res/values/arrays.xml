@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- used to list preference -->
     <string-array name="backup_peri_names_array">
         <item>Diario</item> <!--<item>1</item>-->
         <item>Semanal</item> <!--<item>7</item>-->
@@ -11,6 +12,52 @@
         <item>1</item> <!--<item>Diario</item>-->
         <item>7</item> <!--<item>Semanal</item>-->
         <item>30</item> <!--<item>Mensal</item>-->
+    </string-array>
+
+
+    <!-- used to database values-->
+    <string-array name="meal_names_array">
+        <item>Café da manhã</item>
+        <item>Colação</item>
+        <item>Almoço</item>
+        <item>Lanche da tarde</item>
+        <item>Jantar</item>
+        <item>Ceia</item>
+    </string-array>
+
+    <string-array name="meal_values_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="meal_time_names_array">
+        <item></item>
+        <item>Antes</item>
+        <item>Depois</item>
+    </string-array>
+
+    <string-array name="meal_time_values_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="event_names_array">
+        <item>Antes do exercício</item>
+        <item>Depois do exercício</item>
+        <item>Medição Extra</item>
+        <item>Outros</item>
+    </string-array>
+
+    <string-array name="event_values_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
 </resources>
