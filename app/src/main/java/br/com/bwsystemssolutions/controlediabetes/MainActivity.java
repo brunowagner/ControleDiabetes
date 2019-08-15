@@ -2,16 +2,13 @@ package br.com.bwsystemssolutions.controlediabetes;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,19 +20,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.opencsv.CSVWriter;
+
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import br.com.bwsystemssolutions.controlediabetes.androidFileAndDirectoryPicker.PickerByDialog;
+import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     Button mCalculoDeBolusButton;
     Button mRegistrosButton;
-    Button mImportarDB;
+    Button mExportarData;
     Button mCreateBK;
     SQLiteDatabase mDb;
     Context mContextMain = MainActivity.this;
@@ -48,12 +50,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mCalculoDeBolusButton = (Button) findViewById(R.id.btn_calculo_de_bolus);
         mRegistrosButton = (Button) findViewById(R.id.btn_registros);
-        mImportarDB = (Button) findViewById(R.id.btn_import_db);
+        mExportarData = (Button) findViewById(R.id.btn_export_data);
         mCreateBK = (Button) findViewById(R.id.btn_create_db);
 
         mCalculoDeBolusButton.setOnClickListener(this);//new ListenerEvents());
         mRegistrosButton.setOnClickListener(this);//new ListenerEvents());
-        mImportarDB.setOnClickListener(this);//new ListenerEvents());
+        mExportarData.setOnClickListener(this);//new ListenerEvents());
         mCreateBK.setOnClickListener(this);
 
 
@@ -153,8 +155,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 goToRegistros();
             }
 
-            if (id == R.id.btn_import_db) {
-                performFileSearch();
+            if (id == R.id.btn_export_data) {
+                //performFileSearch();
+                exportDataToCSV();
 
 //                CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(MainActivity.this);
 //                try {
@@ -193,6 +196,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
             }
+        }
+
+
+
+        public void exportDataToCSV(){
+            //File dbFile=getDatabasePath("yourDBname.sqlite");
+
+            PickerByDialog.OnResponseListener closure = new PickerByDialog.OnResponseListener() {
+                @Override
+                public void onResponse(boolean canceled, String response) {
+                    if (canceled){
+                        Toast.makeText(MainActivity.this, "Escolha de pasta cancelada!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    CalculoDeBolusDBHelper dbhelper = new CalculoDeBolusDBHelper(MainActivity.this);
+                    String path = response;
+                    File exportDir = new File(path, "");
+                    if (!exportDir.exists())
+                    {
+                        exportDir.mkdirs();
+                    }
+
+                    Date date = new Date();
+                    SimpleDateFormat formataData = new SimpleDateFormat("yyyy-MM-dd_HHmm");
+                    String dataFormatada = formataData.format(date);
+                    File file = new File(exportDir, "Registros_" + dataFormatada + ".csv");
+                    try
+                    {
+                        file.createNewFile();
+                        CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
+                        SQLiteDatabase db = dbhelper.getReadableDatabase();
+                        Cursor curCSV = db.rawQuery("SELECT * FROM " + CalculoDeBolusContract.RecordEntry.TABLE_NAME,null);
+                        String arrColumnNames[] = new String[]{"ID", "Data e Hora", "Evento", "Glicose", "Carboidrato", "Insul. Rápida", "Insul. Basal", "Medicamento", "Doente", "Obs"};
+                        csvWrite.writeNext(arrColumnNames);
+                        //csvWrite.writeNext(curCSV.getColumnNames());
+                        while(curCSV.moveToNext())
+                        {
+                            //Which column you want to exprort
+                            StringBuffer sb = new StringBuffer();
+                            String arrStr[] = {
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry._ID)),
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME)),
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME)),
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME)),
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME)),
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME)),
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME)),
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME)),
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME)),
+                                    curCSV.getString(curCSV.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME))
+                            };
+
+                            //String arrStr[] ={curCSV.getString(0),curCSV.getString(1), curCSV.getString(2)};
+                            csvWrite.writeNext(arrStr);
+                        }
+                        csvWrite.close();
+                        curCSV.close();
+                        Toast.makeText(MainActivity.this,"Exportação realizada com sucesso!", Toast.LENGTH_SHORT).show();
+                    }
+                    catch(Exception sqlEx)
+                    {
+                        Log.e("MainActivity", sqlEx.getMessage(), sqlEx);
+                        Toast.makeText(MainActivity.this,"Erro de exportação!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            };
+
+
+            String strRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
+            PickerByDialog picker = new PickerByDialog(this,strRoot);
+            picker.setItemBackgroundColor(getResources().getColor(R.color.colorDefaultBackgroudListView),getResources().getColor(R.color.colorSelectedBackgroundItem));
+            picker.setSelectType(PickerByDialog.SELECT_TYPE_FOLDER);
+            picker.setOnResponseListener(closure);
+            picker.show();
         }
 
         public void performFileSearch() {
