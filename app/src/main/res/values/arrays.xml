@@ -17,6 +17,7 @@
 
     <!-- used to database values-->
     <string-array name="meal_names_array">
+        <item></item>
         <item>Café da manhã</item>
         <item>Colação</item>
         <item>Almoço</item>
@@ -32,6 +33,7 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
     </string-array>
 
     <string-array name="meal_time_names_array">
