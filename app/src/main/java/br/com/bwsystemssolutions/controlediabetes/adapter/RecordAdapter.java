@@ -199,19 +199,25 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		String mealtime = "";
 		if (!record.getMealTime().equals("")) mealtime = "(" + record.getMealTime() +")";
 		registrosAdapterViewHolder.mRefeicaoTextView.setText(mealtime + record.getMeal());
-		if (record.getEvent().equals("")){
-			registrosAdapterViewHolder.mEventoTextView.setVisibility(View.GONE);
-		} else{
-			registrosAdapterViewHolder.mEventoTextView.setVisibility(View.VISIBLE);
-		}
+
 		registrosAdapterViewHolder.mEventoTextView.setText(record.getEvent());
 		registrosAdapterViewHolder.mCarboidratoTextView.setText(String.valueOf(record.getCarbohydrate()));
 		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
 		registrosAdapterViewHolder.mObsTextView.setText(record.getNote());
 
+		//Bloco que exibe ou omite Refeicao ou Evento
+		if (record.getEvent().equals("")){
+			registrosAdapterViewHolder.mEventoTextView.setVisibility(View.GONE);
+		} else{
+			registrosAdapterViewHolder.mEventoTextView.setVisibility(View.VISIBLE);
+		}
 
-
+		if (record.getMeal().equals("")){
+			registrosAdapterViewHolder.mRefeicaoTextView.setVisibility(View.GONE);
+		} else{
+			registrosAdapterViewHolder.mRefeicaoTextView.setVisibility(View.VISIBLE);
+		}
 
 
 		//Bloco que seta a selecao do item
