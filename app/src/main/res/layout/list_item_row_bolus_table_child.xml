@@ -15,6 +15,7 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/tv_meal"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -23,6 +24,7 @@
             android:text="Lanche da Tarde"/>
 
         <TextView
+            android:id="@+id/tv_insuline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3.0"/>

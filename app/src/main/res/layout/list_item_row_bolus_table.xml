@@ -10,6 +10,7 @@
     android:layout_marginTop="2dp">
 
     <TextView
+        android:id="@+id/tv_glucose"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:gravity="center"
@@ -17,6 +18,7 @@
         android:text="60"/>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_bolus_table_row_meals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
