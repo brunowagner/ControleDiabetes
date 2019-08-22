@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import java.time.Instant;
 import java.util.ArrayList;
 
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
