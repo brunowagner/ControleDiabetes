@@ -84,9 +84,22 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_MEALS_TABLE = "CREATE TABLE " +
                 MealEntry.TABLE_NAME + "(" +
                 MealEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                MealEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL," +
-                MealEntry.COLUMN_MEAL_SORT + " INTEGER NOT NULL," +
+                MealEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL UNIQUE," +
+                MealEntry.COLUMN_MEAL_SORT + " INTEGER NOT NULL UNIQUE," +
                 MealEntry.COLUMN_MEAL_SOURCE + " TEXT NOT NULL" +
+                ");";
+
+        final String SQL_CREATE_GLUCOSES_TABLE = "CREATE TABLE " +
+                GlucoseEntry.TABLE_NAME + "(" +
+                GlucoseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                GlucoseEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL UNIQUE" +
+                ");";
+
+        final String SQL_CREATE_BOLUS_TABLE = "CREATE TABLE " +
+                BolusEntry.TABLE_NAME + "(" +
+                BolusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                BolusEntry.COLUMN_GLUCOSE_ID + " INTEGER NOT NULL," +
+                BolusEntry.COLUMN_MEAL_ID + " INTEGER NOT NULL" +
                 ");";
 
         final String SQL_POPULATE_EVENT_TABLE = getPopulateEventTableString();
@@ -99,6 +112,8 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_MEALS_TABLE);
         db.execSQL(SQL_POPULATE_EVENT_TABLE);
         db.execSQL(SQL_POPULATE_MEAL_TABLE);
+        db.execSQL(SQL_CREATE_GLUCOSES_TABLE);
+        db.execSQL(SQL_CREATE_BOLUS_TABLE);
 
     }
 

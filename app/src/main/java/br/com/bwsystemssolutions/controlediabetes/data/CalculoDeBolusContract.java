@@ -48,4 +48,15 @@ public class CalculoDeBolusContract {
         public static final String COLUMN_MEAL_SORT = "sort";
         public static final String COLUMN_MEAL_SOURCE = "source";
     }
+
+    public static  final class GlucoseEntry implements BaseColumns{
+        public static final String TABLE_NAME = "glucoses";
+        public static final String COLUMN_GLUCOSE_NAME = "glucose";
+    }
+
+    public static  final class BolusEntry implements BaseColumns{
+        public static final String TABLE_NAME = "bolus";
+        public static final String COLUMN_GLUCOSE_ID = "glucose_id";
+        public static final String COLUMN_MEAL_ID = "meal_id";
+    }
 }
