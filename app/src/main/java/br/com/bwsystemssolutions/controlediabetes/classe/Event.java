@@ -4,6 +4,7 @@ public class Event {
     private int id;
     private String text;
     private String source;
+    private int sort;
 
     public static final String BUNDLE_STRING_KEY = Event.class.toString();
     public static final String SOURCE_FROM_APP = "app";
@@ -35,5 +36,13 @@ public class Event {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 }
