@@ -38,15 +38,15 @@ public class CalculoDeBolusContract {
     public static  final class EventEntry implements BaseColumns{
         public static final String TABLE_NAME = "events";
         public static final String COLUMN_EVENT_NAME = "event";
-        public static final String COLUMN_EVENT_SORT = "sort";
-        public static final String COLUMN_EVENT_SOURCE = "source";
+        public static final String COLUMN_SORT_NAME = "sort";
+        public static final String COLUMN_SOURCE_NAME = "source";
     }
 
     public static  final class MealEntry implements BaseColumns{
         public static final String TABLE_NAME = "meals";
         public static final String COLUMN_MEAL_NAME = "meal";
-        public static final String COLUMN_MEAL_SORT = "sort";
-        public static final String COLUMN_MEAL_SOURCE = "source";
+        public static final String COLUMN_SORT_NAME = "sort";
+        public static final String COLUMN_SOURCE_NAME = "source";
     }
 
     public static  final class GlucoseEntry implements BaseColumns{
@@ -56,7 +56,8 @@ public class CalculoDeBolusContract {
 
     public static  final class BolusEntry implements BaseColumns{
         public static final String TABLE_NAME = "bolus";
-        public static final String COLUMN_GLUCOSE_ID = "glucose_id";
-        public static final String COLUMN_MEAL_ID = "meal_id";
+        public static final String COLUMN_GLUCOSE_ID_NAME = "glucose_id";
+        public static final String COLUMN_MEAL_ID_NAME = "meal_id";
+        public static final String COLUMN_INSULIN_NAME = "insulin";
     }
 }

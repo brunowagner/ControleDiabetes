@@ -77,16 +77,16 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 EventEntry.TABLE_NAME + "(" +
                 EventEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 EventEntry.COLUMN_EVENT_NAME + " TEXT NOT NULL," +
-                EventEntry.COLUMN_EVENT_SORT + " INTEGER NOT NULL," +
-                EventEntry.COLUMN_EVENT_SOURCE + " TEXT NOT NULL" +
+                EventEntry.COLUMN_SORT_NAME + " INTEGER NOT NULL," +
+                EventEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL" +
                 ");";
 
         final String SQL_CREATE_MEALS_TABLE = "CREATE TABLE " +
                 MealEntry.TABLE_NAME + "(" +
                 MealEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MealEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL UNIQUE," +
-                MealEntry.COLUMN_MEAL_SORT + " INTEGER NOT NULL UNIQUE," +
-                MealEntry.COLUMN_MEAL_SOURCE + " TEXT NOT NULL" +
+                MealEntry.COLUMN_SORT_NAME + " INTEGER NOT NULL UNIQUE," +
+                MealEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL" +
                 ");";
 
         final String SQL_CREATE_GLUCOSES_TABLE = "CREATE TABLE " +
@@ -98,8 +98,9 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_BOLUS_TABLE = "CREATE TABLE " +
                 BolusEntry.TABLE_NAME + "(" +
                 BolusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                BolusEntry.COLUMN_GLUCOSE_ID + " INTEGER NOT NULL," +
-                BolusEntry.COLUMN_MEAL_ID + " INTEGER NOT NULL" +
+                BolusEntry.COLUMN_GLUCOSE_ID_NAME + " INTEGER NOT NULL," +
+                BolusEntry.COLUMN_MEAL_ID_NAME + " INTEGER NOT NULL," +
+                BolusEntry.COLUMN_INSULIN_NAME + " REAL NOT NULL" +
                 ");";
 
         final String SQL_POPULATE_EVENT_TABLE = getPopulateEventTableString();
@@ -124,17 +125,17 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
           db.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
 //        onCreate(db);
 
-        String updateVersion2a = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_EVENT_SOURCE + " TEXT NOT NULL";
+        String updateVersion2a = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL";
         String updateVersion2b = getPopulateEventTableString();
         String updateVersion3a = "ALTER TABLE " + RecordEntry.TABLE_NAME + " ADD COLUMN " + RecordEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL";
         String updateVersion3b = "ALTER TABLE " + RecordEntry.TABLE_NAME + " ADD COLUMN " + RecordEntry.COLUMN_MEAL_TIME_NAME + " TEXT NOT NULL";
-        String updateVersion3c = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_EVENT_SORT + " INTEGER NOT NULL";
+        String updateVersion3c = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_SORT_NAME + " INTEGER NOT NULL";
         String updateVersion3d = "CREATE TABLE " +
                 MealEntry.TABLE_NAME + "(" +
                 MealEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MealEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL," +
-                MealEntry.COLUMN_MEAL_SORT + " INTEGER NOT NULL," +
-                MealEntry.COLUMN_MEAL_SOURCE + " TEXT NOT NULL" +
+                MealEntry.COLUMN_SORT_NAME + " INTEGER NOT NULL," +
+                MealEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL" +
                 ");";
         String updateVersion3e = getPopulateMealTableString();
 
@@ -157,7 +158,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
 
             StringBuffer sb = new StringBuffer("INSERT INTO " +
                     EventEntry.TABLE_NAME + " (" +
-                    EventEntry.COLUMN_EVENT_NAME + "," + EventEntry.COLUMN_EVENT_SORT + "," + EventEntry.COLUMN_EVENT_SOURCE + ") VALUES ");
+                    EventEntry.COLUMN_EVENT_NAME + "," + EventEntry.COLUMN_SORT_NAME + "," + EventEntry.COLUMN_SOURCE_NAME + ") VALUES ");
 
             for (int i = 0; i < array.length; i++){
                 sb.append("('"  + array[i] + "','" + i + "','app')");
@@ -173,7 +174,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
 
         StringBuffer sb = new StringBuffer("INSERT INTO " +
                 MealEntry.TABLE_NAME + " (" +
-                MealEntry.COLUMN_MEAL_NAME + "," + MealEntry.COLUMN_MEAL_SORT + "," + MealEntry.COLUMN_MEAL_SOURCE + ") VALUES ");
+                MealEntry.COLUMN_MEAL_NAME + "," + MealEntry.COLUMN_SORT_NAME + "," + MealEntry.COLUMN_SOURCE_NAME + ") VALUES ");
 
         for (int i = 0; i < array.length; i++){
             sb.append("('"  + array[i] + "','" + i + "','app')");
@@ -191,13 +192,13 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
     *  --------------------------------------------------------------------------------------------
     *
     *   - Versão 2:
-    *        - Foi adicionada a coluna 'EventEntry.COLUMN_EVENT_SOURCE' na tabela 'Events'
+    *        - Foi adicionada a coluna 'EventEntry.COLUMN_SOURCE_NAME' na tabela 'Events'
     *        - Foi implementado o SQL_POPULATE_EVENT_TABLE para popular com valores padrões a tabela Events
     *
     *   - Versão 3:
     *       - Foi adicionada a coluna 'RecordEntry.COLUMN_MEAL_NAME' na tabela 'Records'
     *       - Foi adicionada a coluna 'RecordEntry.COLUMN_MEAL_TIME_NAME' na tabela 'Events'
-    *       - Foi adicionada a coluna 'EventEntry.COLUMN_EVENT_SORT' na tabela 'Events'
+    *       - Foi adicionada a coluna 'EventEntry.COLUMN_SORT_NAME' na tabela 'Events'
     *       - Foi criada a tabela Meals
     *       - Foi implementado o SQL_POPULATE_MEAL_TABLE para popular com valores padrões a tabela Meals
     *       - Foi reescrito o SQL_POPULATE_EVENT_TABLE para popular com os novos valores padrões a tabela Events

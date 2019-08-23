@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.Event;
-import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
@@ -79,7 +78,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventAdapter
                 Event event = new Event();
                 event.setId(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.EventEntry._ID)));
                 event.setText(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.EventEntry.COLUMN_EVENT_NAME)));
-                event.setSource(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.EventEntry.COLUMN_EVENT_SOURCE)));
+                event.setSource(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.EventEntry.COLUMN_SOURCE_NAME)));
 
                 events.add(event);
 
