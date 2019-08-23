@@ -11,12 +11,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.R;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableDataMeals;
 
 public class BolusTableMealAdapter extends RecyclerView.Adapter<BolusTableMealAdapter.BolusTableMealAdapterViewHolder> {
 
-    private ArrayList<BolusTableData> mBolusTableData;
-    private Double[] mBolusArray;
+    private ArrayList<BolusTableDataMeals> mBolusTableDataMeals;
+
+    public BolusTableMealAdapter(ArrayList<BolusTableDataMeals> mBolusTableDataMeals) {
+        this.mBolusTableDataMeals = mBolusTableDataMeals;
+    }
 
     @NonNull
     @Override
@@ -25,22 +28,21 @@ public class BolusTableMealAdapter extends RecyclerView.Adapter<BolusTableMealAd
         LayoutInflater inflater = LayoutInflater.from(context);
         int layoutIdFromListItem = R.layout.list_item_row_bolus_table_child;
         boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(layoutIdFromListItem, viewGroup,shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdFromListItem, viewGroup, shouldAttachToParentImmediately);
         return new BolusTableMealAdapterViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BolusTableMealAdapterViewHolder bolusTableMealAdapterViewHolder, int i) {
-        double item = mBolusArray[i];
-
-
-
+        BolusTableDataMeals bolusTableDataMeals = mBolusTableDataMeals.get(i);
+        bolusTableMealAdapterViewHolder.mMealTextView.setText(bolusTableDataMeals.getMeal());
+        bolusTableMealAdapterViewHolder.mInsulin.setText(String.valueOf(bolusTableDataMeals.getmInsulin()));
     }
 
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mBolusTableDataMeals.size();
     }
 
 

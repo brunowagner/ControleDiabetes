@@ -26,26 +26,10 @@
         <item>Ceia</item>
     </string-array>
 
-    <string-array name="meal_values_array">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-    </string-array>
-
     <string-array name="meal_time_names_array">
         <item></item>
         <item>Antes</item>
         <item>Depois</item>
-    </string-array>
-
-    <string-array name="meal_time_values_array">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
     </string-array>
 
     <string-array name="event_names_array">
@@ -54,14 +38,6 @@
         <item>Depois do exercício</item>
         <item>Medição Extra</item>
         <item>Outros</item>
-    </string-array>
-
-    <string-array name="event_values_array">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
     </string-array>
 
 </resources>
