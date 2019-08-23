@@ -30,7 +30,7 @@ public class BolusTableActivity extends AppCompatActivity {
         mBolusTableAdapter = new BolusTimeBlockAdapter(dbHelper,this);
         mParentRecyclerView.setAdapter(mBolusTableAdapter);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mParentRecyclerView.setLayoutManager(linearLayoutManager);
 
         /*
