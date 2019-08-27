@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableDataMeals;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
@@ -100,19 +101,46 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     // ---------------------------------- Data Base ---------------------------------------------
 
     private Cursor getAllData() {
-        return mDb.query(CalculoDeBolusContract.TimeBlockEntry.TABLE_NAME,
-                null, null, null, null,null,
-                CalculoDeBolusContract.TimeBlockEntry.COLUMN_INITIAL_TIME_NAME);
+        String sqlQuery = CalculoDeBolusContract.BolusTableQuery.FETCH_ALL_DATA;
+
+        return mDb.rawQuery(sqlQuery,null);
     }
 
     public void refreshData(){
         Cursor cursor = getAllData();
-        ArrayList<BolusTimeBlockData> bolusTimeBlockDataAL = new ArrayList<BolusTimeBlockData>();
+        int lastGlucoseId = -1;
+        ArrayList<BolusTableData> bolusTableDataAL = new ArrayList<BolusTableData>();
+        BolusTableData bolusTableData;
         if (cursor.moveToFirst()){
             do {
-                BolusTimeBlockData bolusTableData = new BolusTimeBlockData();
-                bolusTableData.id = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry._ID));
-                bolusTableData.start = cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_INITIAL_TIME_NAME));
+                int glucoseId = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTableEntry.COLUMN_GLUCOSE_ID_NAME));
+                if (lastGlucoseId != glucoseId){
+                    if (bolusTableData != null){
+                        bolusTableDataAL.add(bolusTableData);
+                        //iniciar novo
+                    }
+                } else {
+
+
+
+                }
+
+
+                BolusTableData bolusTableData = new BolusTableData();
+                bolusTableData.setGlucoseId (cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTableEntry.COLUMN_GLUCOSE_ID_NAME)));
+                bolusTableData.setGlucose(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTableEntry.COLUMN_GLUCOSE_NAME)));
+
+                BolusTableDataMeals bolusTableDataMeals = new BolusTableDataMeals();
+                bolusTableDataMeals.setMealId(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTableEntry.COLUMN_MEAL_ID_NAME)));
+                bolusTableDataMeals.setMeal(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.BolusTableEntry.COLUMN_MEAL_NAME)));
+
+                if (/*mesmo id glicose*/){
+                    cursor.
+                }
+
+
+
+
                 bolusTableData.relation = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_RELATION_NAME));
                 bolusTableData.sensibilityFactor = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME));
                 bolusTableData.tarjet = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.TimeBlockEntry.COLUMN_TARGET_NAME));

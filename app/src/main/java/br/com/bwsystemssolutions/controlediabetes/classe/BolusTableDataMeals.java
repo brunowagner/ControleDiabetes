@@ -1,8 +1,18 @@
 package br.com.bwsystemssolutions.controlediabetes.classe;
 
 public class BolusTableDataMeals {
+
+    private int mealId;
     private String meal;
     private double mInsulin;
+
+    public int getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(int mealId) {
+        this.mealId = mealId;
+    }
 
     public String getMeal() {
         return meal;
