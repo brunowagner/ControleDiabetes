@@ -79,7 +79,7 @@ public class CalculoDeBolusContract {
                         GlucoseEntry.TABLE_NAME + "." + GlucoseEntry.COLUMN_GLUCOSE_NAME + " AS " + BolusTableEntry.COLUMN_GLUCOSE_NAME + ", " +
                         MealEntry.TABLE_NAME + "." + MealEntry._ID + " AS " + BolusTableEntry.COLUMN_MEAL_ID_NAME + ", " +
                         MealEntry.TABLE_NAME + "." + MealEntry.COLUMN_MEAL_NAME + " AS " + BolusTableEntry.COLUMN_MEAL_NAME + ", " +
-                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_INSULIN_NAME + " AS " + BolusTableEntry.COLUMN_INSULIN_NAME +
+                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_INSULIN_NAME + " AS " + BolusTableEntry.COLUMN_INSULIN_NAME + " " +
 
                 "FROM " +
                         GlucoseEntry.TABLE_NAME + " " +
@@ -96,7 +96,7 @@ public class CalculoDeBolusContract {
 
                 "ORDER BY " +
                         BolusTableEntry.COLUMN_GLUCOSE_ID_NAME + ", " +
-                        BolusTableEntry.COLUMN_MEAL_ID_NAME;
+                        BolusTableEntry.COLUMN_MEAL_ID_NAME + ";";
 
 
 //        String sqlQuery =

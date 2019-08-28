@@ -48,7 +48,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_TIME_BLOCK_TABLE = "CREATE TABLE " +
+        final String SQL_CREATE_TIME_BLOCK_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 TimeBlockEntry.TABLE_NAME + "(" +
                 TimeBlockEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 TimeBlockEntry.COLUMN_INITIAL_TIME_NAME + " STRING NOT NULL," +
@@ -57,7 +57,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 TimeBlockEntry.COLUMN_SENSITIVITY_FACTOR_NAME + " INTEGER NOT NULL" +
                 ");";
         
-        final String SQL_CREATE_RECORDS_TABLE = "CREATE TABLE " +
+        final String SQL_CREATE_RECORDS_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 RecordEntry.TABLE_NAME + "(" +
                 RecordEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 RecordEntry.COLUMN_DATE_TIME_NAME + " TEXT NOT NULL," +
@@ -73,7 +73,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 RecordEntry.COLUMN_NOTE_NAME + " TEXT" +
                 ");";
         
-        final String SQL_CREATE_EVENTS_TABLE = "CREATE TABLE " +
+        final String SQL_CREATE_EVENTS_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 EventEntry.TABLE_NAME + "(" +
                 EventEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 EventEntry.COLUMN_EVENT_NAME + " TEXT NOT NULL," +
@@ -81,7 +81,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 EventEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL" +
                 ");";
 
-        final String SQL_CREATE_MEALS_TABLE = "CREATE TABLE " +
+        final String SQL_CREATE_MEALS_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 MealEntry.TABLE_NAME + "(" +
                 MealEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MealEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL UNIQUE," +
@@ -89,13 +89,13 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 MealEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL" +
                 ");";
 
-        final String SQL_CREATE_GLUCOSES_TABLE = "CREATE TABLE " +
+        final String SQL_CREATE_GLUCOSES_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 GlucoseEntry.TABLE_NAME + "(" +
                 GlucoseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GlucoseEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL UNIQUE" +
                 ");";
 
-        final String SQL_CREATE_BOLUS_TABLE = "CREATE TABLE " +
+        final String SQL_CREATE_BOLUS_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 BolusEntry.TABLE_NAME + "(" +
                 BolusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 BolusEntry.COLUMN_GLUCOSE_ID_NAME + " INTEGER NOT NULL," +

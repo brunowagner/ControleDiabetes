@@ -24,10 +24,15 @@ public class BolusTableActivity extends AppCompatActivity {
         configureRecyclerView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mBolusTableAdapter.refreshData();
+    }
 
     private void configureRecyclerView(){
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mBolusTableAdapter = new BolusTimeBlockAdapter(dbHelper,this);
+        mBolusTableAdapter = new BolusTableAdapter(this,dbHelper);
         mParentRecyclerView.setAdapter(mBolusTableAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);

@@ -22,12 +22,12 @@
             android:lines="2"
             android:text="Glicemia (dL/ml)"/>
 
-        <view
-            android:id="@+id/divider"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:tag="divider"
-            android:background="?android:attr/listDivider"/>
+        <!--<view-->
+            <!--android:id="@+id/divider"-->
+            <!--android:layout_width="5dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:tag="divider"-->
+            <!--android:background="?android:attr/listDivider"/>-->
 
         <TextView
             android:layout_width="match_parent"
