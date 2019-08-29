@@ -125,11 +125,11 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
           db.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
 //        onCreate(db);
 
-        String updateVersion2a = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL";
+        String updateVersion2a = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL DEFAULT ''";
         String updateVersion2b = getPopulateEventTableString();
-        String updateVersion3a = "ALTER TABLE " + RecordEntry.TABLE_NAME + " ADD COLUMN " + RecordEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL";
-        String updateVersion3b = "ALTER TABLE " + RecordEntry.TABLE_NAME + " ADD COLUMN " + RecordEntry.COLUMN_MEAL_TIME_NAME + " TEXT NOT NULL";
-        String updateVersion3c = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_SORT_NAME + " INTEGER NOT NULL";
+        String updateVersion3a = "ALTER TABLE " + RecordEntry.TABLE_NAME + " ADD COLUMN " + RecordEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL DEFAULT ''";
+        String updateVersion3b = "ALTER TABLE " + RecordEntry.TABLE_NAME + " ADD COLUMN " + RecordEntry.COLUMN_MEAL_TIME_NAME + " TEXT NOT NULL DEFAULT ''";
+        String updateVersion3c = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_SORT_NAME + " INTEGER NOT NULL DEFAULT 0";
         String updateVersion3d = "CREATE TABLE " +
                 MealEntry.TABLE_NAME + "(" +
                 MealEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -145,6 +145,8 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 db.execSQL(updateVersion2b);
                 break;
             default:
+                db.execSQL(updateVersion2a);
+                db.execSQL(updateVersion2b);
                 db.execSQL(updateVersion3a);
                 db.execSQL(updateVersion3b);
                 db.execSQL(updateVersion3c);

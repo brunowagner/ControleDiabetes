@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -42,69 +43,81 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
         Log.d("bwvm", "BolusTableAdapter: tamanho do cursor kdjf ajd fklajd jasd fj: " + cursor.getCount());
 
+        if (cursor.getCount() == 0) {
+            String insert = "INSERT INTO " + CalculoDeBolusContract.BolusEntry.TABLE_NAME +
+                    "(" + CalculoDeBolusContract.BolusEntry.COLUMN_GLUCOSE_ID_NAME +
+                    "," + CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_ID_NAME +
+                    "," + CalculoDeBolusContract.BolusEntry.COLUMN_INSULIN_NAME + ") VALUES " +
+                    "(1,1,1.0)," +
+            "(1,2,1.0)," +
+            "(1,3,1.5)," +
+            "(1,4,0.0)," +
+            "(1,5,2.0)," +
+            "(1,6,0.0)," +
+            "(1,7,0.0)," +
+            "(2,1,1.5)," +
+            "(2,2,1.5)," +
+            "(2,3,2.0)," +
+            "(2,4,0.5)," +
+            "(2,5,2.5)," +
+            "(2,6,0.0)," +
+            "(2,7,0.0)," +
+            "(3,1,2.0)," +
+            "(3,2,2.0)," +
+            "(3,3,2.5)," +
+            "(3,4,1.0)," +
+            "(3,5,3.0)," +
+            "(3,6,0.5)," +
+            "(3,7,0.0)," +
+            "(4,1,2.5)," +
+            "(4,2,2.5)," +
+            "(4,3,3.0)," +
+            "(4,4,1.5)," +
+            "(4,5,3.5)," +
+            "(4,6,1.0)," +
+            "(4,7,0.0)," +
+            "(5,1,3.0)," +
+            "(5,2,3.0)," +
+            "(5,3,3.5)," +
+            "(5,4,2.0)," +
+            "(5,5,4.0)," +
+            "(5,6,1.5)," +
+            "(5,7,0.0)," +
+            "(6,7,0.0)," +
+            "(7,7,0.0)," +
+            "(8,7,0.0)," +
+            "(6,1,4.0)," +
+            "(6,2,4.0)," +
+            "(6,3,4.0)," +
+            "(6,4,2.5)," +
+            "(6,5,4.5)," +
+            "(6,6,2.0)," +
+            "(7,1,5.0)," +
+            "(7,2,5.0)," +
+            "(7,3,5.0)," +
+            "(7,4,3.0)," +
+            "(7,5,5.0)," +
+            "(7,6,2.5)," +
+            "(8,1,6.0)," +
+            "(8,2,6.0)," +
+            "(8,3,6.0)," +
+            "(8,4,3.5)," +
+            "(8,5,5.5)," +
+            "(8,6,3.0);";
 
-//        String insert = "INSERT INTO " + CalculoDeBolusContract.BolusEntry.TABLE_NAME +
-//                "(" + CalculoDeBolusContract.BolusEntry.COLUMN_GLUCOSE_ID_NAME +
-//                "," + CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_ID_NAME +
-//                "," + CalculoDeBolusContract.BolusEntry.COLUMN_INSULIN_NAME + ") VALUES " +
-//                "(1,1,1.0)," +
-//        "(1,2,1.0)," +
-//        "(1,3,1.5)," +
-//        "(1,4,0.0)," +
-//        "(1,5,2.0)," +
-//        "(1,6,0.0)," +
-//        "(1,7,0.0)," +
-//        "(2,1,1.5)," +
-//        "(2,2,1.5)," +
-//        "(2,3,2.0)," +
-//        "(2,4,0.5)," +
-//        "(2,5,2.5)," +
-//        "(2,6,0.0)," +
-//        "(2,7,0.0)," +
-//        "(3,1,2.0)," +
-//        "(3,2,2.0)," +
-//        "(3,3,2.5)," +
-//        "(3,4,1.0)," +
-//        "(3,5,3.0)," +
-//        "(3,6,0.5)," +
-//        "(3,7,0.0)," +
-//        "(4,1,2.5)," +
-//        "(4,2,2.5)," +
-//        "(4,3,3.0)," +
-//        "(4,4,1.5)," +
-//        "(4,5,3.5)," +
-//        "(4,6,1.0)," +
-//        "(4,7,0.0)," +
-//        "(5,1,3.0)," +
-//        "(5,2,3.0)," +
-//        "(5,3,3.5)," +
-//        "(5,4,2.0)," +
-//        "(5,5,4.0)," +
-//        "(5,6,1.5)," +
-//        "(5,7,0.0)," +
-//        "(6,7,0.0)," +
-//        "(7,7,0.0)," +
-//        "(8,7,0.0)," +
-//        "(6,1,4.0)," +
-//        "(6,2,4.0)," +
-//        "(6,3,4.0)," +
-//        "(6,4,2.5)," +
-//        "(6,5,4.5)," +
-//        "(6,6,2.0)," +
-//        "(7,1,5.0)," +
-//        "(7,2,5.0)," +
-//        "(7,3,5.0)," +
-//        "(7,4,3.0)," +
-//        "(7,5,5.0)," +
-//        "(7,6,2.5)," +
-//        "(8,1,6.0)," +
-//        "(8,2,6.0)," +
-//        "(8,3,6.0)," +
-//        "(8,4,3.5)," +
-//        "(8,5,5.5)," +
-//        "(8,6,3.0);";
-//
-//        mDb.execSQL(insert);
+            mDb.execSQL(insert);
+        }
+
+        cursor = mDb.rawQuery("SELECT * FROM glucoses;", null);
+
+        if (cursor.getCount() == 0 ) {
+            String insertGlucoses = "INSERT INTO glucoses (glucose) values (60),(100),(150),(200),(250),(300),(400),(500);";
+            mDb.execSQL(insertGlucoses);
+        }
+
+        Log.d("bwvm", "BolusTableAdapter: curso do glucoses: " + cursor.getCount());
+
+
 
 //        mDb.rawQuery(insert,null);
 
@@ -125,10 +138,18 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
     @Override
     public void onBindViewHolder(@NonNull BolusTableAdapter.BolusTableAdapterViewHolder bolusTableAdapterViewHolder, int i) {
+        Log.d("bwvm", "onBindViewHolder: position: " + i);
         BolusTableData bolusTableData = mBolusTableData.get(i);
         bolusTableAdapterViewHolder.mGlucoseTextView.setText(String.valueOf(bolusTableData.getGlucose()));
 
         BolusTableMealAdapter bolusTableMealAdapter = new BolusTableMealAdapter(bolusTableData.getBolusTableDataMeals());
+
+        if (null == bolusTableAdapterViewHolder.mBolusRecyclerView) {
+            Log.d("bwvm", "onBindViewHolder: bolusTableMealAdapter é nulo");
+        } else {
+            Log.d("bwvm", "onBindViewHolder: bolusTableMealAdapter não é nulo");
+        }
+
         bolusTableAdapterViewHolder.mBolusRecyclerView.setAdapter(bolusTableMealAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
@@ -160,7 +181,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         public BolusTableAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             mGlucoseTextView = itemView.findViewById(R.id.tv_glucose);
-            mBolusRecyclerView = itemView.findViewById(R.id.rv_bolus_table_glucose);
+            mBolusRecyclerView = itemView.findViewById(R.id.rv_bolus_table_row_meals);
         }
     }
 
@@ -181,10 +202,20 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         String sqlQuery = CalculoDeBolusContract.BolusTableQuery.FETCH_ALL_DATA;
         Log.d("bwvm", "getAllData: sqlQuery: " + sqlQuery);
 
+        String teste2 = "SELECT glucoses._id, glucoses.glucose, meals._id, meals.meal, bolus.insulin " +
+                        "FROM glucoses, meals, bolus " +
+                        "WHERE bolus.glucose_id = glucoses._id AND meals._id = bolus.meal_id ;";
+
         String teste = "SELECT * FROM " + CalculoDeBolusContract.RecordEntry.TABLE_NAME +
-                " WHERE " + CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME + " = ?;";
+                " WHERE " + CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME + " = 90;";
+
+        //String teste3 = "SELECT glucoses._id AS glucose_id, glucoses.glucose AS glucose, meals._id AS meal_id, meals.meal AS meal, bolus.insulin AS insulin FROM glucoses LEFT JOIN bolus on bolus.glucose_id = glucoses._id LEFT JOIN meals on meals._id = bolus.meal_id ORDER BY glucose_id, meal_id;";
+        String teste3 = "SELECT glucoses._id AS glucose_id, glucoses.glucose AS glucose, bolus.insulin AS insulin FROM glucoses LEFT JOIN bolus on bolus.glucose_id = glucoses._id;";
+        //Cursor c = mDb.rawQuery(teste, null);
 
         Cursor c = mDb.rawQuery(sqlQuery, null);
+
+        //Cursor c = mDb.rawQuery(teste3,null);
 
         return c;
     }
@@ -228,7 +259,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         int contaLoop2 = 0;
 
         Cursor cursor = getAllData();
-        Log.d("bwvm", "refreshData: tamanho do cursor" + cursor.getCount());
+        Log.d("bwvm", "refreshData BolusTableAdapter: tamanho do cursor: " + cursor.getCount());
         if (cursor.getCount() <= 0) return;
         boolean hasNext = false;
         ArrayList<BolusTableData> bolusTableDatas = new ArrayList<BolusTableData>();
@@ -250,10 +281,13 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
                     bolusTableDataMeals.add(bolus);
 
+                    Log.d("bwvm", "refreshData: glucose:" + glucoseId + "    mealId" + bolus.getMealId() + "    Insulin:" + bolus.getmInsulin());
+
                     hasNext = cursor.moveToNext();
 
-                    currentId = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTableEntry.COLUMN_GLUCOSE_ID_NAME));
+                    if (hasNext) currentId = cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTableEntry.COLUMN_GLUCOSE_ID_NAME));
                     contaLoop2 += 1;
+
                 }while(hasNext && glucoseId == currentId && contaLoop2 < 1000);
 
                 bolusTableData.setBolusTableDataMeals(bolusTableDataMeals);
