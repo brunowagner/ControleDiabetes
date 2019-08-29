@@ -24,6 +24,7 @@
         <item>Lanche da tarde</item>
         <item>Jantar</item>
         <item>Ceia</item>
+        <item>Madrugada</item>
     </string-array>
 
     <string-array name="meal_time_names_array">
