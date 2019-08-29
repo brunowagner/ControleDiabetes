@@ -11,11 +11,11 @@
 
     <TextView
         android:id="@+id/tv_glucose"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:text="60"/>
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:text="600"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_bolus_table_row_meals"
