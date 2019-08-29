@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -29,12 +30,16 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     private SQLiteDatabase mDb;
     private CalculoDeBolusDBHelper dbHelper;
     private ArrayList<BolusTableData> mBolusTableData;
+    private RecyclerView mParentRecyclerView;
     private Context context;
+    private int mTouchedRvTag;
 
-    public BolusTableAdapter (Context context, CalculoDeBolusDBHelper dbHelper){
+    public BolusTableAdapter (Context context, CalculoDeBolusDBHelper dbHelper, RecyclerView parentRecyclerView){
         this.context = context;
         this.dbHelper = dbHelper;
-        mDb = dbHelper.getWritableDatabase();
+        this. mDb = dbHelper.getWritableDatabase();
+        this.mParentRecyclerView = parentRecyclerView;
+
 
 
         Log.d("bwvm", "BolusTableAdapter: antes da consulta ");
@@ -144,16 +149,14 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
         BolusTableMealAdapter bolusTableMealAdapter = new BolusTableMealAdapter(bolusTableData.getBolusTableDataMeals());
 
-        if (null == bolusTableAdapterViewHolder.mBolusRecyclerView) {
-            Log.d("bwvm", "onBindViewHolder: bolusTableMealAdapter é nulo");
-        } else {
-            Log.d("bwvm", "onBindViewHolder: bolusTableMealAdapter não é nulo");
-        }
-
         bolusTableAdapterViewHolder.mBolusRecyclerView.setAdapter(bolusTableMealAdapter);
+        bolusTableAdapterViewHolder.mBolusRecyclerView.setTag(bolusTableData.getGlucoseId());
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
         bolusTableAdapterViewHolder.mBolusRecyclerView.setLayoutManager(linearLayoutManager);
+        bolusTableAdapterViewHolder.mBolusRecyclerView.addOnScrollListener(synchronizeScroll);
+        bolusTableAdapterViewHolder.mBolusRecyclerView.addOnItemTouchListener(touchedItem);
+
 
         /*
          * Use this setting to improve performance if you know that changes in content do not
@@ -169,6 +172,43 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         return mBolusTableData.size();
 
     }
+
+    private RecyclerView.OnScrollListener synchronizeScroll = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            int numOfRecyclesView = getItemCount();
+
+            if ((int) recyclerView.getTag() == mTouchedRvTag) {
+                for (int noOfRecyclerView = 0; noOfRecyclerView <= numOfRecyclesView; noOfRecyclerView++) {
+                    if (noOfRecyclerView != (int) recyclerView.getTag()) {
+                        RecyclerView tempRecyclerView = (RecyclerView) recyclerView.getRootView().findViewWithTag(noOfRecyclerView);
+                        if (tempRecyclerView != null) tempRecyclerView.scrollBy(dx, dy);
+                    }
+                }
+            }
+        }
+    };
+
+    RecyclerView.OnItemTouchListener touchedItem = new RecyclerView.OnItemTouchListener() {
+        @Override
+        public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+            mTouchedRvTag = (int) recyclerView.getTag();
+            Log.d("bwvm", "onInterceptTouchEvent: tag touched: " + mTouchedRvTag);
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean b) {
+
+        }
+    };
 
 
 

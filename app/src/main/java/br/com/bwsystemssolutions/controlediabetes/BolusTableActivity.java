@@ -32,7 +32,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
     private void configureRecyclerView(){
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mBolusTableAdapter = new BolusTableAdapter(this,dbHelper);
+        mBolusTableAdapter = new BolusTableAdapter(this,dbHelper,mParentRecyclerView);
         mParentRecyclerView.setAdapter(mBolusTableAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
