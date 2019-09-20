@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,11 +12,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
@@ -24,7 +28,7 @@ import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
-public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.BolusTableAdapterViewHolder> {
+public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.BolusTableAdapterViewHolder> implements View.OnClickListener {
 
     Cursor mCursor;
     private SQLiteDatabase mDb;
@@ -33,6 +37,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     private RecyclerView mParentRecyclerView;
     private Context context;
     private int mTouchedRvTag;
+    private boolean isCardClickListner = false;
 
     public BolusTableAdapter (Context context, CalculoDeBolusDBHelper dbHelper, RecyclerView parentRecyclerView){
         this.context = context;
@@ -100,7 +105,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         return new BolusTableAdapterViewHolder(view);
     }
 
-//    @Override
+    //    @Override
 //    public void onBindViewHolder(@NonNull BolusTableAdapter.BolusTableAdapterViewHolder bolusTableAdapterViewHolder, int i) {
 //        Log.d("bwvm", "onBindViewHolder: position: " + i);
 //        BolusTableData bolusTableData = mBolusTableData.get(i);
@@ -126,26 +131,50 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 //    }
 
     @Override
-    public void onBindViewHolder(@NonNull BolusTableAdapter.BolusTableAdapterViewHolder bolusTableAdapterViewHolder, int i) {
+    public void onBindViewHolder(@NonNull BolusTableAdapter.BolusTableAdapterViewHolder viewHolder, int i) {
         Log.d("bwvm", "onBindViewHolder: position: " + i);
         BolusTableData bolusTableData = mBolusTableData.get(i);
-        //bolusTableAdapterViewHolder.mGlucoseTextView.setText(String.valueOf(bolusTableData.getGlucose()));
+        //viewHolder.mGlucoseTextView.setText(String.valueOf(bolusTableData.getGlucose()));
+        viewHolder.itemView.setTag(bolusTableData.getId());
 
-        bolusTableAdapterViewHolder.mMeal1.setText(bolusTableData.getMeal1());
-        bolusTableAdapterViewHolder.mMeal2.setText(bolusTableData.getMeal2());
-        bolusTableAdapterViewHolder.mMeal3.setText(bolusTableData.getMeal3());
-        bolusTableAdapterViewHolder.mMeal4.setText(bolusTableData.getMeal4());
-        bolusTableAdapterViewHolder.mMeal5.setText(bolusTableData.getMeal5());
-        bolusTableAdapterViewHolder.mMeal6.setText(bolusTableData.getMeal6());
-        bolusTableAdapterViewHolder.mMeal7.setText(bolusTableData.getMeal7());
+        viewHolder.mMeal1.setText(bolusTableData.getMeal1());
+        viewHolder.mMeal2.setText(bolusTableData.getMeal2());
+        viewHolder.mMeal3.setText(bolusTableData.getMeal3());
+        viewHolder.mMeal4.setText(bolusTableData.getMeal4());
+        viewHolder.mMeal5.setText(bolusTableData.getMeal5());
+        viewHolder.mMeal6.setText(bolusTableData.getMeal6());
+        viewHolder.mMeal7.setText(bolusTableData.getMeal7());
 
-        bolusTableAdapterViewHolder.mInsul1.setText(String.valueOf(bolusTableData.getInsulin1()));
-        bolusTableAdapterViewHolder.mInsul2.setText(String.valueOf(bolusTableData.getInsulin2()));
-        bolusTableAdapterViewHolder.mInsul3.setText(String.valueOf(bolusTableData.getInsulin3()));
-        bolusTableAdapterViewHolder.mInsul4.setText(String.valueOf(bolusTableData.getInsulin4()));
-        bolusTableAdapterViewHolder.mInsul5.setText(String.valueOf(bolusTableData.getInsulin5()));
-        bolusTableAdapterViewHolder.mInsul6.setText(String.valueOf(bolusTableData.getInsulin6()));
-        bolusTableAdapterViewHolder.mInsul7.setText(String.valueOf(bolusTableData.getInsulin7()));
+        viewHolder.mInsul1.setText(String.valueOf(bolusTableData.getInsulin1()));
+        viewHolder.mInsul2.setText(String.valueOf(bolusTableData.getInsulin2()));
+        viewHolder.mInsul3.setText(String.valueOf(bolusTableData.getInsulin3()));
+        viewHolder.mInsul4.setText(String.valueOf(bolusTableData.getInsulin4()));
+        viewHolder.mInsul5.setText(String.valueOf(bolusTableData.getInsulin5()));
+        viewHolder.mInsul6.setText(String.valueOf(bolusTableData.getInsulin6()));
+        viewHolder.mInsul7.setText(String.valueOf(bolusTableData.getInsulin7()));
+
+        viewHolder.mCard1.setTag(new FieldId(bolusTableData.getId(),1));
+        viewHolder.mCard2.setTag(new FieldId(bolusTableData.getId(),2));
+        viewHolder.mCard3.setTag(new FieldId(bolusTableData.getId(),3));
+        viewHolder.mCard4.setTag(new FieldId(bolusTableData.getId(),4));
+        viewHolder.mCard5.setTag(new FieldId(bolusTableData.getId(),5));
+        viewHolder.mCard6.setTag(new FieldId(bolusTableData.getId(),6));
+        viewHolder.mCard7.setTag(new FieldId(bolusTableData.getId(),7));
+
+            viewHolder.mCard1.setOnClickListener(this);
+            viewHolder.mCard2.setOnClickListener(this);
+            viewHolder.mCard3.setOnClickListener(this);
+            viewHolder.mCard4.setOnClickListener(this);
+            viewHolder.mCard5.setOnClickListener(this);
+            viewHolder.mCard6.setOnClickListener(this);
+            viewHolder.mCard7.setOnClickListener(this);
+
+            if (isCardClickListner){
+                //viewHolder.mBlockClick.setVisibility(View.GONE);
+            }
+
+
+
     }
 
     @Override
@@ -192,12 +221,23 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         }
     };
 
+    @Override
+    public void onClick(View view) {
+        Log.d("bwvm", "onClick: CardView Clicado = " + view.getId());
+    }
 
-
-    public class BolusTableAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class BolusTableAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
 //        public final TextView mGlucoseTextView;
 //        public final RecyclerView mBolusRecyclerView;
+        public final CardView mCard1;
+        public final CardView mCard2;
+        public final CardView mCard3;
+        public final CardView mCard4;
+        public final CardView mCard5;
+        public final CardView mCard6;
+        public final CardView mCard7;
+
         public final TextView mMeal1;
         public final TextView mMeal2;
         public final TextView mMeal3;
@@ -214,6 +254,10 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         public final TextView mInsul6;
         public final TextView mInsul7;
 
+        public final LinearLayout mBlockClick;
+
+
+
 
 
 
@@ -221,6 +265,17 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             super(itemView);
 //            mGlucoseTextView = itemView.findViewById(R.id.tv_glucose);
 //            mBolusRecyclerView = itemView.findViewById(R.id.rv_bolus_table_row_meals);
+
+            mBlockClick = itemView.findViewById(R.id.view_block_click);
+
+            mCard1 = itemView.findViewById(R.id.cv_1);
+            mCard2 = itemView.findViewById(R.id.cv_2);
+            mCard3 = itemView.findViewById(R.id.cv_3);
+            mCard4 = itemView.findViewById(R.id.cv_4);
+            mCard5 = itemView.findViewById(R.id.cv_5);
+            mCard6 = itemView.findViewById(R.id.cv_6);
+            mCard7 = itemView.findViewById(R.id.cv_7);
+
             mMeal1 = itemView.findViewById(R.id.tv_meal_1);
             mMeal2 = itemView.findViewById(R.id.tv_meal_2);
             mMeal3 = itemView.findViewById(R.id.tv_meal_3);
@@ -236,6 +291,27 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             mInsul5 = itemView.findViewById(R.id.tv_insulin_5);
             mInsul6 = itemView.findViewById(R.id.tv_insulin_6);
             mInsul7 = itemView.findViewById(R.id.tv_insulin_7);
+
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Log.d("bwvm", "onClick: RecyclerViewItem clicado = " + getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            if (!isCardClickListner) {
+                isCardClickListner = true;
+                notifyDataSetChanged();
+            } else {
+                isCardClickListner = false;
+                notifyDataSetChanged();
+            }
+            Log.d("bwvm", "onClick: RecyclerViewItem clicado Longo = " + getAdapterPosition());
+            return true;
         }
     }
 
@@ -336,6 +412,16 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         }
         cursor.close();
         setBolusTableData(bolusTableDatas);
+    }
+
+    private class FieldId{
+        public int id;
+        public int column;
+
+        public FieldId(int id, int column) {
+            this.id = id;
+            this.column = column;
+        }
     }
 
 }

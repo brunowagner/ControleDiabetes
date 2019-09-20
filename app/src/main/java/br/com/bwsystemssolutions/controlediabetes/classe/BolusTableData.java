@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class BolusTableData {
 
-    private int glucoseId;
+    private int id;
     private int glucose;
 //    private ArrayList<BolusTableDataMeals> bolusTableDataMeals;
     private String meal1;
@@ -23,12 +23,12 @@ public class BolusTableData {
     private Double insulin6;
     private Double insulin7;
 
-    public int getGlucoseId() {
-        return glucoseId;
+    public int getId() {
+        return id;
     }
 
-    public void setGlucoseId(int glucoseId) {
-        this.glucoseId = glucoseId;
+    public void setId(int glucoseId) {
+        this.id = glucoseId;
     }
 
     public int getGlucose() {
