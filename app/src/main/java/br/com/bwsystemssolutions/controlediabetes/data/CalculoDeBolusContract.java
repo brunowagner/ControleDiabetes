@@ -109,4 +109,16 @@ public class CalculoDeBolusContract {
 //                        "order by " +
 //                        "glucose_id,meal_id;";
     }
+
+    public  static final class BolusTable2Entry implements BaseColumns{
+        public static final String TABLE_NAME = "bolusTable2";
+        public static final String COLUMN_GLUCOSE_NAME = "glucose";
+        public static final String COLUMN_BREAKFAST_NAME = "breakfast"; //café da manhã
+        public static final String COLUMN_BRUNCH_NAME = "brunch"; // colação
+        public static final String COLUMN_LUNCH_NAME = "lunch"; //almoço
+        public static final String COLUMN_TEA_NAME = "tea"; //lanche da tarde
+        public static final String COLUMN_DINNER_NAME = "dinner"; //jantar
+        public static final String COLUMN_SUPPER_NAME = "supper"; //ceia
+        public static final String COLUMN_DAWN_NAME = "dawn"; //madrugada
+    }
 }

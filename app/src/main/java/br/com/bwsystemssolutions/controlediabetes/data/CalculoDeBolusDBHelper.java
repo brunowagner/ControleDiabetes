@@ -103,6 +103,18 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 BolusEntry.COLUMN_INSULIN_NAME + " REAL NOT NULL" +
                 ");";
 
+        final String SQL_CREATE_BOLUS_TABLE_2 = "CREATE TABLE IF NOT EXISTS " +
+                BolusTable2Entry.TABLE_NAME + "(" +
+                BolusTable2Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                BolusTable2Entry.COLUMN_BREAKFAST_NAME + " REAL NOT NULL," +
+                BolusTable2Entry.COLUMN_BRUNCH_NAME + " REAL NOT NULL," +
+                BolusTable2Entry.COLUMN_LUNCH_NAME + " REAL NOT NULL," +
+                BolusTable2Entry.COLUMN_TEA_NAME + " REAL NOT NULL," +
+                BolusTable2Entry.COLUMN_DINNER_NAME + " REAL NOT NULL," +
+                BolusTable2Entry.COLUMN_SUPPER_NAME + " REAL NOT NULL," +
+                BolusTable2Entry.COLUMN_DAWN_NAME + " REAL NOT NULL" +
+                ");";
+
         final String SQL_POPULATE_EVENT_TABLE = getPopulateEventTableString();
         final String SQL_POPULATE_MEAL_TABLE = getPopulateMealTableString();
 
@@ -115,6 +127,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_POPULATE_MEAL_TABLE);
         db.execSQL(SQL_CREATE_GLUCOSES_TABLE);
         db.execSQL(SQL_CREATE_BOLUS_TABLE);
+        db.execSQL(SQL_CREATE_BOLUS_TABLE_2);
 
     }
 
