@@ -37,13 +37,17 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     private RecyclerView mParentRecyclerView;
     private Context context;
     private int mTouchedRvTag;
-    private boolean isCardClickListner = false;
+    private final BolusTableAdapterOnClickHandler mClickHandler;
+    private int mSelectedItem = ITEN_SELECT_NONE;
 
-    public BolusTableAdapter (Context context, CalculoDeBolusDBHelper dbHelper, RecyclerView parentRecyclerView){
+    public static final int ITEN_SELECT_NONE = -1;
+
+    public BolusTableAdapter (Context context, CalculoDeBolusDBHelper dbHelper, BolusTableAdapterOnClickHandler clickHandler , RecyclerView parentRecyclerView){
         this.context = context;
         this.dbHelper = dbHelper;
         this. mDb = dbHelper.getWritableDatabase();
         this.mParentRecyclerView = parentRecyclerView;
+        this.mClickHandler = clickHandler;
 
         final String SQL_CREATE_BOLUS_TABLE_2 = "CREATE TABLE IF NOT EXISTS " +
                 CalculoDeBolusContract.BolusTable2Entry.TABLE_NAME + "(" +
@@ -160,21 +164,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         viewHolder.mCard5.setTag(new FieldId(bolusTableData.getId(),5));
         viewHolder.mCard6.setTag(new FieldId(bolusTableData.getId(),6));
         viewHolder.mCard7.setTag(new FieldId(bolusTableData.getId(),7));
-
-            viewHolder.mCard1.setOnClickListener(this);
-            viewHolder.mCard2.setOnClickListener(this);
-            viewHolder.mCard3.setOnClickListener(this);
-            viewHolder.mCard4.setOnClickListener(this);
-            viewHolder.mCard5.setOnClickListener(this);
-            viewHolder.mCard6.setOnClickListener(this);
-            viewHolder.mCard7.setOnClickListener(this);
-
-            if (isCardClickListner){
-                //viewHolder.mBlockClick.setVisibility(View.GONE);
-            }
-
-
-
     }
 
     @Override
@@ -254,19 +243,10 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         public final TextView mInsul6;
         public final TextView mInsul7;
 
-        public final LinearLayout mBlockClick;
-
-
-
-
-
-
         public BolusTableAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
 //            mGlucoseTextView = itemView.findViewById(R.id.tv_glucose);
 //            mBolusRecyclerView = itemView.findViewById(R.id.rv_bolus_table_row_meals);
-
-            mBlockClick = itemView.findViewById(R.id.view_block_click);
 
             mCard1 = itemView.findViewById(R.id.cv_1);
             mCard2 = itemView.findViewById(R.id.cv_2);
@@ -292,25 +272,28 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             mInsul6 = itemView.findViewById(R.id.tv_insulin_6);
             mInsul7 = itemView.findViewById(R.id.tv_insulin_7);
 
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
+            mCard1.setOnClickListener(this);
+            mCard2.setOnClickListener(this);
+            mCard3.setOnClickListener(this);
+            mCard4.setOnClickListener(this);
+            mCard5.setOnClickListener(this);
+            mCard6.setOnClickListener(this);
+            mCard7.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View view) {
-            Log.d("bwvm", "onClick: RecyclerViewItem clicado = " + getAdapterPosition());
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            BolusTableData bolusTableData = mBolusTableData.get(position);
+            mClickHandler.onClick(bolusTableData, mSelectedItem);
         }
 
         @Override
-        public boolean onLongClick(View view) {
-            if (!isCardClickListner) {
-                isCardClickListner = true;
-                notifyDataSetChanged();
-            } else {
-                isCardClickListner = false;
-                notifyDataSetChanged();
-            }
-            Log.d("bwvm", "onClick: RecyclerViewItem clicado Longo = " + getAdapterPosition());
+        public boolean onLongClick(View v) {
+            mSelectedItem = getAdapterPosition();
+            notifyDataSetChanged();
+            mClickHandler.onLongClick(mSelectedItem);
+
             return true;
         }
     }
@@ -414,7 +397,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         setBolusTableData(bolusTableDatas);
     }
 
-    private class FieldId{
+    public class FieldId{
         public int id;
         public int column;
 
@@ -422,6 +405,11 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             this.id = id;
             this.column = column;
         }
+    }
+
+    public interface BolusTableAdapterOnClickHandler{
+        void onClick(BolusTableData bolusTableData, int itemSelected);
+        void onLongClick(int selectedItem);
     }
 
 }
