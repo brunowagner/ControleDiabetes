@@ -5,26 +5,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
 
+import br.com.bwsystemssolutions.controlediabetes.BolusTableActivity;
 import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableDataMeals;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTimeBlockData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
@@ -101,7 +94,25 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     @Override
     public BolusTableAdapter.BolusTableAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
-        int layoutIdFromListItem = R.layout.list_item_row_bolus_table;
+
+        int layoutIdFromListItem = (int)viewGroup.getTag();
+        Log.d("bwvm", "onCreateViewHolder: TAG do viewgroup = " + layoutIdFromListItem);
+
+
+        int recyclerViewTag = (int) viewGroup.getTag();
+
+        if (recyclerViewTag == BolusTableActivity.TAG_RECYCLERVIEW_GLUCOSE){
+            layoutIdFromListItem = R.layout.list_item_row_bolus_table_glucose;
+            Log.d("bwvm", "onCreateViewHolder: TAG = list_item_row_bolus_table_glucose" );
+        } else if (recyclerViewTag == BolusTableActivity.TAG_RECYCLERVIEW_BOLUS){
+            layoutIdFromListItem = R.layout.list_item_row_bolus_table_bolus;
+            Log.d("bwvm", "onCreateViewHolder: TAG = list_item_row_bolus_table_bolus" );
+        }
+
+
+        if (layoutIdFromListItem == 0 ) Log.d("bwvm", "onCreateViewHolder: parent não é RV");
+
+        //int layoutIdFromListItem = R.layout.list_item_row_bolus_table_bolus;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
@@ -141,6 +152,11 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         //viewHolder.mGlucoseTextView.setText(String.valueOf(bolusTableData.getGlucose()));
         viewHolder.itemView.setTag(bolusTableData.getId());
 
+        if (null != viewHolder.mGlucose){
+            viewHolder.mGlucose.setText(String.valueOf(bolusTableData.getGlucose()));
+            return;
+        }
+
         viewHolder.mMeal1.setText(bolusTableData.getMeal1());
         viewHolder.mMeal2.setText(bolusTableData.getMeal2());
         viewHolder.mMeal3.setText(bolusTableData.getMeal3());
@@ -173,42 +189,14 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
     }
 
-    private RecyclerView.OnScrollListener synchronizeScroll = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
+    @Override
+    public void onViewAttachedToWindow(@NonNull BolusTableAdapterViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
 
-            int numOfRecyclesView = getItemCount();
+        String text = holder.mGlucose == null ? "null" : String.valueOf(holder.mGlucose.getText());
 
-            if ((int) recyclerView.getTag() == mTouchedRvTag) {
-                for (int noOfRecyclerView = 0; noOfRecyclerView <= numOfRecyclesView; noOfRecyclerView++) {
-                    if (noOfRecyclerView != (int) recyclerView.getTag()) {
-                        RecyclerView tempRecyclerView = (RecyclerView) recyclerView.getRootView().findViewWithTag(noOfRecyclerView);
-                        if (tempRecyclerView != null) tempRecyclerView.scrollBy(dx, dy);
-                    }
-                }
-            }
-        }
-    };
-
-    RecyclerView.OnItemTouchListener touchedItem = new RecyclerView.OnItemTouchListener() {
-        @Override
-        public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-            mTouchedRvTag = (int) recyclerView.getTag();
-            Log.d("bwvm", "onInterceptTouchEvent: tag touched: " + mTouchedRvTag);
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean b) {
-
-        }
-    };
+        Log.d("bwvm", "onViewAttachedToWindow: Texto do Textview Glucose: " + text);
+    }
 
     @Override
     public void onClick(View view) {
@@ -219,34 +207,42 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
 //        public final TextView mGlucoseTextView;
 //        public final RecyclerView mBolusRecyclerView;
-        public final CardView mCard1;
-        public final CardView mCard2;
-        public final CardView mCard3;
-        public final CardView mCard4;
-        public final CardView mCard5;
-        public final CardView mCard6;
-        public final CardView mCard7;
+        public  CardView mCard1;
+        public  CardView mCard2;
+        public  CardView mCard3;
+        public  CardView mCard4;
+        public  CardView mCard5;
+        public  CardView mCard6;
+        public  CardView mCard7;
 
-        public final TextView mMeal1;
-        public final TextView mMeal2;
-        public final TextView mMeal3;
-        public final TextView mMeal4;
-        public final TextView mMeal5;
-        public final TextView mMeal6;
-        public final TextView mMeal7;
+        public  TextView mMeal1;
+        public  TextView mMeal2;
+        public  TextView mMeal3;
+        public  TextView mMeal4;
+        public  TextView mMeal5;
+        public  TextView mMeal6;
+        public  TextView mMeal7;
 
-        public final TextView mInsul1;
-        public final TextView mInsul2;
-        public final TextView mInsul3;
-        public final TextView mInsul4;
-        public final TextView mInsul5;
-        public final TextView mInsul6;
-        public final TextView mInsul7;
+        public  TextView mInsul1;
+        public  TextView mInsul2;
+        public  TextView mInsul3;
+        public  TextView mInsul4;
+        public  TextView mInsul5;
+        public  TextView mInsul6;
+        public  TextView mInsul7;
+
+        public TextView mGlucose;
 
         public BolusTableAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
 //            mGlucoseTextView = itemView.findViewById(R.id.tv_glucose);
 //            mBolusRecyclerView = itemView.findViewById(R.id.rv_bolus_table_row_meals);
+
+            mGlucose = itemView.findViewById(R.id.tv_item_bolus_table_glucose);
+
+            if (null != mGlucose) {
+                return;
+            }
 
             mCard1 = itemView.findViewById(R.id.cv_1);
             mCard2 = itemView.findViewById(R.id.cv_2);
@@ -272,6 +268,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             mInsul6 = itemView.findViewById(R.id.tv_insulin_6);
             mInsul7 = itemView.findViewById(R.id.tv_insulin_7);
 
+
             mCard1.setOnClickListener(this);
             mCard2.setOnClickListener(this);
             mCard3.setOnClickListener(this);
@@ -279,6 +276,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             mCard5.setOnClickListener(this);
             mCard6.setOnClickListener(this);
             mCard7.setOnClickListener(this);
+
         }
 
         @Override

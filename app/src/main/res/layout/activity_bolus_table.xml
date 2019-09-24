@@ -14,7 +14,7 @@
         android:background="@android:color/white">
 
         <TextView
-            android:layout_width="65dp"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:lines="2"
@@ -35,18 +35,36 @@
 
     </LinearLayout>
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_bolus_table_glucose"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            tools:listitem="@layout/list_item_row_bolus_table">
+            tools:listitem="@layout/list_item_row_bolus_table_glucose"
+            >
 
         </android.support.v7.widget.RecyclerView>
-    </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_bolus_table_bolus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/list_item_row_bolus_table_bolus">
+
+            </android.support.v7.widget.RecyclerView>
+        </HorizontalScrollView>
+
+
+    </LinearLayout>
+
 
 
 

@@ -7,27 +7,34 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.View;
 import android.widget.EditText;
 
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
-import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTimeBlockAdapter;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
-import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 
 
 public class BolusTableActivity extends AppCompatActivity {
 
-    RecyclerView mParentRecyclerView;
+    RecyclerView mBolusRecyclerView;
+    RecyclerView mGlucoseRecyclerView;
     BolusTableAdapter mBolusTableAdapter;
+    RecyclerView.OnScrollListener[] scrollListeners = new RecyclerView.OnScrollListener[2];
+
+    public static final int TAG_RECYCLERVIEW_GLUCOSE = 0;
+    public static final int TAG_RECYCLERVIEW_BOLUS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bolus_table);
 
-        mParentRecyclerView = findViewById(R.id.rv_bolus_table_glucose);
+        mBolusRecyclerView = findViewById(R.id.rv_bolus_table_bolus);
+        mBolusRecyclerView.setTag(TAG_RECYCLERVIEW_BOLUS);
+        mGlucoseRecyclerView = findViewById(R.id.rv_bolus_table_glucose);
+        mGlucoseRecyclerView.setTag(TAG_RECYCLERVIEW_GLUCOSE);
         configureRecyclerView();
     }
 
@@ -39,17 +46,24 @@ public class BolusTableActivity extends AppCompatActivity {
 
     private void configureRecyclerView(){
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mBolusTableAdapter = new BolusTableAdapter(this,dbHelper, clickHandler(), mParentRecyclerView);
-        mParentRecyclerView.setAdapter(mBolusTableAdapter);
+        mBolusTableAdapter = new BolusTableAdapter(this,dbHelper, clickHandler(), mBolusRecyclerView);
+        mBolusRecyclerView.setAdapter(mBolusTableAdapter);
+        mGlucoseRecyclerView.setAdapter(mBolusTableAdapter);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        mParentRecyclerView.setLayoutManager(linearLayoutManager);
+
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mBolusRecyclerView.setLayoutManager(linearLayoutManager1);
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mGlucoseRecyclerView.setLayoutManager(linearLayoutManager2);
 
         /*
          * Use this setting to improve performance if you know that changes in content do not
          * change the child layout size in the RecyclerView
          */
-        mParentRecyclerView.setHasFixedSize(true);
+        mBolusRecyclerView.setHasFixedSize(true);
+        mGlucoseRecyclerView.setHasFixedSize(true);
+
+        configureScrollListeners();
     }
 
     public BolusTableAdapter.BolusTableAdapterOnClickHandler clickHandler(){
@@ -79,6 +93,36 @@ public class BolusTableActivity extends AppCompatActivity {
         };
         return handler;
     }
+
+    private void configureScrollListeners(){
+        scrollListeners[0] = new RecyclerView.OnScrollListener( )
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                super.onScrolled(recyclerView, dx, dy);
+                mBolusRecyclerView.removeOnScrollListener(scrollListeners[1]);
+                mBolusRecyclerView.scrollBy(dx, dy);
+                mBolusRecyclerView.addOnScrollListener(scrollListeners[1]);
+            }
+        };
+        scrollListeners[1] = new RecyclerView.OnScrollListener( )
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                super.onScrolled(recyclerView, dx, dy);
+                mGlucoseRecyclerView.removeOnScrollListener(scrollListeners[0]);
+                mGlucoseRecyclerView.scrollBy(dx, dy);
+                mGlucoseRecyclerView.addOnScrollListener(scrollListeners[0]);
+            }
+        };
+        mGlucoseRecyclerView.addOnScrollListener(scrollListeners[0]);
+        mBolusRecyclerView.addOnScrollListener(scrollListeners[1]);
+    }
+
+
+
 
 
 }
