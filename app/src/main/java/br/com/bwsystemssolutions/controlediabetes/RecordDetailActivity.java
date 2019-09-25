@@ -25,6 +25,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,8 @@ public class RecordDetailActivity extends AppCompatActivity {
     public  EditText mGlicemiaEditText;
     //public  EditText mEventoEditText;
     public  Spinner mEventSpinner;
+    public  Spinner mMealSpinner;
+    public  Spinner mMealTimeSpinner;
     public  EditText mCarboidratoEditText;
     public  EditText mInsulinaRapidaEditText;
     public  EditText mInsulinaBasalEditText;
@@ -70,6 +73,8 @@ public class RecordDetailActivity extends AppCompatActivity {
         mGlicemiaEditText = (EditText) findViewById(R.id.et_glicemia_record);
         //mEventoEditText = (EditText) findViewById(R.id.et_evento_record);
         mEventSpinner = findViewById(R.id.sp_evento);
+        mMealSpinner = findViewById(R.id.sp_refeicao);
+        mMealTimeSpinner = findViewById(R.id.sp_refeicao_momento);
         mCarboidratoEditText = (EditText) findViewById(R.id.et_carboidrato_record);
         mInsulinaRapidaEditText = (EditText) findViewById(R.id.et_insulina_rapida_record);
         mInsulinaBasalEditText = (EditText) findViewById(R.id.et_insulina_basal_record);
@@ -101,6 +106,8 @@ public class RecordDetailActivity extends AppCompatActivity {
     private void loadData(){
 
         loadEventsSpinner();
+        loadMealsSpinner();
+        loadMealsTimeSpinner();
         if (mRecord == null){
             mDataEditText.setText(Utilidades.convertDateToString(new Date(), Utilidades.DEFAULT_DATE_FORMAT));
             mHoraEditText.setText(Utilidades.convertTimeToString(new Date(), Utilidades.DEFAULT_TIME_FORMAT));
@@ -112,11 +119,21 @@ public class RecordDetailActivity extends AppCompatActivity {
         mGlicemiaEditText.setText(String.valueOf(mRecord.getGlucose()));
         //mEventoEditText.setText(mRecord.getEvent());
         // Caso o evento náo exista mais (deletado da Base), utiliza o evento 'Outro';
-        int position = getSpinnerPositionByString(mEventSpinner, mRecord.getEvent());
-        if (position == -1) {
-            position = getSpinnerPositionByString(mEventSpinner, "Outro");
+        int positionEventSpinner = getSpinnerPositionByString(mEventSpinner, mRecord.getEvent());
+        if (positionEventSpinner == -1) {
+            positionEventSpinner = getSpinnerPositionByString(mEventSpinner, "Outro");
         }
-        mEventSpinner.setSelection(position);
+        mEventSpinner.setSelection(positionEventSpinner);
+        int positionMealSpinner = getSpinnerPositionByString(mMealSpinner, mRecord.getMeal());
+        if (positionMealSpinner == -1) {
+            positionMealSpinner = getSpinnerPositionByString(mMealSpinner, "");
+        }
+        mMealSpinner.setSelection(positionMealSpinner);
+        int positionMealTimeSpinner = getSpinnerPositionByString(mMealTimeSpinner, mRecord.getMealTime());
+        if (positionMealTimeSpinner == -1) {
+            positionMealTimeSpinner = getSpinnerPositionByString(mMealTimeSpinner, "");
+        }
+        mMealTimeSpinner.setSelection(positionMealTimeSpinner);
         mCarboidratoEditText.setText(String.valueOf(mRecord.getCarbohydrate()));
         mInsulinaRapidaEditText.setText(String.valueOf(mRecord.getFastInsulin()));
         mInsulinaBasalEditText.setText(String.valueOf(mRecord.getBasalInsulin()));
@@ -131,6 +148,14 @@ public class RecordDetailActivity extends AppCompatActivity {
         return mDb.query(CalculoDeBolusContract.EventEntry.TABLE_NAME,
                 null, null, null, null,null,
                 CalculoDeBolusContract.EventEntry.COLUMN_EVENT_NAME);
+
+    }
+
+    private Cursor fetchAllMeals(){
+
+        return mDb.query(CalculoDeBolusContract.MealEntry.TABLE_NAME,
+                null, null, null, null,null,
+                CalculoDeBolusContract.MealEntry.COLUMN_MEAL_NAME);
 
     }
 
@@ -153,6 +178,37 @@ public class RecordDetailActivity extends AppCompatActivity {
         mEventSpinner.setAdapter(eventsArrayAdapter);
     }
 
+
+    private void loadMealsSpinner(){
+        Cursor cursor = fetchAllMeals();
+
+        List<String> mealsList = new ArrayList<>();
+
+        if (cursor.getCount() <= 0){
+            //Do nothing
+        } else {
+            if (cursor.moveToFirst()){
+                do {
+                    mealsList.add(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.MealEntry.COLUMN_MEAL_NAME)));
+                }while(cursor.moveToNext());
+            }
+        }
+        cursor.close();
+
+        ArrayAdapter<String> mealsArrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,mealsList);
+        mMealSpinner.setAdapter(mealsArrayAdapter);
+    }
+
+    private void loadMealsTimeSpinner(){
+
+        String array[] = getResources().getStringArray(R.array.meal_time_names_array);
+
+        List<String> mealTimeList = new ArrayList<String>(Arrays.asList(array));
+
+        ArrayAdapter<String> mealsArrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,mealTimeList);
+        mMealTimeSpinner.setAdapter(mealsArrayAdapter);
+    }
+
     /**
      * Method to shearch position of text in spinner.
      * @param spinner The spinner widget.
@@ -173,22 +229,6 @@ public class RecordDetailActivity extends AppCompatActivity {
             return -1;
 
         }
-
-
-
-//        int spinnerLength = spinner.getCount();
-//        String textSpinner = "";
-//        int returnValue = -1;
-//
-//        for (int i = 0 ; i < spinnerLength ; i ++){
-//            textSpinner = (String) spinner.getItemAtPosition(i);
-//            if (textSpinner.equals(text)) {
-//                returnValue = i;
-//                break;
-//            }
-//        }
-//
-//        return returnValue;
     }
 
     private boolean saveData(){
@@ -273,6 +313,8 @@ public class RecordDetailActivity extends AppCompatActivity {
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
         //cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, String.valueOf(mEventSpinner.getSelectedItem()));
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME, String.valueOf(mMealSpinner.getSelectedItem()));
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_TIME_NAME, String.valueOf(mMealTimeSpinner.getSelectedItem()));
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
@@ -307,6 +349,8 @@ public class RecordDetailActivity extends AppCompatActivity {
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
                         //cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, String.valueOf(mEventSpinner.getSelectedItem()));
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME, String.valueOf(mMealSpinner.getSelectedItem()));
+                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_TIME_NAME, String.valueOf(mMealTimeSpinner.getSelectedItem()));
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());

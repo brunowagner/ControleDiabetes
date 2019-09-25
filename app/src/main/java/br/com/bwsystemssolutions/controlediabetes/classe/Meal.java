@@ -1,37 +1,34 @@
 package br.com.bwsystemssolutions.controlediabetes.classe;
 
-public class Event {
+public class Meal {
     private int id;
-    private String text;
+    private String meal;
     private String source;
     private int sort;
 
-    public static final String BUNDLE_STRING_KEY = Event.class.toString();
+
+    public static final String BUNDLE_STRING_KEY = Meal.class.toString();
     public static final String SOURCE_FROM_APP = "app";
     public static final String SOURCE_FROM_user = "user";
 
-
-    public Event(){
-    }
-
     public int getId() {
         return id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public String getSource() {
-        return source;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public String getMeal() {
+        return meal;
+    }
+
+    public void setMeal(String meal) {
+        this.meal = meal;
+    }
+
+    public String getSource() {
+        return source;
     }
 
     public void setSource(String source) {

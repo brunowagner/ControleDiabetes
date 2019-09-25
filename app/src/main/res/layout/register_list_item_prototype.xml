@@ -59,15 +59,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_evento"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:text="Após Glicemia Baixa" />
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_refeicao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="Depois - Lanche da tarde" />
+
+                    <TextView
+                        android:id="@+id/tv_evento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:visibility="gone"
+                        android:text="Antes do exercicio" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_hora"

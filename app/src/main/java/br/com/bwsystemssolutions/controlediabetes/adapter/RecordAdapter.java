@@ -88,6 +88,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 				record.setFastInsulin(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME)));
 				record.setBasalInsulin(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME)));
 				record.setEvent(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME)));
+				record.setMeal(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME)));
+				record.setMealTime(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_TIME_NAME)));
 				record.setNote(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME)));
 				record.setSick(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME))>0);
 				record.setMedicament(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME))>0);
@@ -130,6 +132,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		public final TextView mDataDiaSemanaTextView;
 		public final TextView mHoraTextView;
 		public final TextView mGlicemiaTextView;
+		public final TextView mRefeicaoTextView;
 		public final TextView mEventoTextView;
 		public final TextView mCarboidratoTextView;
 		public final TextView mInsulinaRapidaTextView;
@@ -143,6 +146,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 			mDataDiaSemanaTextView = (TextView) itemView.findViewById(R.id.tv_data_dia_semana);
 			mHoraTextView = (TextView) itemView.findViewById(R.id.tv_hora);
 			mGlicemiaTextView = (TextView) itemView.findViewById(R.id.tv_glicemia);
+			mRefeicaoTextView = (TextView) itemView.findViewById(R.id.tv_refeicao);
 			mEventoTextView = (TextView) itemView.findViewById(R.id.tv_evento);
 			mCarboidratoTextView = (TextView) itemView.findViewById(R.id.tv_carboidrato);
 			mInsulinaRapidaTextView = (TextView) itemView.findViewById(R.id.tv_insulina_rapida);
@@ -192,14 +196,28 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		registrosAdapterViewHolder.mDataDiaSemanaTextView.setText(record.getDateWeekDayString() );
 		registrosAdapterViewHolder.mHoraTextView.setText( record.getTime() );
 		registrosAdapterViewHolder.mGlicemiaTextView.setText(String.valueOf(record.getGlucose()));
+		String mealtime = "";
+		if (!record.getMealTime().equals("")) mealtime = "(" + record.getMealTime() +")";
+		registrosAdapterViewHolder.mRefeicaoTextView.setText(mealtime + record.getMeal());
+
 		registrosAdapterViewHolder.mEventoTextView.setText(record.getEvent());
 		registrosAdapterViewHolder.mCarboidratoTextView.setText(String.valueOf(record.getCarbohydrate()));
 		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));
 		registrosAdapterViewHolder.mInsulinaBasalTextView.setText(String.valueOf(record.getBasalInsulin()));
 		registrosAdapterViewHolder.mObsTextView.setText(record.getNote());
 
+		//Bloco que exibe ou omite Refeicao ou Evento
+		if (record.getEvent().equals("")){
+			registrosAdapterViewHolder.mEventoTextView.setVisibility(View.GONE);
+		} else{
+			registrosAdapterViewHolder.mEventoTextView.setVisibility(View.VISIBLE);
+		}
 
-
+		if (record.getMeal().equals("")){
+			registrosAdapterViewHolder.mRefeicaoTextView.setVisibility(View.GONE);
+		} else{
+			registrosAdapterViewHolder.mRefeicaoTextView.setVisibility(View.VISIBLE);
+		}
 
 
 		//Bloco que seta a selecao do item

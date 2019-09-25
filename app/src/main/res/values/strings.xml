@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ControleDiabetes</string>
     <string name="title_calcular_bolus">Calcular Bolus</string>
-    <string name="title_controle_de_diabetes">Controle de Diabetes</string>
     <string name="title_registros">Registros</string>
     <string name="title_registro">Registro</string>
     <string name="title_blocos_de_tempo">Blocos de Tempo</string>
@@ -28,7 +27,6 @@
 
     <string name="pref_glicemia_alta_summary">Valor de início da glicemia considerada alta.</string>
     <string name="pref_glicemia_baixa_summary">Valor de início da glicemia considerada baixa.</string>
-    <string name="pref_glicemia_normal_summary">Valor de glicemia considerada normal.</string>
 
     <string name="pref_glicemias_key">glicemias</string>
     <string name="pref_glicemias_title">Glicemias</string>

@@ -11,6 +11,8 @@ public class Record implements Serializable {
     private Date date;
     private int glucose;
     private String event;
+    private String meal;
+    private String mealTime;
     private int carbohydrate;
     private double fastInsulin;
     private double basalInsulin;
@@ -71,6 +73,22 @@ public class Record implements Serializable {
 
     public void setEvent(String event) {
         this.event = event;
+    }
+
+    public String getMeal() {
+        return meal;
+    }
+
+    public void setMeal(String meal) {
+        this.meal = meal;
+    }
+
+    public String getMealTime() {
+        return mealTime;
+    }
+
+    public void setMealTime(String mealTime) {
+        this.mealTime = mealTime;
     }
 
     public int getCarbohydrate() {
