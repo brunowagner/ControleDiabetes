@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.view.View;
+import android.util.Log;
 import android.widget.EditText;
 
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
@@ -26,6 +26,8 @@ public class BolusTableActivity extends AppCompatActivity {
     public static final int TAG_RECYCLERVIEW_GLUCOSE = 0;
     public static final int TAG_RECYCLERVIEW_BOLUS = 1;
 
+    public static final String TAG = "bwvm";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +42,17 @@ public class BolusTableActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        Log.d(TAG, "onStart: iniciando o on start");
         super.onStart();
+        Log.d(TAG, "onStart: acionando o refresh");
         mBolusTableAdapter.refreshData();
     }
 
     private void configureRecyclerView(){
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mBolusTableAdapter = new BolusTableAdapter(this,dbHelper, clickHandler(), mBolusRecyclerView);
+        mBolusTableAdapter = new BolusTableAdapter(this,dbHelper, clickHandler());
         mBolusRecyclerView.setAdapter(mBolusTableAdapter);
         mGlucoseRecyclerView.setAdapter(mBolusTableAdapter);
-
 
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mBolusRecyclerView.setLayoutManager(linearLayoutManager1);
@@ -117,7 +120,7 @@ public class BolusTableActivity extends AppCompatActivity {
                 mGlucoseRecyclerView.addOnScrollListener(scrollListeners[0]);
             }
         };
-        mGlucoseRecyclerView.addOnScrollListener(scrollListeners[0]);
+        //mGlucoseRecyclerView.addOnScrollListener(scrollListeners[0]);  //se colocar este agora, dá erro quando rotaciona. (o recyclerview do bolus perde um item)
         mBolusRecyclerView.addOnScrollListener(scrollListeners[1]);
     }
 

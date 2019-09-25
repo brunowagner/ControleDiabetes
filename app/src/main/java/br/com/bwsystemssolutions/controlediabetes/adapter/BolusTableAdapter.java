@@ -8,7 +8,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,23 +22,21 @@ import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
 public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.BolusTableAdapterViewHolder> implements View.OnClickListener {
 
+    private static final String TAG = "bwvm";
     Cursor mCursor;
     private SQLiteDatabase mDb;
     private CalculoDeBolusDBHelper dbHelper;
     private ArrayList<BolusTableData> mBolusTableData;
-    private RecyclerView mParentRecyclerView;
     private Context context;
-    private int mTouchedRvTag;
     private final BolusTableAdapterOnClickHandler mClickHandler;
     private int mSelectedItem = ITEN_SELECT_NONE;
 
     public static final int ITEN_SELECT_NONE = -1;
 
-    public BolusTableAdapter (Context context, CalculoDeBolusDBHelper dbHelper, BolusTableAdapterOnClickHandler clickHandler , RecyclerView parentRecyclerView){
+    public BolusTableAdapter (Context context, CalculoDeBolusDBHelper dbHelper, BolusTableAdapterOnClickHandler clickHandler){
         this.context = context;
         this.dbHelper = dbHelper;
         this. mDb = dbHelper.getWritableDatabase();
-        this.mParentRecyclerView = parentRecyclerView;
         this.mClickHandler = clickHandler;
 
         final String SQL_CREATE_BOLUS_TABLE_2 = "CREATE TABLE IF NOT EXISTS " +
@@ -59,11 +56,11 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
 
 
-        Log.d("bwvm", "BolusTableAdapter: antes da consulta ");
+        Log.d(TAG, "BolusTableAdapter: antes da consulta ");
 
         Cursor cursor = mDb.rawQuery("SELECT * FROM " + CalculoDeBolusContract.BolusTable2Entry.TABLE_NAME, null);
 
-        Log.d("bwvm", "BolusTableAdapter: tamanho do cursor kdjf ajd fklajd jasd fj: " + cursor.getCount());
+        Log.d(TAG, "BolusTableAdapter: tamanho do cursor kdjf ajd fklajd jasd fj: " + cursor.getCount());
 
         if (cursor.getCount() == 0) {
 
@@ -96,7 +93,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         Context context = viewGroup.getContext();
 
         int layoutIdFromListItem = (int)viewGroup.getTag();
-        Log.d("bwvm", "onCreateViewHolder: TAG do viewgroup = " + layoutIdFromListItem);
+        Log.d(TAG, "onCreateViewHolder: TAG do viewgroup(RecyclerView) = " + layoutIdFromListItem);
 
 
         int recyclerViewTag = (int) viewGroup.getTag();
@@ -112,7 +109,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
         if (layoutIdFromListItem == 0 ) Log.d("bwvm", "onCreateViewHolder: parent não é RV");
 
-        //int layoutIdFromListItem = R.layout.list_item_row_bolus_table_bolus;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
@@ -120,34 +116,9 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         return new BolusTableAdapterViewHolder(view);
     }
 
-    //    @Override
-//    public void onBindViewHolder(@NonNull BolusTableAdapter.BolusTableAdapterViewHolder bolusTableAdapterViewHolder, int i) {
-//        Log.d("bwvm", "onBindViewHolder: position: " + i);
-//        BolusTableData bolusTableData = mBolusTableData.get(i);
-//        bolusTableAdapterViewHolder.mGlucoseTextView.setText(String.valueOf(bolusTableData.getGlucose()));
-//
-//        BolusTableMealAdapter bolusTableMealAdapter = new BolusTableMealAdapter(bolusTableData.getBolusTableDataMeals());
-//
-//        bolusTableAdapterViewHolder.mBolusRecyclerView.setAdapter(bolusTableMealAdapter);
-//        bolusTableAdapterViewHolder.mBolusRecyclerView.setTag(bolusTableData.getGlucoseId());
-//
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
-//        bolusTableAdapterViewHolder.mBolusRecyclerView.setLayoutManager(linearLayoutManager);
-//        bolusTableAdapterViewHolder.mBolusRecyclerView.addOnScrollListener(synchronizeScroll);
-//        bolusTableAdapterViewHolder.mBolusRecyclerView.addOnItemTouchListener(touchedItem);
-//
-//
-//        /*
-//         * Use this setting to improve performance if you know that changes in content do not
-//         * change the child layout size in the RecyclerView
-//         */
-//        bolusTableAdapterViewHolder.mBolusRecyclerView.setHasFixedSize(true);
-//
-//    }
-
     @Override
     public void onBindViewHolder(@NonNull BolusTableAdapter.BolusTableAdapterViewHolder viewHolder, int i) {
-        Log.d("bwvm", "onBindViewHolder: position: " + i);
+        Log.d(TAG, "onBindViewHolder: position: " + i);
         BolusTableData bolusTableData = mBolusTableData.get(i);
         //viewHolder.mGlucoseTextView.setText(String.valueOf(bolusTableData.getGlucose()));
         viewHolder.itemView.setTag(bolusTableData.getId());
@@ -193,14 +164,16 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     public void onViewAttachedToWindow(@NonNull BolusTableAdapterViewHolder holder) {
         super.onViewAttachedToWindow(holder);
 
-        String text = holder.mGlucose == null ? "null" : String.valueOf(holder.mGlucose.getText());
+        String text1 = holder.mGlucose == null ? "null" : String.valueOf(holder.mGlucose.getText());
+        String text2 = holder.mInsul1 == null ? "null" : String.valueOf(holder.mInsul1.getText());
 
-        Log.d("bwvm", "onViewAttachedToWindow: Texto do Textview Glucose: " + text);
+        Log.d(TAG, "onViewAttachedToWindow: Texto do Textview Glucose: " + text1);
+        Log.d(TAG, "onViewAttachedToWindow: Texto do Textview Insulin1: " + text2);
     }
 
     @Override
     public void onClick(View view) {
-        Log.d("bwvm", "onClick: CardView Clicado = " + view.getId());
+        Log.d(TAG, "onClick: CardView Clicado = " + view.getId());
     }
 
     public class BolusTableAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -235,8 +208,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
         public BolusTableAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
-//            mGlucoseTextView = itemView.findViewById(R.id.tv_glucose);
-//            mBolusRecyclerView = itemView.findViewById(R.id.rv_bolus_table_row_meals);
 
             mGlucose = itemView.findViewById(R.id.tv_item_bolus_table_glucose);
 
@@ -300,7 +271,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     // ---------------------------------- Functions ---------------------------------------------
 
     public void setBolusTableData(ArrayList<BolusTableData> bolusTableData){
-        Log.d("bwvm", "setBolusBlockTimeData: ");
+        Log.d(TAG, "setBolusBlockTimeData: ");
         mBolusTableData = bolusTableData;
         notifyDataSetChanged();
     }
@@ -311,54 +282,19 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
     private Cursor getAllData() {
         String sqlQuery = "SELECT * FROM " + CalculoDeBolusContract.BolusTable2Entry.TABLE_NAME;//CalculoDeBolusContract.BolusTableQuery.FETCH_ALL_DATA;
-        Log.d("bwvm", "getAllData: sqlQuery: " + sqlQuery);
+        Log.d(TAG, "getAllData: sqlQuery: " + sqlQuery);
 
         Cursor c = mDb.rawQuery(sqlQuery, null);
 
         return c;
     }
 
-
-    /*
-    * 	public void refreshData(){
-
-		Cursor cursor = getAllData();
-		Log.d("bwvm", "refreshData: tamanho do cursor" + cursor.getCount());
-		if (cursor.getCount() <= 0) return;
-		ArrayList<Record> records = new ArrayList<Record>();
-		if (cursor.moveToFirst()){
-			do {
-				Record record = new Record();
-				record.setId(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry._ID)));
-				record.setDateFromStringDateSqlite(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME)));
-				record.setCarbohydrate(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME)));
-				record.setGlucose(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME)));
-				record.setFastInsulin(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME)));
-				record.setBasalInsulin(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME)));
-				record.setEvent(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME)));
-				record.setMeal(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME)));
-				record.setMealTime(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_TIME_NAME)));
-				record.setNote(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME)));
-				record.setSick(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME))>0);
-				record.setMedicament(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME))>0);
-
-				records.add(record);
-			}while(cursor.moveToNext());
-
-		}
-		cursor.close();
-		setRecords(records);
-	}
-    * */
-
     public void refreshData(){
 
-        int contaLoop1 = 0;
-        int contaLoop2 = 0;
         String[] meals = context.getResources().getStringArray(R.array.meal_names_array);
 
         Cursor cursor = getAllData();
-        Log.d("bwvm", "refreshData BolusTableAdapter: tamanho do cursor: " + cursor.getCount());
+        Log.d(TAG, "refreshData BolusTableAdapter: tamanho do cursor: " + cursor.getCount());
         if (cursor.getCount() <= 0) return;
 
         ArrayList<BolusTableData> bolusTableDatas = new ArrayList<>();
