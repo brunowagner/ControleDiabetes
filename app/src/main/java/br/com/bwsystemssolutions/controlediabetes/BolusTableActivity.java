@@ -8,7 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.EditText;
+
+import java.util.zip.Inflater;
 
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
@@ -125,7 +130,30 @@ public class BolusTableActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_iedit_idelete_vadd, menu);
 
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_edit:
+                //TODO criar ação para botão de edição.
+                break;
+            case R.id.action_delete:
+                //TODO criar ação para botão de deleção.
+                break;
+            case R.id.action_add:
+                //TODO criar ação para botão de adição.
+                break;
+        }
+        return true;
+    }
 }
