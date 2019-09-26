@@ -1,5 +1,7 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ public class BolusTableActivity extends AppCompatActivity {
     RecyclerView mGlucoseRecyclerView;
     BolusTableAdapter mBolusTableAdapter;
     RecyclerView.OnScrollListener[] scrollListeners = new RecyclerView.OnScrollListener[2];
+    boolean mEnableActionDelete = false;
 
     public static final int TAG_RECYCLERVIEW_GLUCOSE = 0;
     public static final int TAG_RECYCLERVIEW_BOLUS = 1;
@@ -51,6 +54,15 @@ public class BolusTableActivity extends AppCompatActivity {
         super.onStart();
         Log.d(TAG, "onStart: acionando o refresh");
         mBolusTableAdapter.refreshData();
+    }
+
+    private void refreshRecyclerView(){
+        mBolusTableAdapter.refreshData();
+    }
+
+    private void setEnableActionDelete(boolean enable){
+        mEnableActionDelete = enable;
+        invalidateOptionsMenu();
     }
 
     private void configureRecyclerView(){
@@ -146,14 +158,23 @@ public class BolusTableActivity extends AppCompatActivity {
         switch (id){
             case R.id.action_edit:
                 //TODO criar ação para botão de edição.
-                break;
+                return true;
             case R.id.action_delete:
                 //TODO criar ação para botão de deleção.
-                break;
+//                boolean deleted = mBolusTableAdapter.deleteRecord(mSelectedItem);
+//                if (deleted){
+//                    setEnableActionDelete(false);
+//                    refreshRecyclerView();
+//                }
+//                return deleted;
             case R.id.action_add:
-                //TODO criar ação para botão de adição.
-                break;
+                Context context = this;
+                Intent intent = new Intent(context, BolusDetailActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 }

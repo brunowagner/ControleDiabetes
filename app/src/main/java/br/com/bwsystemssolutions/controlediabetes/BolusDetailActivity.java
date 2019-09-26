@@ -36,7 +36,7 @@ public class BolusDetailActivity extends AppCompatActivity {
     }
 
     private void setFilters() {
-        final InputFilter[] inputFilter = {Filters.DecimalDigits(3, 2)};
+        final InputFilter[] inputFilter = {Filters.DecimalDigits(2, 2)};
         mGlucoseEditText.setFilters(inputFilter);
         mBreakFastEditText.setFilters(inputFilter);
         mBrunchEditText.setFilters(inputFilter);

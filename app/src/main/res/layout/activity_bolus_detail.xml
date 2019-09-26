@@ -42,8 +42,8 @@
                 android:textStyle="bold"
                 android:textAlignment="center"
                 android:background="@color/colorPrimary"
-                android:elevation="4dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:padding="5dp"/>
 
             <!--Café da Manhã-->
             <LinearLayout
