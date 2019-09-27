@@ -21,6 +21,7 @@ import java.util.zip.Inflater;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableDataDAO;
 import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 
 public class BolusDetailActivity extends AppCompatActivity {
@@ -85,9 +86,26 @@ public class BolusDetailActivity extends AppCompatActivity {
         switch (id){
             case R.id.action_save:
                 // TODO criar ação para salvar o registro
+                save();
                 break;
         }
         return true;
+    }
+
+    private void save(){
+        BolusTableData bolusTableData = new BolusTableData();
+
+        bolusTableData.setGlucose(Integer.parseInt(mGlucoseEditText.getText().toString()));
+        bolusTableData.setInsulin1(Double.parseDouble(mBreakFastEditText.getText().toString()));
+        bolusTableData.setInsulin2(Double.parseDouble(mBrunchEditText.getText().toString()));
+        bolusTableData.setInsulin3(Double.parseDouble(mLunchEditText.getText().toString()));
+        bolusTableData.setInsulin4(Double.parseDouble(mTeaEditText.getText().toString()));
+        bolusTableData.setInsulin5(Double.parseDouble(mDinnerEditText.getText().toString()));
+        bolusTableData.setInsulin6(Double.parseDouble(mSupperEditText.getText().toString()));
+        bolusTableData.setInsulin7(Double.parseDouble(mDawnEditText.getText().toString()));
+
+        BolusTableDataDAO bolusTableDataDAO= new BolusTableDataDAO(this);
+        bolusTableDataDAO.add(bolusTableData);
     }
 
 
