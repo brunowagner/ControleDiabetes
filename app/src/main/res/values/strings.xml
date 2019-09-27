@@ -59,5 +59,15 @@
     <string name="pref_backup_restore_title">Recuperar Dados</string>
     <string name="pref_backup_restore_summary">Recuperar os dados apartir de um backup criado anteriormente.</string>
 
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            Utilizado como clunas de base de dados e rótulos
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+    <string name="meals_name_breakfast">Café da manhã</string>
+    <string name="meals_name_brunch">Colação</string>
+    <string name="meals_name_Lunch">Almoço</string>
+    <string name="meals_name_tea">Lanche da tarde</string>
+    <string name="meals_name_dinner">Jantar</string>
+    <string name="meals_name_supper">Ceia</string>
+    <string name="meals_name_dawn">Madrugada</string>
 </resources>

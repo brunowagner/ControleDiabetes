@@ -159,4 +159,9 @@ public class BolusTableData {
     public void setInsulin7(Double insulin7) {
         this.insulin7 = insulin7;
     }
+
+
+    //Queries
+
+
 }

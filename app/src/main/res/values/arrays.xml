@@ -18,13 +18,13 @@
     <!-- used to database values-->
     <string-array name="meal_names_array">
         <item></item>
-        <item>Café da manhã</item>
-        <item>Colação</item>
-        <item>Almoço</item>
-        <item>Lanche da tarde</item>
-        <item>Jantar</item>
-        <item>Ceia</item>
-        <item>Madrugada</item>
+        <item>@string/meals_name_breakfast</item>
+        <item>@string/meals_name_brunch</item>
+        <item>@string/meals_name_Lunch</item>
+        <item>@string/meals_name_tea</item>
+        <item>@string/meals_name_dinner</item>
+        <item>@string/meals_name_supper</item>
+        <item>@string/meals_name_dawn</item>
     </string-array>
 
     <string-array name="meal_time_names_array">
