@@ -26,7 +26,7 @@ public class BolusTableDataDAO {
 
     public ArrayList<BolusTableData> fetchAll(){
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
-        final Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        final Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME,null);
         return parseToBoluslusTableDatas(cursor);
     }
 

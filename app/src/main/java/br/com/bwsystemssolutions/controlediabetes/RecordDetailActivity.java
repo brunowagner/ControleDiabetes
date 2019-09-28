@@ -298,7 +298,6 @@ public class RecordDetailActivity extends AppCompatActivity {
     private boolean existsRegister(String date, String time){
         String selection = CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + "=?";
         String[] args = new String[] { Utilidades.convertDateTimeToSQLiteFormat(date, time) };
-
         Cursor cursor = mDb.query(CalculoDeBolusContract.RecordEntry.TABLE_NAME, new String[]{CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME}, selection, args, null, null, null);
 
         Log.d("bwvm", "existsRegister: Tamanho do cursor: " + cursor.getCount());
