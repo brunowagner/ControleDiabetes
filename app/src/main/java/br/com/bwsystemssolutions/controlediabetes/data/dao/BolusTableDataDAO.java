@@ -61,13 +61,14 @@ public class BolusTableDataDAO {
     @NonNull
     private ContentValues parseToContentValues(BolusTableData bolusTableData) {
         ContentValues cv = new ContentValues();
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME, bolusTableData.getGlucose());
         cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BREAKFAST_NAME, bolusTableData.getInsulin1());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME, bolusTableData.getInsulin1());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME, bolusTableData.getInsulin1());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME, bolusTableData.getInsulin1());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME, bolusTableData.getInsulin1());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME, bolusTableData.getInsulin1());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME, bolusTableData.getInsulin1());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME, bolusTableData.getInsulin2());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME, bolusTableData.getInsulin3());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME, bolusTableData.getInsulin4());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME, bolusTableData.getInsulin5());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME, bolusTableData.getInsulin6());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME, bolusTableData.getInsulin7());
         return cv;
     }
 

@@ -22,6 +22,7 @@ import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableDataDAO;
+import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 
 public class BolusDetailActivity extends AppCompatActivity {
@@ -50,8 +51,8 @@ public class BolusDetailActivity extends AppCompatActivity {
     }
 
     private void setFilters() {
-        final InputFilter[] inputFilter = {Filters.DecimalDigits(2, 2)};
-        mGlucoseEditText.setFilters(inputFilter);
+        final InputFilter[] inputFilter = {Filters.DecimalDigits(3, 2)};
+        //mGlucoseEditText.setFilters(inputFilter);
         mBreakFastEditText.setFilters(inputFilter);
         mBrunchEditText.setFilters(inputFilter);
         mLunchEditText.setFilters(inputFilter);
@@ -86,28 +87,33 @@ public class BolusDetailActivity extends AppCompatActivity {
         switch (id){
             case R.id.action_save:
                 // TODO criar ação para salvar o registro
-                save();
-                break;
+                boolean saved = save();
+                if (saved){
+                    Toast.makeText(this,"Salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(this,"Não foi possível salvar!", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 
-    private void save(){
+    private boolean save(){
         BolusTableData bolusTableData = new BolusTableData();
-
-        bolusTableData.setGlucose(Integer.parseInt(mGlucoseEditText.getText().toString()));
-        bolusTableData.setInsulin1(Double.parseDouble(mBreakFastEditText.getText().toString()));
-        bolusTableData.setInsulin2(Double.parseDouble(mBrunchEditText.getText().toString()));
-        bolusTableData.setInsulin3(Double.parseDouble(mLunchEditText.getText().toString()));
-        bolusTableData.setInsulin4(Double.parseDouble(mTeaEditText.getText().toString()));
-        bolusTableData.setInsulin5(Double.parseDouble(mDinnerEditText.getText().toString()));
-        bolusTableData.setInsulin6(Double.parseDouble(mSupperEditText.getText().toString()));
-        bolusTableData.setInsulin7(Double.parseDouble(mDawnEditText.getText().toString()));
+        bolusTableData.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
+        bolusTableData.setInsulin1(Converter.toDouble(mBreakFastEditText.getText().toString()));
+        bolusTableData.setInsulin2(Converter.toDouble(mBrunchEditText.getText().toString()));
+        bolusTableData.setInsulin3(Converter.toDouble(mLunchEditText.getText().toString()));
+        bolusTableData.setInsulin4(Converter.toDouble(mTeaEditText.getText().toString()));
+        bolusTableData.setInsulin5(Converter.toDouble(mDinnerEditText.getText().toString()));
+        bolusTableData.setInsulin6(Converter.toDouble(mSupperEditText.getText().toString()));
+        bolusTableData.setInsulin7(Converter.toDouble(mDawnEditText.getText().toString()));
 
         BolusTableDataDAO bolusTableDataDAO= new BolusTableDataDAO(this);
-        bolusTableDataDAO.add(bolusTableData);
+        return bolusTableDataDAO.add(bolusTableData);
     }
-
 
     // Data
 
