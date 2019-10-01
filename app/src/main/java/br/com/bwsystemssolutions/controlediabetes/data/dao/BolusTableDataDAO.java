@@ -33,14 +33,18 @@ public class BolusTableDataDAO {
     public boolean add (BolusTableData bolusTableData){
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = parseToContentValues(bolusTableData);
-        return db.insert(TABLE_NAME, null, cv) > 0;
+        boolean inserted = db.insert(TABLE_NAME, null, cv) > 0;
+        db.close();
+        return inserted;
     }
 
     public boolean delete (int id){
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         String whereClause = COLUMN_ID_NAME + " = ?";
         String[] whereArgs = new String[] {String.valueOf(id)};
-        return db.delete(TABLE_NAME, whereClause, whereArgs ) > 0;
+        boolean deleted = db.delete(TABLE_NAME, whereClause, whereArgs ) > 0;
+        db.close();
+        return deleted;
     }
 
     public boolean update (BolusTableData bolusTableData){

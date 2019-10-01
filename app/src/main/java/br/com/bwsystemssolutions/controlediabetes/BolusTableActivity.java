@@ -14,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.zip.Inflater;
 
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
@@ -30,6 +32,7 @@ public class BolusTableActivity extends AppCompatActivity {
     BolusTableAdapter mBolusTableAdapter;
     RecyclerView.OnScrollListener[] scrollListeners = new RecyclerView.OnScrollListener[2];
     boolean mEnableActionDelete = false;
+    private HashMap<Integer,Integer> mSelectedItems;
 
     public static final int TAG_RECYCLERVIEW_GLUCOSE = 0;
     public static final int TAG_RECYCLERVIEW_BOLUS = 1;
@@ -45,6 +48,7 @@ public class BolusTableActivity extends AppCompatActivity {
         mBolusRecyclerView.setTag(TAG_RECYCLERVIEW_BOLUS);
         mGlucoseRecyclerView = findViewById(R.id.rv_bolus_table_glucose);
         mGlucoseRecyclerView.setTag(TAG_RECYCLERVIEW_GLUCOSE);
+        //this.mSelectedItems = new HashMap<>();
         configureRecyclerView();
     }
 
@@ -107,8 +111,9 @@ public class BolusTableActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongClick(int selectedItem) {
-
+            public void onLongClick(HashMap<Integer, Integer> selectedItems) {
+                mEnableActionDelete = selectedItems.size() > 0;
+                invalidateOptionsMenu();
             }
         };
         return handler;
@@ -159,14 +164,16 @@ public class BolusTableActivity extends AppCompatActivity {
             case R.id.action_edit:
                 //TODO criar ação para botão de edição.
                 return true;
+
             case R.id.action_delete:
-                //TODO criar ação para botão de deleção.
-//                boolean deleted = mBolusTableAdapter.deleteRecord(mSelectedItem);
-//                if (deleted){
-//                    setEnableActionDelete(false);
-//                    refreshRecyclerView();
-//                }
-//                return deleted;
+                int deleteds = mBolusTableAdapter.deleteSelectedItems();
+                if (deleteds <= 0){
+                    return super.onOptionsItemSelected(item);
+                }
+                setEnableActionDelete(false);
+                refreshRecyclerView();
+                return true;
+
             case R.id.action_add:
                 Context context = this;
                 Intent intent = new Intent(context, BolusDetailActivity.class);
@@ -176,5 +183,14 @@ public class BolusTableActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        final MenuItem item = menu.findItem(R.id.action_delete);
+        item.setVisible(mEnableActionDelete);
+        item.setEnabled(mEnableActionDelete);
+        return true;
     }
 }

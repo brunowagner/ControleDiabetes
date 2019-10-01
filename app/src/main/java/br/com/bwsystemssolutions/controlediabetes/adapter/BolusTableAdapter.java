@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import br.com.bwsystemssolutions.controlediabetes.BolusTableActivity;
 import br.com.bwsystemssolutions.controlediabetes.R;
@@ -31,6 +33,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     private Context context;
     private final BolusTableAdapterOnClickHandler mClickHandler;
     private int mSelectedItem = ITEN_SELECT_NONE;
+    private HashMap<Integer, Integer> mSelectedItens;
 
     public static final int ITEN_SELECT_NONE = -1;
 
@@ -39,6 +42,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         this.dbHelper = dbHelper;
         this. mDb = dbHelper.getWritableDatabase();
         this.mClickHandler = clickHandler;
+        this.mSelectedItens = new HashMap<>();
 
         final String SQL_CREATE_BOLUS_TABLE_2 = "CREATE TABLE IF NOT EXISTS " +
                 CalculoDeBolusContract.BolusTable2Entry.TABLE_NAME + "(" +
@@ -177,6 +181,8 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         Log.d(TAG, "onClick: CardView Clicado = " + view.getId());
     }
 
+
+
     public class BolusTableAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
 //        public final TextView mGlucoseTextView;
@@ -249,6 +255,14 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             mCard6.setOnClickListener(this);
             mCard7.setOnClickListener(this);
 
+            mCard1.setOnLongClickListener(this);
+            mCard2.setOnLongClickListener(this);
+            mCard3.setOnLongClickListener(this);
+            mCard4.setOnLongClickListener(this);
+            mCard5.setOnLongClickListener(this);
+            mCard6.setOnLongClickListener(this);
+            mCard7.setOnLongClickListener(this);
+
         }
 
         @Override
@@ -261,8 +275,13 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         @Override
         public boolean onLongClick(View v) {
             mSelectedItem = getAdapterPosition();
+            if (mSelectedItens.containsKey(mSelectedItem)){
+                mSelectedItens.remove(mSelectedItem);
+            } else {
+                mSelectedItens.put(mSelectedItem,mSelectedItem);
+            }
             notifyDataSetChanged();
-            mClickHandler.onLongClick(mSelectedItem);
+            mClickHandler.onLongClick(mSelectedItens);
 
             return true;
         }
@@ -336,6 +355,19 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         setBolusTableData(bolusTableDatas);
     }
 
+    public int deleteSelectedItems() {
+        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
+        int before = mSelectedItens.size();
+        int cont = 0;
+        for (Map.Entry<Integer,Integer> item : mSelectedItens.entrySet()){
+            final int id = mBolusTableData.get(item.getKey()).getId();
+            if (bolusTableDataDAO.delete(id)) {
+                cont+=1;
+            }
+        }
+        return cont;
+    }
+
     public class FieldId{
         public int id;
         public int column;
@@ -348,7 +380,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
     public interface BolusTableAdapterOnClickHandler{
         void onClick(BolusTableData bolusTableData, int itemSelected);
-        void onLongClick(int selectedItem);
+        void onLongClick(HashMap<Integer,Integer> selectedItens);
     }
 
 }
