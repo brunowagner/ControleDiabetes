@@ -281,11 +281,11 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
         @Override
         public boolean onLongClick(View v) {
-            mSelectedItem = getAdapterPosition();
-            if (mSelectedItems.containsKey(mSelectedItem)){
-                mSelectedItems.remove(mSelectedItem);
+            int clickedItem = getAdapterPosition();
+            if (mSelectedItems.containsKey(clickedItem)){
+                mSelectedItems.remove(clickedItem);
             } else {
-                mSelectedItems.put(mSelectedItem,mSelectedItem);
+                mSelectedItems.put(clickedItem,clickedItem);
             }
             notifyDataSetChanged();
             mClickHandler.onLongClick(mSelectedItems);
@@ -364,13 +364,14 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
     public int deleteSelectedItems() {
         BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
-        HashMap<Integer,Integer> selecteds = (HashMap<Integer, Integer>) mSelectedItems.clone();
+        HashMap<Integer,Integer> selecteds = new HashMap<>(mSelectedItems);
         int cont = 0;
         for (Map.Entry<Integer,Integer> item : selecteds.entrySet()){
             final int id = mBolusTableData.get(item.getKey()).getId();
             if (bolusTableDataDAO.delete(id)) {
-                mSelectedItems.remove(item);
+                mSelectedItems.remove(item.getKey());
                 cont+=1;
+                Log.d(TAG, "deleteSelectedItems: qtd selecionados: " + mSelectedItems.size());
             }
         }
         //mSelectedItems.clear();
