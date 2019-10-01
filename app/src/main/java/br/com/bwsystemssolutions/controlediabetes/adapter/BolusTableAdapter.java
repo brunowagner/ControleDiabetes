@@ -3,6 +3,7 @@ package br.com.bwsystemssolutions.controlediabetes.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +34,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     private Context context;
     private final BolusTableAdapterOnClickHandler mClickHandler;
     private int mSelectedItem = ITEN_SELECT_NONE;
-    private HashMap<Integer, Integer> mSelectedItens;
+    private HashMap<Integer, Integer> mSelectedItems;
 
     public static final int ITEN_SELECT_NONE = -1;
 
@@ -42,7 +43,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         this.dbHelper = dbHelper;
         this. mDb = dbHelper.getWritableDatabase();
         this.mClickHandler = clickHandler;
-        this.mSelectedItens = new HashMap<>();
+        this.mSelectedItems = new HashMap<>();
 
         final String SQL_CREATE_BOLUS_TABLE_2 = "CREATE TABLE IF NOT EXISTS " +
                 CalculoDeBolusContract.BolusTable2Entry.TABLE_NAME + "(" +
@@ -122,9 +123,9 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BolusTableAdapter.BolusTableAdapterViewHolder viewHolder, int i) {
-        Log.d(TAG, "onBindViewHolder: position: " + i);
-        BolusTableData bolusTableData = mBolusTableData.get(i);
+    public void onBindViewHolder(@NonNull BolusTableAdapter.BolusTableAdapterViewHolder viewHolder, int position) {
+        Log.d(TAG, "onBindViewHolder: position: " + position);
+        BolusTableData bolusTableData = mBolusTableData.get(position);
         //viewHolder.mGlucoseTextView.setText(String.valueOf(bolusTableData.getGlucose()));
         viewHolder.itemView.setTag(bolusTableData.getId());
 
@@ -156,6 +157,12 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         viewHolder.mCard5.setTag(new FieldId(bolusTableData.getId(),5));
         viewHolder.mCard6.setTag(new FieldId(bolusTableData.getId(),6));
         viewHolder.mCard7.setTag(new FieldId(bolusTableData.getId(),7));
+
+        if (mSelectedItems.containsKey(position)){
+            viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
+        } else {
+            viewHolder.itemView.setBackgroundColor(Color.WHITE);
+        }
     }
 
     @Override
@@ -275,13 +282,13 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         @Override
         public boolean onLongClick(View v) {
             mSelectedItem = getAdapterPosition();
-            if (mSelectedItens.containsKey(mSelectedItem)){
-                mSelectedItens.remove(mSelectedItem);
+            if (mSelectedItems.containsKey(mSelectedItem)){
+                mSelectedItems.remove(mSelectedItem);
             } else {
-                mSelectedItens.put(mSelectedItem,mSelectedItem);
+                mSelectedItems.put(mSelectedItem,mSelectedItem);
             }
             notifyDataSetChanged();
-            mClickHandler.onLongClick(mSelectedItens);
+            mClickHandler.onLongClick(mSelectedItems);
 
             return true;
         }
@@ -357,14 +364,17 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
     public int deleteSelectedItems() {
         BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
-        int before = mSelectedItens.size();
+        HashMap<Integer,Integer> selecteds = (HashMap<Integer, Integer>) mSelectedItems.clone();
         int cont = 0;
-        for (Map.Entry<Integer,Integer> item : mSelectedItens.entrySet()){
+        for (Map.Entry<Integer,Integer> item : selecteds.entrySet()){
             final int id = mBolusTableData.get(item.getKey()).getId();
             if (bolusTableDataDAO.delete(id)) {
+                mSelectedItems.remove(item);
                 cont+=1;
             }
         }
+        //mSelectedItems.clear();
+        notifyDataSetChanged();
         return cont;
     }
 
