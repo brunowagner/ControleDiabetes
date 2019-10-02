@@ -390,8 +390,12 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         notifyDataSetChanged();
     }
 
-    public void unSelectItem(int item){
+    public void unselectItem(int item){
         mSelectedItems.remove(item);
+        notifyDataSetChanged();
+    }
+    public void unselectAllItems(){
+        mSelectedItems.clear();
         notifyDataSetChanged();
     }
 

@@ -32,6 +32,7 @@ public class BolusTableActivity extends AppCompatActivity {
     BolusTableAdapter mBolusTableAdapter;
     RecyclerView.OnScrollListener[] scrollListeners = new RecyclerView.OnScrollListener[2];
     boolean mEnableActionDelete = false;
+    boolean mEnableActionEdit = false;
     private HashMap<Integer,Integer> mSelectedItems;
 
     public static final int TAG_RECYCLERVIEW_GLUCOSE = 0;
@@ -64,8 +65,9 @@ public class BolusTableActivity extends AppCompatActivity {
         mBolusTableAdapter.refreshData();
     }
 
-    private void setEnableActionDelete(boolean enable){
-        mEnableActionDelete = enable;
+    private void resetMenu(){
+        mEnableActionDelete = false;
+        mEnableActionEdit = false;
         invalidateOptionsMenu();
     }
 
@@ -97,10 +99,9 @@ public class BolusTableActivity extends AppCompatActivity {
             public void onClick(BolusTableData bolusTableData, int itemSelected, int selectedItems) {
 
                 if (mEnableActionDelete){
-                    if (selectedItems == 0){
-                        mEnableActionDelete = false;
-                        invalidateOptionsMenu();
-                    }
+                    mEnableActionDelete = selectedItems > 0;
+                    mEnableActionEdit = selectedItems == 1;
+                    invalidateOptionsMenu();
                     return;
                 }
 
@@ -121,6 +122,7 @@ public class BolusTableActivity extends AppCompatActivity {
             @Override
             public void onLongClick(HashMap<Integer, Integer> selectedItems) {
                 mEnableActionDelete = selectedItems.size() > 0;
+                mEnableActionEdit = selectedItems.size() == 1;
                 invalidateOptionsMenu();
             }
         };
@@ -178,7 +180,7 @@ public class BolusTableActivity extends AppCompatActivity {
                 if (deleteds <= 0){
                     return super.onOptionsItemSelected(item);
                 }
-                setEnableActionDelete(false);
+                resetMenu();
                 refreshRecyclerView();
                 return true;
 
@@ -186,6 +188,8 @@ public class BolusTableActivity extends AppCompatActivity {
                 Context context = this;
                 Intent intent = new Intent(context, BolusDetailActivity.class);
                 startActivity(intent);
+                mBolusTableAdapter.unselectAllItems();
+                resetMenu();
                 return true;
 
             default:
@@ -196,9 +200,17 @@ public class BolusTableActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        final MenuItem item = menu.findItem(R.id.action_delete);
-        item.setVisible(mEnableActionDelete);
-        item.setEnabled(mEnableActionDelete);
+        final MenuItem itemDelete = menu.findItem(R.id.action_delete);
+        showMenuItens(itemDelete, mEnableActionDelete);
+
+        final MenuItem itemEdit = menu.findItem(R.id.action_edit);
+        showMenuItens(itemEdit,mEnableActionEdit);
         return true;
     }
+
+    private void showMenuItens(MenuItem item, boolean show){
+        item.setVisible(show);
+        item.setEnabled(show);
+    }
+
 }
