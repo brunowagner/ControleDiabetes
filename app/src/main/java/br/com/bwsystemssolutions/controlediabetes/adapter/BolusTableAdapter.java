@@ -129,6 +129,12 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         //viewHolder.mGlucoseTextView.setText(String.valueOf(bolusTableData.getGlucose()));
         viewHolder.itemView.setTag(bolusTableData.getId());
 
+        if (mSelectedItems.containsKey(position)){
+            viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
+        } else {
+            viewHolder.itemView.setBackgroundColor(Color.WHITE);
+        }
+
         if (null != viewHolder.mGlucose){
             viewHolder.mGlucose.setText(String.valueOf(bolusTableData.getGlucose()));
             return;
@@ -158,11 +164,11 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         viewHolder.mCard6.setTag(new FieldId(bolusTableData.getId(),6));
         viewHolder.mCard7.setTag(new FieldId(bolusTableData.getId(),7));
 
-        if (mSelectedItems.containsKey(position)){
-            viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
-        } else {
-            viewHolder.itemView.setBackgroundColor(Color.WHITE);
-        }
+//        if (mSelectedItems.containsKey(position)){
+//            viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
+//        } else {
+//            viewHolder.itemView.setBackgroundColor(Color.WHITE);
+//        }
     }
 
     @Override
@@ -226,6 +232,8 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             mGlucose = itemView.findViewById(R.id.tv_item_bolus_table_glucose);
 
             if (null != mGlucose) {
+                itemView.setOnClickListener(this);
+                itemView.setOnLongClickListener(this);
                 return;
             }
 
@@ -275,8 +283,23 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
+            if (mSelectedItems.size() > 0) {
+                if (mSelectedItems.containsKey(position)) {
+                    mSelectedItems.remove(position);
+                } else {
+                    mSelectedItems.put(position, position);
+                }
+                notifyDataSetChanged();
+                mClickHandler.onClick(null, mSelectedItem, mSelectedItems.size());
+                return;
+            }
+
+            if (v instanceof CardView == false){
+                return;
+            }
+
             BolusTableData bolusTableData = mBolusTableData.get(position);
-            mClickHandler.onClick(bolusTableData, mSelectedItem);
+            mClickHandler.onClick(bolusTableData, mSelectedItem, 0);
         }
 
         @Override
@@ -362,6 +385,16 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         setBolusTableData(bolusTableDatas);
     }
 
+    public void selectItem(int item){
+        mSelectedItems.put(item, item);
+        notifyDataSetChanged();
+    }
+
+    public void unSelectItem(int item){
+        mSelectedItems.remove(item);
+        notifyDataSetChanged();
+    }
+
     public int deleteSelectedItems() {
         BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
         HashMap<Integer,Integer> selecteds = new HashMap<>(mSelectedItems);
@@ -390,7 +423,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     }
 
     public interface BolusTableAdapterOnClickHandler{
-        void onClick(BolusTableData bolusTableData, int itemSelected);
+        void onClick(BolusTableData bolusTableData, int itemSelected, int SelectedItems);
         void onLongClick(HashMap<Integer,Integer> selectedItens);
     }
 

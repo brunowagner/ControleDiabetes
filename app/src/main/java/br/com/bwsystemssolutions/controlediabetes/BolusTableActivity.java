@@ -94,7 +94,15 @@ public class BolusTableActivity extends AppCompatActivity {
 
         final BolusTableAdapter.BolusTableAdapterOnClickHandler handler = new BolusTableAdapter.BolusTableAdapterOnClickHandler() {
             @Override
-            public void onClick(BolusTableData bolusTableData, int itemSelected) {
+            public void onClick(BolusTableData bolusTableData, int itemSelected, int selectedItems) {
+
+                if (mEnableActionDelete){
+                    if (selectedItems == 0){
+                        mEnableActionDelete = false;
+                        invalidateOptionsMenu();
+                    }
+                    return;
+                }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
                 builder.setTitle("Alterar valor do Bolus")
