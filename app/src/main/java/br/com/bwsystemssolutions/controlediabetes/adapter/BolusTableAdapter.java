@@ -311,7 +311,11 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
                 mSelectedItems.put(clickedItem,clickedItem);
             }
             notifyDataSetChanged();
-            mClickHandler.onLongClick(mSelectedItems);
+            BolusTableData bolusTableData = null;
+            if (mSelectedItems.size() == 1){
+                bolusTableData = mBolusTableData.get(clickedItem);
+            }
+            mClickHandler.onLongClick(mSelectedItems, bolusTableData);
 
             return true;
         }
@@ -428,7 +432,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
     public interface BolusTableAdapterOnClickHandler{
         void onClick(BolusTableData bolusTableData, int itemSelected, int SelectedItems);
-        void onLongClick(HashMap<Integer,Integer> selectedItens);
+        void onLongClick(HashMap<Integer,Integer> selectedItens, BolusTableData bolusTableData);
     }
 
 }

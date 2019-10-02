@@ -3,6 +3,7 @@ package br.com.bwsystemssolutions.controlediabetes;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,7 @@ import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 
 public class BolusDetailActivity extends AppCompatActivity {
 
-    BolusTableData mBolusTableData;
+    private BolusTableData mBolusTableData;
     SQLiteDatabase mDb;
 
     private EditText mGlucoseEditText;
@@ -46,8 +47,16 @@ public class BolusDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bolus_detail);
 
+        Intent intentThatStartedThisActivity = getIntent();
+
+        if (intentThatStartedThisActivity.hasExtra(BolusTableData.BUNDLE_STRING_KEY)){
+            Bundle bundle = intentThatStartedThisActivity.getExtras();
+            mBolusTableData = (BolusTableData) bundle.getSerializable(BolusTableData.BUNDLE_STRING_KEY);
+        }
+
         initComponents();
         setFilters();
+        fillComponents();
     }
 
     private void setFilters() {
@@ -72,6 +81,20 @@ public class BolusDetailActivity extends AppCompatActivity {
         mSupperEditText = findViewById(R.id.et_ceia);
         mDawnEditText = findViewById(R.id.et_madrugada);
     }
+
+    private void fillComponents() {
+        if (mBolusTableData == null) return;
+
+        mGlucoseEditText.setText(String.valueOf(mBolusTableData.getGlucose()));
+        mBreakFastEditText.setText(String.valueOf(mBolusTableData.getInsulin1()));
+        mBrunchEditText.setText(String.valueOf(mBolusTableData.getInsulin2()));
+        mLunchEditText.setText(String.valueOf(mBolusTableData.getInsulin3()));
+        mTeaEditText.setText(String.valueOf(mBolusTableData.getInsulin4()));
+        mDinnerEditText.setText(String.valueOf(mBolusTableData.getInsulin5()));
+        mSupperEditText.setText(String.valueOf(mBolusTableData.getInsulin6()));
+        mDawnEditText.setText(String.valueOf(mBolusTableData.getInsulin7()));
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

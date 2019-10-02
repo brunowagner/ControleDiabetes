@@ -33,7 +33,9 @@ public class BolusTableActivity extends AppCompatActivity {
     RecyclerView.OnScrollListener[] scrollListeners = new RecyclerView.OnScrollListener[2];
     boolean mEnableActionDelete = false;
     boolean mEnableActionEdit = false;
-    private HashMap<Integer,Integer> mSelectedItems;
+    private BolusTableData mSelectedItem;
+    //private HashMap<Integer,Integer> mSelectedItems;
+
 
     public static final int TAG_RECYCLERVIEW_GLUCOSE = 0;
     public static final int TAG_RECYCLERVIEW_BOLUS = 1;
@@ -120,9 +122,15 @@ public class BolusTableActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongClick(HashMap<Integer, Integer> selectedItems) {
+            public void onLongClick(HashMap<Integer, Integer> selectedItems, BolusTableData bolusTableData) {
                 mEnableActionDelete = selectedItems.size() > 0;
                 mEnableActionEdit = selectedItems.size() == 1;
+                mSelectedItem = bolusTableData;
+                if (bolusTableData == null){
+                    Log.d(TAG, "onLongClick: bolus data :" + null );
+                } else {
+                    Log.d(TAG+2, "onLongClick: bolus data :" + "not null" );
+                }
                 invalidateOptionsMenu();
             }
         };
@@ -173,6 +181,18 @@ public class BolusTableActivity extends AppCompatActivity {
         switch (id){
             case R.id.action_edit:
                 //TODO criar ação para botão de edição.
+                Intent intent1 = new Intent(this, BolusDetailActivity.class);
+                startActivity(intent1);
+
+                //Empacotando o objeto
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(BolusTableData.BUNDLE_STRING_KEY, mSelectedItem);
+
+                //passando o objeto na Intent
+                intent1.putExtras(bundle);
+
+                mBolusTableAdapter.unselectAllItems();
+                resetMenu();
                 return true;
 
             case R.id.action_delete:
@@ -185,9 +205,8 @@ public class BolusTableActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_add:
-                Context context = this;
-                Intent intent = new Intent(context, BolusDetailActivity.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(this, BolusDetailActivity.class);
+                startActivity(intent2);
                 mBolusTableAdapter.unselectAllItems();
                 resetMenu();
                 return true;

@@ -1,8 +1,11 @@
 package br.com.bwsystemssolutions.controlediabetes.classe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BolusTableData {
+public class BolusTableData implements Serializable {
+
+    public static final String BUNDLE_STRING_KEY = Record.class.toString();
 
     private int id;
     private int glucose;
