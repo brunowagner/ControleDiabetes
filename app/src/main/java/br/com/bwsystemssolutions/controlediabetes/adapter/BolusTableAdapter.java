@@ -399,6 +399,9 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         notifyDataSetChanged();
     }
     public void unselectAllItems(){
+        if (mSelectedItems == null || mSelectedItems.size() <= 0){
+            return;
+        }
         mSelectedItems.clear();
         notifyDataSetChanged();
     }

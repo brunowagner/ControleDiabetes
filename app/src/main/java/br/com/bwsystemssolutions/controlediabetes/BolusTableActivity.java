@@ -70,6 +70,7 @@ public class BolusTableActivity extends AppCompatActivity {
     private void resetMenu(){
         mEnableActionDelete = false;
         mEnableActionEdit = false;
+        mBolusTableAdapter.unselectAllItems();
         invalidateOptionsMenu();
     }
 
@@ -180,9 +181,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.action_edit:
-                //TODO criar ação para botão de edição.
                 Intent intent1 = new Intent(this, BolusDetailActivity.class);
-                startActivity(intent1);
 
                 //Empacotando o objeto
                 Bundle bundle = new Bundle();
@@ -190,8 +189,8 @@ public class BolusTableActivity extends AppCompatActivity {
 
                 //passando o objeto na Intent
                 intent1.putExtras(bundle);
+                startActivity(intent1);
 
-                mBolusTableAdapter.unselectAllItems();
                 resetMenu();
                 return true;
 
@@ -207,7 +206,7 @@ public class BolusTableActivity extends AppCompatActivity {
             case R.id.action_add:
                 Intent intent2 = new Intent(this, BolusDetailActivity.class);
                 startActivity(intent2);
-                mBolusTableAdapter.unselectAllItems();
+
                 resetMenu();
                 return true;
 
