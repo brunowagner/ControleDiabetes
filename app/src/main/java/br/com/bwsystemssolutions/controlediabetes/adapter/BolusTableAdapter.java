@@ -140,14 +140,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             return;
         }
 
-//        viewHolder.mMeal1.setText(bolusTableData.getMeal1());
-//        viewHolder.mMeal2.setText(bolusTableData.getMeal2());
-//        viewHolder.mMeal3.setText(bolusTableData.getMeal3());
-//        viewHolder.mMeal4.setText(bolusTableData.getMeal4());
-//        viewHolder.mMeal5.setText(bolusTableData.getMeal5());
-//        viewHolder.mMeal6.setText(bolusTableData.getMeal6());
-//        viewHolder.mMeal7.setText(bolusTableData.getMeal7());
-
         viewHolder.mInsul1.setText(String.valueOf(bolusTableData.getInsulin1()));
         viewHolder.mInsul2.setText(String.valueOf(bolusTableData.getInsulin2()));
         viewHolder.mInsul3.setText(String.valueOf(bolusTableData.getInsulin3()));
@@ -163,12 +155,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         viewHolder.mCard5.setTag(new FieldId(bolusTableData.getId(),5));
         viewHolder.mCard6.setTag(new FieldId(bolusTableData.getId(),6));
         viewHolder.mCard7.setTag(new FieldId(bolusTableData.getId(),7));
-
-//        if (mSelectedItems.containsKey(position)){
-//            viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
-//        } else {
-//            viewHolder.itemView.setBackgroundColor(Color.WHITE);
-//        }
     }
 
     @Override
@@ -208,14 +194,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         public  CardView mCard6;
         public  CardView mCard7;
 
-//        public  TextView mMeal1;
-//        public  TextView mMeal2;
-//        public  TextView mMeal3;
-//        public  TextView mMeal4;
-//        public  TextView mMeal5;
-//        public  TextView mMeal6;
-//        public  TextView mMeal7;
-
         public  TextView mInsul1;
         public  TextView mInsul2;
         public  TextView mInsul3;
@@ -245,14 +223,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             mCard6 = itemView.findViewById(R.id.cv_6);
             mCard7 = itemView.findViewById(R.id.cv_7);
 
-//            mMeal1 = itemView.findViewById(R.id.tv_meal_1);
-//            mMeal2 = itemView.findViewById(R.id.tv_meal_2);
-//            mMeal3 = itemView.findViewById(R.id.tv_meal_3);
-//            mMeal4 = itemView.findViewById(R.id.tv_meal_4);
-//            mMeal5 = itemView.findViewById(R.id.tv_meal_5);
-//            mMeal6 = itemView.findViewById(R.id.tv_meal_6);
-//            mMeal7 = itemView.findViewById(R.id.tv_meal_7);
-
             mInsul1 = itemView.findViewById(R.id.tv_insulin_1);
             mInsul2 = itemView.findViewById(R.id.tv_insulin_2);
             mInsul3 = itemView.findViewById(R.id.tv_insulin_3);
@@ -260,7 +230,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             mInsul5 = itemView.findViewById(R.id.tv_insulin_5);
             mInsul6 = itemView.findViewById(R.id.tv_insulin_6);
             mInsul7 = itemView.findViewById(R.id.tv_insulin_7);
-
 
             mCard1.setOnClickListener(this);
             mCard2.setOnClickListener(this);
@@ -344,46 +313,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     }
 
     public void refreshData(){
-
-//        String[] meals = context.getResources().getStringArray(R.array.meal_names_array);
-//
-//        Cursor cursor = getAllData();
-//        Log.d(TAG, "refreshData BolusTableAdapter: tamanho do cursor: " + cursor.getCount());
-//        if (cursor.getCount() <= 0) return;
-//
-//        ArrayList<BolusTableData> bolusTableDatas = new ArrayList<>();
-//
-//
-//        if (cursor.moveToFirst()){
-//
-//            do {
-//                BolusTableData bolusTableData = new BolusTableData();
-//
-//                bolusTableData.setGlucose(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME)));
-//
-//                bolusTableData.setMeal1(meals[1]);
-//                bolusTableData.setMeal2(meals[2]);
-//                bolusTableData.setMeal3(meals[3]);
-//                bolusTableData.setMeal4(meals[4]);
-//                bolusTableData.setMeal5(meals[5]);
-//                bolusTableData.setMeal6(meals[6]);
-//                bolusTableData.setMeal7(meals[7]);
-//
-//
-//                bolusTableData.setInsulin1(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BREAKFAST_NAME)));
-//                bolusTableData.setInsulin2(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME)));
-//                bolusTableData.setInsulin3(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME)));
-//                bolusTableData.setInsulin4(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME)));
-//                bolusTableData.setInsulin5(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME)));
-//                bolusTableData.setInsulin6(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME)));
-//                bolusTableData.setInsulin7(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME)));
-//
-//                bolusTableDatas.add(bolusTableData);
-//            }while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        setBolusTableData(bolusTableDatas);
-
         BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
         ArrayList<BolusTableData> bolusTableDatas = bolusTableDataDAO.fetchAll();
         setBolusTableData(bolusTableDatas);
@@ -418,7 +347,6 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
                 Log.d(TAG, "deleteSelectedItems: qtd selecionados: " + mSelectedItems.size());
             }
         }
-        //mSelectedItems.clear();
         notifyDataSetChanged();
         return cont;
     }
