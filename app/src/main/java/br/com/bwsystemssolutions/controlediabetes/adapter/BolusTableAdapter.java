@@ -35,6 +35,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     private final BolusTableAdapterOnClickHandler mClickHandler;
     private int mSelectedItem = ITEN_SELECT_NONE;
     private HashMap<Integer, Integer> mSelectedItems;
+    private FieldId fieldClicked;
 
     public static final int ITEN_SELECT_NONE = -1;
 
@@ -252,6 +253,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
+            fieldClicked = null;
             if (mSelectedItems.size() > 0) {
                 if (mSelectedItems.containsKey(position)) {
                     mSelectedItems.remove(position);
@@ -259,7 +261,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
                     mSelectedItems.put(position, position);
                 }
                 notifyDataSetChanged();
-                mClickHandler.onClick(null, mSelectedItem, mSelectedItems.size());
+                mClickHandler.onClick(null, mSelectedItem, mSelectedItems.size(), null, null);
                 return;
             }
 
@@ -267,8 +269,13 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
                 return;
             }
 
+            CardView cardView = (CardView)v;
+            TextView textView = (TextView) cardView.getChildAt(0);
+            String mealName = textView.getText().toString();
+            fieldClicked = (FieldId) cardView.getTag();
+
             BolusTableData bolusTableData = mBolusTableData.get(position);
-            mClickHandler.onClick(bolusTableData, mSelectedItem, 0);
+            mClickHandler.onClick(bolusTableData, mSelectedItem, 0, mealName, fieldClicked);
         }
 
         @Override
@@ -351,19 +358,69 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         return cont;
     }
 
+    public boolean updateSelectedItem(Double insuline){
+        if (fieldClicked == null) {
+            return false;
+        }
+
+        if (mSelectedItems.size() == 1) {
+
+        }
+        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
+        bolusTableDataDAO.update(mBolusTableData.get(mSelectedItem))
+    }
+
     public class FieldId{
-        public int id;
-        public int column;
+        private int id;
+        private int column;
+        private String columnName;
 
         public FieldId(int id, int column) {
             this.id = id;
             this.column = column;
+            this.columnName = convertIntToColumnName(column);
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getColumn() {
+            return column;
+        }
+
+        public void setColumn(int column) {
+            this.column = column;
+            this.columnName = convertIntToColumnName(column);
+        }
+
+        public String getColumnName() {
+            return columnName;
+        }
+
+        private String convertIntToColumnName(int column){
+            switch (column){
+                case 1: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_BREAKFAST_NAME;
+                case 2: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME;
+                case 3: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME;
+                case 4: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME;
+                case 5: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME;
+                case 6: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME;
+                case 7: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME;
+                default: return null;
+            }
         }
     }
 
     public interface BolusTableAdapterOnClickHandler{
-        void onClick(BolusTableData bolusTableData, int itemSelected, int SelectedItems);
+        void onClick(BolusTableData bolusTableData, int itemSelected, int SelectedItems, String mealName);
         void onLongClick(HashMap<Integer,Integer> selectedItens, BolusTableData bolusTableData);
     }
+
+
 
 }

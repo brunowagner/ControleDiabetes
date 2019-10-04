@@ -1,6 +1,7 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -99,7 +100,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
         final BolusTableAdapter.BolusTableAdapterOnClickHandler handler = new BolusTableAdapter.BolusTableAdapterOnClickHandler() {
             @Override
-            public void onClick(BolusTableData bolusTableData, int itemSelected, int selectedItems) {
+            public void onClick(BolusTableData bolusTableData, int itemSelected, int selectedItems, String mealName) {
 
                 if (mEnableActionDelete){
                     mEnableActionDelete = selectedItems > 0;
@@ -108,18 +109,30 @@ public class BolusTableActivity extends AppCompatActivity {
                     return;
                 }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
-                builder.setTitle("Alterar valor do Bolus")
-                        .setMessage("Digite o novo valor");
+                new AlertDialog.Builder(BolusTableActivity.this)
+                        .setTitle("Editar insulina do(a) " + mealName.toLowerCase())
+                        .setMessage("Deseja editar a quantidade de insulina desta refeição quando " +
+                                "a glicemia for maior ou igual a " + bolusTableData.getGlucose() + " ?")
+                        .setPositiveButton("Sim", null)
+                        .setNegativeButton("Não", null)
+                        .create()
+                        .show();
 
-                final EditText editText = new EditText(BolusTableActivity.this);
-                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                editText.setFilters(new InputFilter[] {Filters.DecimalDigits(3, 1)});
-                builder.setView(editText);
-                builder.setPositiveButton("OK", null);
-                builder.setNegativeButton("Cancelar", null);
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+
+//                AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
+//                builder.setTitle("Alterar valor do Bolus")
+//                        .setMessage("Digite o novo valor");
+//
+//                final EditText editText = new EditText(BolusTableActivity.this);
+//                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//                editText.setFilters(new InputFilter[] {Filters.DecimalDigits(3, 1)});
+//                builder.setView(editText);
+//                builder.setPositiveButton("OK", null);
+//                builder.setNegativeButton("Cancelar", null);
+//                final AlertDialog alertDialog = builder.create();
+//                alertDialog.show();
+
+
             }
 
             @Override
@@ -137,6 +150,44 @@ public class BolusTableActivity extends AppCompatActivity {
         };
         return handler;
     }
+
+    private void editFast(final BolusTableData bolusTableData, String mealName){
+        String glucose = String.valueOf(bolusTableData.getGlucose());
+        AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
+        builder.setTitle("Editar quantidade de insulina")
+                .setMessage("Digite quantas unidades a ser aplicada no(a) " + mealName +
+                        "quando a glicemia for uglua ou maior que " + glucose + ".");
+
+        final EditText editText = new EditText(BolusTableActivity.this);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editText.setFilters(new InputFilter[] {Filters.DecimalDigits(3, 1)});
+        builder.setView(editText);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mBolusTableAdapter.update(bolusTableData)
+            }
+        });
+        builder.setNegativeButton("Cancelar", null);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+//
+//    private void editFast(BolusTableData bolusTableData){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
+//        builder.setTitle("Alterar valor do Bolus")
+//                .setMessage("Digite o novo valor");
+//
+//        final EditText editText = new EditText(BolusTableActivity.this);
+//        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//        editText.setFilters(new InputFilter[] {Filters.DecimalDigits(3, 1)});
+//        builder.setView(editText);
+//        builder.setPositiveButton("OK", null);
+//        builder.setNegativeButton("Cancelar", null);
+//        final AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+//    }
 
     private void configureScrollListeners(){
         scrollListeners[0] = new RecyclerView.OnScrollListener( )
