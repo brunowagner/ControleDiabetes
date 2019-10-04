@@ -23,10 +23,7 @@ public class BolusDetailActivity extends AppCompatActivity {
 
     private BolusTableData mBolusTableData;
     private BolusTableDataDAO mBolusTableDataDAO;
-    SQLiteDatabase mDb;
     private boolean mEditAction = false;
-    private boolean saved = false;
-    private String mToastMessage = "";
 
     private EditText mGlucoseEditText;
     private EditText mBreakFastEditText; //café da manhã
@@ -44,6 +41,7 @@ public class BolusDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bolus_detail);
 
+        //Verifica se veio objeto e set a variavel que informa que trata-se de edição ou não.
         Intent intentThatStartedThisActivity = getIntent();
 
         if (intentThatStartedThisActivity.hasExtra(BolusTableData.BUNDLE_STRING_KEY)){
@@ -95,15 +93,6 @@ public class BolusDetailActivity extends AppCompatActivity {
         mDawnEditText.setText(String.valueOf(mBolusTableData.getInsulin7()));
     }
 
-    private boolean isSaved(){
-        return saved;
-    }
-
-    private void setSaved(boolean saved){
-        this.saved = saved;
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -126,17 +115,6 @@ public class BolusDetailActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void alert (Context context, String title, String message, String positiveButtonLable, DialogInterface.OnClickListener positiveClick, String cancelButtonLable, DialogInterface.OnClickListener cancelClick){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(positiveButtonLable, positiveClick)
-                .setNegativeButton(cancelButtonLable, cancelClick);
-
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 
     private DialogInterface.OnClickListener replaceClick(){
@@ -199,153 +177,4 @@ public class BolusDetailActivity extends AppCompatActivity {
         bolusTableData.setInsulin6(Converter.toDouble(mSupperEditText.getText().toString()));
         bolusTableData.setInsulin7(Converter.toDouble(mDawnEditText.getText().toString()));
     }
-
-    // Data
-
-//    private boolean saveData(){
-//        isSaved = false;
-//        boolean executed = false;
-//
-//        if (mBolusTableData == null || mBolusTableData.getId() == 0){
-//            if (!validateFields(true)) { return false;}
-//
-//            addRecord();
-//
-//        } else {
-//            if (!validateFields(false)) { return false;}
-//
-//            updateRecord();
-//        }
-//
-//        if (isSaved){ executed = true; }
-//
-//        return executed;
-//    }
-//
-//    private boolean validateFields(boolean isToSave){
-//        boolean validate = false;
-//        String message = "";
-//
-//        // se algum campo não for preenchido
-//        if (mDataEditText.getText().length() == 0 || mHoraEditText.getText().length() == 0 ) {
-//            //mEventoEditText.getText().length() == 0) {
-//
-//
-//            message = "A data, a hora ou o evento não foi preenchido!";
-//
-//        } else if (mCarboidratoEditText.getText().length() == 0 && mGlicemiaEditText.getText().length() == 0 &&
-//                mInsulinaBasalEditText.getText().length() == 0 && mInsulinaRapidaEditText.getText().length() == 0) {
-//
-//            message = "Preencha pelo menos um dos campos abaixo:\n" +
-//                    "- Carbohidrato\n" +
-//                    "- Glicemia\n" +
-//                    "- Insulina Rápida\n" +
-//                    "- Insulina Basal";
-//        } else if (isToSave && mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRegister(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )){
-//            message = "Data e hora ja' existem.\nO registro não pôde ser salvo.";
-//
-//        } else {
-//            validate = true;
-//        }
-//
-//        if (!validate) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//            builder.setMessage(message)
-//                    .setTitle("Atenção!")
-//                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            //do nothing
-//                        }
-//                    });
-//
-//            AlertDialog alert = builder.create();
-//            alert.show();
-//        }
-//
-//        return validate;
-//    }
-//
-//    private boolean existsRegister(String date, String time){
-//        String selection = CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + "=?";
-//        String[] args = new String[] { Utilidades.convertDateTimeToSQLiteFormat(date, time) };
-//
-//        Cursor cursor = mDb.query(CalculoDeBolusContract.RecordEntry.TABLE_NAME, new String[]{CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME}, selection, args, null, null, null);
-//
-//        Log.d("bwvm", "existsRegister: Tamanho do cursor: " + cursor.getCount());
-//        return cursor.getCount() > 0 ? true : false;
-//    }
-//
-//    private void addRecord(){
-//
-//        ContentValues cv = new ContentValues();
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
-//        //cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, String.valueOf(mEventSpinner.getSelectedItem()));
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME, String.valueOf(mMealSpinner.getSelectedItem()));
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_TIME_NAME, String.valueOf(mMealTimeSpinner.getSelectedItem()));
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, mMedicamentoCheckBox.getText().toString());
-//        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, mObservacaoEditText.getText().toString());
-//
-//        long saveds =  mDb.insert(CalculoDeBolusContract.RecordEntry.TABLE_NAME, null, cv);
-//
-//        if (saveds > 0) {
-//            isSaved = true;
-//            Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
-//            finish();
-//        } else {
-//            isSaved = false;
-//            Toast.makeText(getApplicationContext(), "Não foi possível salvar!", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//
-//    private void updateRecord(){
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("Deseja realmente alterar o registro?")
-//                .setTitle("Atenção!")
-//                .setNegativeButton("Cancelar", null)
-//                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Log.d("bwvm", "updateRecord: Iniciou");
-//                        ContentValues cv = new ContentValues();
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
-//                        //cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, String.valueOf(mEventSpinner.getSelectedItem()));
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME, String.valueOf(mMealSpinner.getSelectedItem()));
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_TIME_NAME, String.valueOf(mMealTimeSpinner.getSelectedItem()));
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, mMedicamentoCheckBox.getText().toString());
-//                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, mObservacaoEditText.getText().toString());
-//
-//                        String where = CalculoDeBolusContract.RecordEntry._ID + "=" + mRecord.getId();
-//
-//                        Log.d("bwvm", "onClick: fara o update!");
-//                        int saveds = mDb.update(CalculoDeBolusContract.RecordEntry.TABLE_NAME, cv, where, null);
-//
-//                        if (saveds > 0) {
-//                            isSaved = true;
-//                            Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                        } else {
-//                            isSaved = false;
-//                            Toast.makeText(getApplicationContext(), "Não foi possível salvar!", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                    }
-//                });
-//
-//        AlertDialog alert = builder.create();
-//        alert.show();
-//    }
 }
