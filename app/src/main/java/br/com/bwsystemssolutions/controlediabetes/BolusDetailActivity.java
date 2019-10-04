@@ -1,27 +1,20 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.zip.Inflater;
-
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
-import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
-import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableDataDAO;
 import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 import br.com.bwsystemssolutions.controlediabetes.util.Filters;
@@ -30,6 +23,9 @@ public class BolusDetailActivity extends AppCompatActivity {
 
     private BolusTableData mBolusTableData;
     SQLiteDatabase mDb;
+    private boolean mEditAction = false;
+    private boolean saved = false;
+    private String mToastMessage = "";
 
     private EditText mGlucoseEditText;
     private EditText mBreakFastEditText; //café da manhã
@@ -52,6 +48,7 @@ public class BolusDetailActivity extends AppCompatActivity {
         if (intentThatStartedThisActivity.hasExtra(BolusTableData.BUNDLE_STRING_KEY)){
             Bundle bundle = intentThatStartedThisActivity.getExtras();
             mBolusTableData = (BolusTableData) bundle.getSerializable(BolusTableData.BUNDLE_STRING_KEY);
+            mEditAction = true;
         }
 
         initComponents();
@@ -95,6 +92,14 @@ public class BolusDetailActivity extends AppCompatActivity {
         mDawnEditText.setText(String.valueOf(mBolusTableData.getInsulin7()));
     }
 
+    private boolean isSaved(){
+        return saved;
+    }
+
+    private void setSaved(boolean saved){
+        this.saved = saved;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,13 +114,12 @@ public class BolusDetailActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.action_save:
-                // TODO criar ação para salvar o registro
-                boolean saved = save();
-                if (saved){
-                    Toast.makeText(this,"Salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                save();
+                if (isSaved()){
+                    //Toast.makeText(this,mToastMessage, Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(this,"Não foi possível salvar!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this,mToastMessage, Toast.LENGTH_SHORT).show();
                 }
                 return true;
             default:
@@ -123,8 +127,72 @@ public class BolusDetailActivity extends AppCompatActivity {
         }
     }
 
-    private boolean save(){
-        BolusTableData bolusTableData = new BolusTableData();
+    private void alert (Context context, String title, String message, String positiveButtonLable, DialogInterface.OnClickListener positiveClick, String cancelButtonLable, DialogInterface.OnClickListener cancelClick){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveButtonLable, positiveClick)
+                .setNegativeButton(cancelButtonLable, cancelClick);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void save(){
+
+        final BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(this);
+
+        mBolusTableData = bolusTableDataDAO.fetchByGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
+
+        if (mBolusTableData != null) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Atenção!")
+                    .setMessage("Glicemia informada já existe.\n" +
+                            "Deseja substituir?.")
+                    .setPositiveButton("Substituir", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            fillObjectWithActivityData(mBolusTableData);
+                            final boolean updated = bolusTableDataDAO.update(mBolusTableData);
+                            if (updated){
+                                Toast.makeText(BolusDetailActivity.this,"Alterado com sucesso!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(BolusDetailActivity.this,"Alteração não realizada!", Toast.LENGTH_SHORT).show();
+                            }
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("Cancelar", null);
+
+            final AlertDialog alertDialog = builder.create();
+
+            alertDialog.show();
+
+        } else {
+            mBolusTableData = new BolusTableData();
+            fillObjectWithActivityData(mBolusTableData);
+             bolusTableDataDAO.add(mBolusTableData);
+        }
+
+
+    }
+
+    private void toast(String message, int toastDur){
+        Toast.makeText(this, message, toastDur).show();
+    }
+
+    private boolean update(){
+        if (mEditAction){
+            fillObjectWithActivityData(mBolusTableData);
+        } else {
+            //TODO else;
+        }
+
+        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(this);
+        return bolusTableDataDAO.add(mBolusTableData);
+    }
+
+    private void fillObjectWithActivityData(BolusTableData bolusTableData) {
         bolusTableData.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
         bolusTableData.setInsulin1(Converter.toDouble(mBreakFastEditText.getText().toString()));
         bolusTableData.setInsulin2(Converter.toDouble(mBrunchEditText.getText().toString()));
@@ -133,9 +201,6 @@ public class BolusDetailActivity extends AppCompatActivity {
         bolusTableData.setInsulin5(Converter.toDouble(mDinnerEditText.getText().toString()));
         bolusTableData.setInsulin6(Converter.toDouble(mSupperEditText.getText().toString()));
         bolusTableData.setInsulin7(Converter.toDouble(mDawnEditText.getText().toString()));
-
-        BolusTableDataDAO bolusTableDataDAO= new BolusTableDataDAO(this);
-        return bolusTableDataDAO.add(bolusTableData);
     }
 
     // Data

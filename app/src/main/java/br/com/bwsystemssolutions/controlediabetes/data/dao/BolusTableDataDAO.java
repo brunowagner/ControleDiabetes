@@ -50,16 +50,17 @@ public class BolusTableDataDAO {
     public boolean update (BolusTableData bolusTableData){
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = parseToContentValues(bolusTableData);
-        return db.update (TABLE_NAME, cv, "WHERE " + COLUMN_ID_NAME + " = ?", new String[] {bolusTableData.getId() + ""}) > 0;
+        return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolusTableData.getId() + ""}) > 0;
     }
 
 
     public BolusTableData fetchById(int id){
-        final SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID_NAME + " = ?";
-        final Cursor cursor = db.rawQuery(sqlString, new String[] {String.valueOf(id)});
-
-        return parseToBoluslusTableDatas(cursor).get(0);
+        return fetchBy(COLUMN_ID_NAME, id);
+//        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+//        String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID_NAME + " = ?";
+//        final Cursor cursor = db.rawQuery(sqlString, new String[] {String.valueOf(id)});
+//
+//        return parseToBoluslusTableDatas(cursor).get(0);
     }
 
     @NonNull
@@ -94,5 +95,18 @@ public class BolusTableDataDAO {
         }
         cursor.close();
         return bolusTableDatas;
+    }
+
+    public BolusTableData fetchByGlucose(int glucose) {
+        return fetchBy(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME, glucose);
+    }
+
+    private BolusTableData fetchBy(String fiend, int value){
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + fiend + " = ?";
+        final Cursor cursor = db.rawQuery(sqlString, new String[] {String.valueOf(value)});
+        final BolusTableData bolusTableData = parseToBoluslusTableDatas(cursor).get(0);
+        db.close();
+        return bolusTableData;
     }
 }
