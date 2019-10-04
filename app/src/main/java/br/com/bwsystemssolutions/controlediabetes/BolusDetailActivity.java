@@ -22,6 +22,7 @@ import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 public class BolusDetailActivity extends AppCompatActivity {
 
     private BolusTableData mBolusTableData;
+    private BolusTableDataDAO mBolusTableDataDAO;
     SQLiteDatabase mDb;
     private boolean mEditAction = false;
     private boolean saved = false;
@@ -50,6 +51,8 @@ public class BolusDetailActivity extends AppCompatActivity {
             mBolusTableData = (BolusTableData) bundle.getSerializable(BolusTableData.BUNDLE_STRING_KEY);
             mEditAction = true;
         }
+
+        mBolusTableDataDAO = new BolusTableDataDAO(this);
 
         initComponents();
         setFilters();
@@ -114,12 +117,10 @@ public class BolusDetailActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.action_save:
-                save();
-                if (isSaved()){
-                    //Toast.makeText(this,mToastMessage, Toast.LENGTH_SHORT).show();
-                    finish();
+                if (mEditAction) {
+                    update();
                 } else {
-                    //Toast.makeText(this,mToastMessage, Toast.LENGTH_SHORT).show();
+                    save();
                 }
                 return true;
             default:
@@ -138,58 +139,54 @@ public class BolusDetailActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    private DialogInterface.OnClickListener replaceClick(){
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                fillObjectWithActivityData(mBolusTableData);
+                final boolean updated = mBolusTableDataDAO.update(mBolusTableData);
+                if (updated){
+                    Toast.makeText(BolusDetailActivity.this,"Alterado com sucesso!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(BolusDetailActivity.this,"Alteração não realizada!", Toast.LENGTH_SHORT).show();
+                }
+                finish();
+            }
+        };
+    }
+
     private void save(){
+        mBolusTableData = mBolusTableDataDAO.fetchByGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
 
-        final BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(this);
-
-        mBolusTableData = bolusTableDataDAO.fetchByGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
-
+        //Se já existir a glicemia
         if (mBolusTableData != null) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Atenção!")
-                    .setMessage("Glicemia informada já existe.\n" +
-                            "Deseja substituir?.")
-                    .setPositiveButton("Substituir", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            fillObjectWithActivityData(mBolusTableData);
-                            final boolean updated = bolusTableDataDAO.update(mBolusTableData);
-                            if (updated){
-                                Toast.makeText(BolusDetailActivity.this,"Alterado com sucesso!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(BolusDetailActivity.this,"Alteração não realizada!", Toast.LENGTH_SHORT).show();
-                            }
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("Cancelar", null);
-
-            final AlertDialog alertDialog = builder.create();
-
-            alertDialog.show();
+            new AlertDialog.Builder(this)
+                    .setTitle("Atenção!")
+                    .setMessage("Glicemia informada já existe.\nDeseja substituir?")
+                    .setPositiveButton("Substituir", replaceClick())//new DialogInterface.OnClickListener() {
+                    .setNegativeButton("Cancelar", null)
+                    .create()
+                    .show();
 
         } else {
             mBolusTableData = new BolusTableData();
             fillObjectWithActivityData(mBolusTableData);
-             bolusTableDataDAO.add(mBolusTableData);
+             mBolusTableDataDAO.add(mBolusTableData);
+            Toast.makeText(BolusDetailActivity.this,"Salvo com sucesso!", Toast.LENGTH_SHORT).show();
+            finish();
         }
-
-
-    }
-
-    private void toast(String message, int toastDur){
-        Toast.makeText(this, message, toastDur).show();
     }
 
     private boolean update(){
-        if (mEditAction){
-            fillObjectWithActivityData(mBolusTableData);
+        fillObjectWithActivityData(mBolusTableData);
+        boolean updated = mBolusTableDataDAO.update(mBolusTableData);
+        if (updated) {
+            Toast.makeText(BolusDetailActivity.this,"Editado com sucesso!", Toast.LENGTH_SHORT).show();
+            finish();
         } else {
-            //TODO else;
+            Toast.makeText(BolusDetailActivity.this,"Não foi possível editar!", Toast.LENGTH_SHORT).show();
         }
-
-        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(this);
-        return bolusTableDataDAO.add(mBolusTableData);
+        return updated;
     }
 
     private void fillObjectWithActivityData(BolusTableData bolusTableData) {

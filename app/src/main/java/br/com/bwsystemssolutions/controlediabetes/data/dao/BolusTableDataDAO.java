@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import org.apache.commons.collections.list.CursorableLinkedList;
-
 import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
@@ -27,7 +25,7 @@ public class BolusTableDataDAO {
     public ArrayList<BolusTableData> fetchAll(){
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         final Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME,null);
-        return parseToBoluslusTableDatas(cursor);
+        return parseToBolusTableDatas(cursor);
     }
 
     public boolean add (BolusTableData bolusTableData){
@@ -60,7 +58,7 @@ public class BolusTableDataDAO {
 //        String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID_NAME + " = ?";
 //        final Cursor cursor = db.rawQuery(sqlString, new String[] {String.valueOf(id)});
 //
-//        return parseToBoluslusTableDatas(cursor).get(0);
+//        return parseToBolusTableDatas(cursor).get(0);
     }
 
     @NonNull
@@ -77,7 +75,7 @@ public class BolusTableDataDAO {
         return cv;
     }
 
-    private ArrayList<BolusTableData> parseToBoluslusTableDatas(Cursor cursor){
+    private ArrayList<BolusTableData> parseToBolusTableDatas(Cursor cursor){
         ArrayList<BolusTableData> bolusTableDatas = new ArrayList<>();
 
         while(cursor.moveToNext()){
@@ -105,8 +103,12 @@ public class BolusTableDataDAO {
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + fiend + " = ?";
         final Cursor cursor = db.rawQuery(sqlString, new String[] {String.valueOf(value)});
-        final BolusTableData bolusTableData = parseToBoluslusTableDatas(cursor).get(0);
+        final ArrayList<BolusTableData> bolusTableDatas = parseToBolusTableDatas(cursor);
         db.close();
-        return bolusTableData;
+        if (bolusTableDatas.size() == 0){
+            return null;
+        }
+        return bolusTableDatas.get(0);
+
     }
 }
