@@ -3,6 +3,7 @@ package br.com.bwsystemssolutions.controlediabetes;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.renderscript.Sampler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import java.util.zip.Inflater;
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
+import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 
 
@@ -100,7 +102,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
         final BolusTableAdapter.BolusTableAdapterOnClickHandler handler = new BolusTableAdapter.BolusTableAdapterOnClickHandler() {
             @Override
-            public void onClick(BolusTableData bolusTableData, int itemSelected, int selectedItems, String mealName) {
+            public void onClick(final BolusTableData bolusTableData, int itemSelected, int selectedItems, final String mealName, final BolusTableAdapter.FieldId fieldId) {
 
                 if (mEnableActionDelete){
                     mEnableActionDelete = selectedItems > 0;
@@ -113,7 +115,12 @@ public class BolusTableActivity extends AppCompatActivity {
                         .setTitle("Editar insulina do(a) " + mealName.toLowerCase())
                         .setMessage("Deseja editar a quantidade de insulina desta refeição quando " +
                                 "a glicemia for maior ou igual a " + bolusTableData.getGlucose() + " ?")
-                        .setPositiveButton("Sim", null)
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                editFast(bolusTableData,mealName,fieldId);
+                            }
+                        })
                         .setNegativeButton("Não", null)
                         .create()
                         .show();
@@ -151,7 +158,7 @@ public class BolusTableActivity extends AppCompatActivity {
         return handler;
     }
 
-    private void editFast(final BolusTableData bolusTableData, String mealName){
+    private void editFast(final BolusTableData bolusTableData, final String mealName, final BolusTableAdapter.FieldId fieldId){
         String glucose = String.valueOf(bolusTableData.getGlucose());
         AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
         builder.setTitle("Editar quantidade de insulina")
@@ -165,7 +172,14 @@ public class BolusTableActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mBolusTableAdapter.update(bolusTableData)
+                if (editText.getText().length() == 0){
+                    return; // n~ao faz nada
+                }
+                Double newValue = Converter.toDouble(editText.getText().toString());
+                boolean updated = mBolusTableAdapter.updateSelectedItem(fieldId.getColumnName(),newValue);
+                String message = "";
+                message = updated ? "Insulina alterada!" : "Erro ao alterar!";
+                Toast.makeText(BolusTableActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("Cancelar", null);

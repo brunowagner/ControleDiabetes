@@ -51,6 +51,13 @@ public class BolusTableDataDAO {
         return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolusTableData.getId() + ""}) > 0;
     }
 
+    public boolean updateInsulineField (BolusTableData bolusTableData, String fieldName, Double value){
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(fieldName, value);
+        return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolusTableData.getId() + ""}) > 0;
+    }
+
 
     public BolusTableData fetchById(int id){
         return fetchBy(COLUMN_ID_NAME, id);

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -149,13 +150,13 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         viewHolder.mInsul6.setText(String.valueOf(bolusTableData.getInsulin6()));
         viewHolder.mInsul7.setText(String.valueOf(bolusTableData.getInsulin7()));
 
-        viewHolder.mCard1.setTag(new FieldId(bolusTableData.getId(),1));
-        viewHolder.mCard2.setTag(new FieldId(bolusTableData.getId(),2));
-        viewHolder.mCard3.setTag(new FieldId(bolusTableData.getId(),3));
-        viewHolder.mCard4.setTag(new FieldId(bolusTableData.getId(),4));
-        viewHolder.mCard5.setTag(new FieldId(bolusTableData.getId(),5));
-        viewHolder.mCard6.setTag(new FieldId(bolusTableData.getId(),6));
-        viewHolder.mCard7.setTag(new FieldId(bolusTableData.getId(),7));
+        viewHolder.mCard1.setTag(new FieldId(bolusTableData.getId(),CalculoDeBolusContract.BolusTable2Entry.COLUMN_BREAKFAST_NAME));
+        viewHolder.mCard2.setTag(new FieldId(bolusTableData.getId(),CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME));
+        viewHolder.mCard3.setTag(new FieldId(bolusTableData.getId(),CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME));
+        viewHolder.mCard4.setTag(new FieldId(bolusTableData.getId(),CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME));
+        viewHolder.mCard5.setTag(new FieldId(bolusTableData.getId(),CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME));
+        viewHolder.mCard6.setTag(new FieldId(bolusTableData.getId(),CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME));
+        viewHolder.mCard7.setTag(new FieldId(bolusTableData.getId(),CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME));
     }
 
     @Override
@@ -260,6 +261,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
                 } else {
                     mSelectedItems.put(position, position);
                 }
+                mSelectedItem = ITEN_SELECT_NONE;
                 notifyDataSetChanged();
                 mClickHandler.onClick(null, mSelectedItem, mSelectedItems.size(), null, null);
                 return;
@@ -270,9 +272,11 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             }
 
             CardView cardView = (CardView)v;
-            TextView textView = (TextView) cardView.getChildAt(0);
+            LinearLayout linearLayout = (LinearLayout) cardView.getChildAt(0);
+            TextView textView = (TextView) linearLayout.getChildAt(0);
             String mealName = textView.getText().toString();
             fieldClicked = (FieldId) cardView.getTag();
+            mSelectedItem = position;
 
             BolusTableData bolusTableData = mBolusTableData.get(position);
             mClickHandler.onClick(bolusTableData, mSelectedItem, 0, mealName, fieldClicked);
@@ -281,6 +285,8 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         @Override
         public boolean onLongClick(View v) {
             int clickedItem = getAdapterPosition();
+            mSelectedItem = ITEN_SELECT_NONE;
+            fieldClicked = null;
             if (mSelectedItems.containsKey(clickedItem)){
                 mSelectedItems.remove(clickedItem);
             } else {
@@ -290,6 +296,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             BolusTableData bolusTableData = null;
             if (mSelectedItems.size() == 1){
                 bolusTableData = mBolusTableData.get(clickedItem);
+                mSelectedItem = clickedItem;
             }
             mClickHandler.onLongClick(mSelectedItems, bolusTableData);
 
@@ -358,27 +365,24 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         return cont;
     }
 
-    public boolean updateSelectedItem(Double insuline){
-        if (fieldClicked == null) {
+    public boolean updateSelectedItem(String fieldName, Double insuline){
+        if (fieldName == null){
             return false;
         }
-
-        if (mSelectedItems.size() == 1) {
-
+        if (mSelectedItems.size() != 1) {
+            return false;
         }
         BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
-        bolusTableDataDAO.update(mBolusTableData.get(mSelectedItem))
+        return bolusTableDataDAO.updateInsulineField(mBolusTableData.get(mSelectedItem),fieldName,insuline);
     }
 
     public class FieldId{
         private int id;
-        private int column;
         private String columnName;
 
-        public FieldId(int id, int column) {
+        public FieldId(int id, String columnName) {
             this.id = id;
-            this.column = column;
-            this.columnName = convertIntToColumnName(column);
+            this.columnName = columnName;
         }
 
         public int getId() {
@@ -389,35 +393,18 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             this.id = id;
         }
 
-        public int getColumn() {
-            return column;
-        }
-
-        public void setColumn(int column) {
-            this.column = column;
-            this.columnName = convertIntToColumnName(column);
-        }
-
         public String getColumnName() {
             return columnName;
         }
 
-        private String convertIntToColumnName(int column){
-            switch (column){
-                case 1: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_BREAKFAST_NAME;
-                case 2: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME;
-                case 3: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME;
-                case 4: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME;
-                case 5: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME;
-                case 6: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME;
-                case 7: return CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME;
-                default: return null;
-            }
+        public void setColumnName(String columnName) {
+            this.columnName = columnName;
         }
+
     }
 
     public interface BolusTableAdapterOnClickHandler{
-        void onClick(BolusTableData bolusTableData, int itemSelected, int SelectedItems, String mealName);
+        void onClick(BolusTableData bolusTableData, int itemSelected, int SelectedItems, String mealName, FieldId fieldId);
         void onLongClick(HashMap<Integer,Integer> selectedItens, BolusTableData bolusTableData);
     }
 
