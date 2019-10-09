@@ -35,10 +35,12 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     private Context context;
     private final BolusTableAdapterOnClickHandler mClickHandler;
     private int mSelectedItem = ITEN_SELECT_NONE;
+    private int mClickedItem;
     private HashMap<Integer, Integer> mSelectedItems;
     private FieldId fieldClicked;
 
     public static final int ITEN_SELECT_NONE = -1;
+
 
     public BolusTableAdapter (Context context, CalculoDeBolusDBHelper dbHelper, BolusTableAdapterOnClickHandler clickHandler){
         this.context = context;
@@ -254,6 +256,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
+            mClickedItem = position;
             fieldClicked = null;
             if (mSelectedItems.size() > 0) {
                 if (mSelectedItems.containsKey(position)) {
@@ -263,7 +266,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
                 }
                 mSelectedItem = ITEN_SELECT_NONE;
                 notifyDataSetChanged();
-                mClickHandler.onClick(null, mSelectedItem, mSelectedItems.size(), null, null);
+                mClickHandler.onClick(null, mClickedItem, mSelectedItems.size(), null, null);
                 return;
             }
 
@@ -279,7 +282,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             mSelectedItem = position;
 
             BolusTableData bolusTableData = mBolusTableData.get(position);
-            mClickHandler.onClick(bolusTableData, mSelectedItem, 0, mealName, fieldClicked);
+            mClickHandler.onClick(bolusTableData, mClickedItem, 0, mealName, fieldClicked);
         }
 
         @Override
@@ -365,15 +368,30 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         return cont;
     }
 
-    public boolean updateSelectedItem(String fieldName, Double insuline){
-        if (fieldName == null){
+//    public boolean updateClickedItem(String fieldName, Double insuline){
+//        if (fieldName == null){
+//            Log.d(TAG, "updateClickedItem: fieldName = null");
+//            return false;
+//        }
+//        if (mSelectedItems.size() != 1) {
+//            Log.d(TAG, "updateClickedItem: mselectedItens diferente de 1");
+//            return false;
+//        }
+//        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
+//        return bolusTableDataDAO.updateInsulineField(mBolusTableData.get(mClickedItem),fieldName,insuline);
+//    }
+
+    public boolean updateItem(BolusTableData bolusTableData, String fieldName, Double insuline){
+        int id = bolusTableData.getId();
+        if (id <= 0){
+            Log.d("Error", "updateItem: Item have no id.");
             return false;
         }
-        if (mSelectedItems.size() != 1) {
-            return false;
-        }
+
         BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
-        return bolusTableDataDAO.updateInsulineField(mBolusTableData.get(mSelectedItem),fieldName,insuline);
+        boolean updated = bolusTableDataDAO.updateInsulineField(bolusTableData,fieldName,insuline);
+        if (updated) refreshData();
+        return updated;
     }
 
     public class FieldId{
@@ -404,7 +422,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     }
 
     public interface BolusTableAdapterOnClickHandler{
-        void onClick(BolusTableData bolusTableData, int itemSelected, int SelectedItems, String mealName, FieldId fieldId);
+        void onClick(BolusTableData bolusTableData, int clickedItem, int SelectedItems, String mealName, FieldId fieldId);
         void onLongClick(HashMap<Integer,Integer> selectedItens, BolusTableData bolusTableData);
     }
 

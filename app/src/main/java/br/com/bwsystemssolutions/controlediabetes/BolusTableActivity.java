@@ -1,9 +1,7 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.renderscript.Sampler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,14 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import java.util.HashMap;
-import java.util.zip.Inflater;
 
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
@@ -112,9 +113,8 @@ public class BolusTableActivity extends AppCompatActivity {
                 }
 
                 new AlertDialog.Builder(BolusTableActivity.this)
-                        .setTitle("Editar insulina do(a) " + mealName.toLowerCase())
-                        .setMessage("Deseja editar a quantidade de insulina desta refeição quando " +
-                                "a glicemia for maior ou igual a " + bolusTableData.getGlucose() + " ?")
+                        .setTitle("Glicemia a patir de " + bolusTableData.getGlucose() + "mg/dl")
+                        .setMessage("Deseja editar a insulina do(a) " + mealName + " ?")
                         .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -124,22 +124,6 @@ public class BolusTableActivity extends AppCompatActivity {
                         .setNegativeButton("Não", null)
                         .create()
                         .show();
-
-
-//                AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
-//                builder.setTitle("Alterar valor do Bolus")
-//                        .setMessage("Digite o novo valor");
-//
-//                final EditText editText = new EditText(BolusTableActivity.this);
-//                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-//                editText.setFilters(new InputFilter[] {Filters.DecimalDigits(3, 1)});
-//                builder.setView(editText);
-//                builder.setPositiveButton("OK", null);
-//                builder.setNegativeButton("Cancelar", null);
-//                final AlertDialog alertDialog = builder.create();
-//                alertDialog.show();
-
-
             }
 
             @Override
@@ -161,22 +145,30 @@ public class BolusTableActivity extends AppCompatActivity {
     private void editFast(final BolusTableData bolusTableData, final String mealName, final BolusTableAdapter.FieldId fieldId){
         String glucose = String.valueOf(bolusTableData.getGlucose());
         AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
-        builder.setTitle("Editar quantidade de insulina")
-                .setMessage("Digite quantas unidades a ser aplicada no(a) " + mealName +
-                        "quando a glicemia for uglua ou maior que " + glucose + ".");
+        builder.setTitle("Insira a nova quantidade de insulina (U):");
+
+        FrameLayout container = new FrameLayout(BolusTableActivity.this);
+        FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int px = Converter.toPx(BolusTableActivity.this, 30);
+        params.leftMargin = px;
+        params.rightMargin = px;
 
         final EditText editText = new EditText(BolusTableActivity.this);
+        editText.setLayoutParams(params);
+        container.addView(editText);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         editText.setFilters(new InputFilter[] {Filters.DecimalDigits(3, 1)});
-        builder.setView(editText);
+        builder.setView(container);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "onClick: botao ok apertado -------------------------------------");
                 if (editText.getText().length() == 0){
+                    Log.d(TAG, "onClick: edittext e vazio --------------------------------------------------");
                     return; // n~ao faz nada
                 }
                 Double newValue = Converter.toDouble(editText.getText().toString());
-                boolean updated = mBolusTableAdapter.updateSelectedItem(fieldId.getColumnName(),newValue);
+                boolean updated = mBolusTableAdapter.updateItem(bolusTableData, fieldId.getColumnName(),newValue);
                 String message = "";
                 message = updated ? "Insulina alterada!" : "Erro ao alterar!";
                 Toast.makeText(BolusTableActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -186,22 +178,6 @@ public class BolusTableActivity extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
-//
-//    private void editFast(BolusTableData bolusTableData){
-//        AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
-//        builder.setTitle("Alterar valor do Bolus")
-//                .setMessage("Digite o novo valor");
-//
-//        final EditText editText = new EditText(BolusTableActivity.this);
-//        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-//        editText.setFilters(new InputFilter[] {Filters.DecimalDigits(3, 1)});
-//        builder.setView(editText);
-//        builder.setPositiveButton("OK", null);
-//        builder.setNegativeButton("Cancelar", null);
-//        final AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//    }
 
     private void configureScrollListeners(){
         scrollListeners[0] = new RecyclerView.OnScrollListener( )
