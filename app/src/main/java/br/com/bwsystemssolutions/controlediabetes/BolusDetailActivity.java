@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableDataDAO;
+import br.com.bwsystemssolutions.controlediabetes.util.Alert;
 import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 
@@ -156,6 +157,16 @@ public class BolusDetailActivity extends AppCompatActivity {
     }
 
     private boolean update(){
+
+
+        int glucose = Converter.toInt(mGlucoseEditText.getText().toString());
+
+        if (glucose != mBolusTableData.getGlucose() && existsGlucose(glucose)) {
+            Alert.ok(this,"Atenção!",
+                    "Este valor de glicemia já está configurado.\nUtilize outro valor de glicemia que ainda não foi utilizado.", "Ok", null).show();
+            return false;
+        }
+
         fillObjectWithActivityData(mBolusTableData);
         boolean updated = mBolusTableDataDAO.update(mBolusTableData);
         if (updated) {
@@ -165,6 +176,10 @@ public class BolusDetailActivity extends AppCompatActivity {
             Toast.makeText(BolusDetailActivity.this,"Não foi possível editar!", Toast.LENGTH_SHORT).show();
         }
         return updated;
+    }
+
+    private boolean existsGlucose(int glucose){
+        return mBolusTableDataDAO.fetchByGlucose(glucose) != null;
     }
 
     private void fillObjectWithActivityData(BolusTableData bolusTableData) {
