@@ -9,6 +9,15 @@
         android:targetClass="br.com.bwsystemssolutions.controlediabetes.GlucoseActivity" />
     </Preference>
 
+    <!--TODO colocar em strings-->
+    <Preference
+        android:key="BolusSettingsKey"
+        android:title="Cálculo de Insulina"
+        android:summary="Define o método para calcular a quantidade de insulina a ser aplicada.">
+        <intent android:targetPackage="br.com.bwsystemssolutions.controlediabetes"
+            android:targetClass="br.com.bwsystemssolutions.controlediabetes.BolusCalculateConfig" />
+    </Preference>
+
     <Preference
         android:key="@string/pref_bloco_de_tempo_key"
         android:title="@string/pref_bloco_de_tempo_title"
