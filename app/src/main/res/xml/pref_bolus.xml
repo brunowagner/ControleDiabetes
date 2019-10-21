@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="@string/pref_bolus_select_method_category_key"
+        android:title="@string/pref_bolus_select_method_category_title">
+
+        <ListPreference
+            android:key="@string/pref_bolus_list_method_key"
+            android:title="@string/pref_bolus_list_method_title"
+            android:summary="@string/pref_bolus_list_method_summary"
+            android:entries="@array/bolus_method_names_array"
+            android:entryValues="@array/bolus_method_values_array"
+            android:defaultValue="0"></ListPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/pref_backup_autobackup_category_key"
+        android:title="Configuração dos Métodos">
+
+        <Preference
+            android:key="@string/pref_bolus_configure_table_key"
+            android:title="@string/pref_bolus_configure_table_title"
+            android:summary="@string/pref_bolus_configure_table_summary"/>
+
+        <Preference
+            android:key="@string/pref_bolus_configure_calculate_key"
+            android:title="@string/pref_bolus_configure_calculate_title"
+            android:summary="@string/pref_bolus_configure_calculate_summary"/>
+
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

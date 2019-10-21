@@ -49,7 +49,7 @@
     <string name="pref_backup_list_peri_summary">Selecione de quanto em quanto tempo o backup sera criado.</string>
 
     <string name="pref_backup_adm_category_key">backup_adm_category_key</string>
-    <string name="pref_backup_adm_title">Administracao de Backup</string>
+    <string name="pref_backup_adm_category_title">Administracao de Backup</string>
 
     <string name="pref_backup_create_key">backup_create_key</string>
     <string name="pref_backup_create_title">Criar Backup</string>
@@ -58,6 +58,24 @@
     <string name="pref_backup_restore_key">backup_restore_key</string>
     <string name="pref_backup_restore_title">Recuperar Dados</string>
     <string name="pref_backup_restore_summary">Recuperar os dados apartir de um backup criado anteriormente.</string>
+
+    <string name="pref_bolus_select_method_category_key">bolus_select_method_key</string>
+    <string name="pref_bolus_select_method_category_title">Seleção do método utilizado para encontrar a quantidade de insulina necessária para o bólus</string>
+
+    <string name="pref_bolus_configure_method_category_key">bolus_configure_method_key</string>
+    <string name="pref_bolus_configure_method_category_title">Configuração dos Métodos</string>
+
+    <string name="pref_bolus_list_method_key">bolus_list_method_key</string>
+    <string name="pref_bolus_list_method_title">Método</string>
+    <string name="pref_bolus_list_method_summary">Método utilizado para encontrar a quantidade de insulina necessária para o bólus: </string>
+
+    <string name="pref_bolus_configure_table_key">bolus_configure_table_key</string>
+    <string name="pref_bolus_configure_table_title">Tabela de Insulina</string>
+    <string name="pref_bolus_configure_table_summary">Configura a tabela de insulina conforme a glicemia e a refeição.</string>
+
+    <string name="pref_bolus_configure_calculate_key">bolus_configure_calculate_key</string>
+    <string name="pref_bolus_configure_calculate_title">Cáculo de bolus</string>
+    <string name="pref_bolus_configure_calculate_summary">Configura blocos de tempo com informações necessárias para o cáculo de insulina do bólus.</string>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             Utilizado como clunas de base de dados e rótulos

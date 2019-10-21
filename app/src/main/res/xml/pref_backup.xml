@@ -19,7 +19,7 @@
 
     <PreferenceCategory
         android:key="@string/pref_backup_adm_category_key"
-        android:title="@string/pref_backup_adm_title">
+        android:title="@string/pref_backup_adm_category_title">
         <Preference
             android:key="@string/pref_backup_create_key"
             android:title="@string/pref_backup_create_title"
