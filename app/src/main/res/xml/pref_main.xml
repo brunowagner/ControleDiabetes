@@ -15,7 +15,7 @@
         android:title="Cálculo de Insulina"
         android:summary="Define o método para calcular a quantidade de insulina a ser aplicada.">
         <intent android:targetPackage="br.com.bwsystemssolutions.controlediabetes"
-            android:targetClass="br.com.bwsystemssolutions.controlediabetes.BolusCalculateConfig" />
+            android:targetClass="br.com.bwsystemssolutions.controlediabetes.BolusPreferenceActivity" />
     </Preference>
 
     <Preference
