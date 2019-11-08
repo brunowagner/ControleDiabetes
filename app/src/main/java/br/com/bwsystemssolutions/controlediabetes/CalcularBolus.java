@@ -3,8 +3,10 @@ package br.com.bwsystemssolutions.controlediabetes;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,28 +17,39 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
+import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
 
 public class CalcularBolus extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "bwvm";
     EditText mGlicemiaEditText;
     EditText mCarboidratosEditText;
     TextView mResultado;
     TextView mUnitTextView;
     TextView mWarningTextView;
+    TextView mMetodoTextView;
+    Spinner mRefeicaoSpinner;
     Button mCalcularButton;
     SQLiteDatabase mDb;
 
@@ -44,6 +57,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
     boolean enableActionSave = false;
 
+    int mMetodoDeDosagem = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +69,30 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         mResultado = (TextView) findViewById(R.id.tv_resultado);
         mUnitTextView = findViewById(R.id.tv_unit);
         mWarningTextView = findViewById(R.id.tv_warning);
+        mMetodoTextView = findViewById(R.id.tv_metodo);
+        mRefeicaoSpinner = findViewById(R.id.sp_refeicao);
         mCalcularButton = (Button) findViewById(R.id.btn_calcular);
         mCalcularButton.setOnClickListener(this);
 
         mGlicemiaEditText.addTextChangedListener(new OnTextEdit());
         mCarboidratosEditText.addTextChangedListener(new OnTextEdit());
+
+
+        //verifica nas configuracoes, qual o método utilizado para obter a dosagem de insulina
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String s = settings.getString(getString(R.string.pref_bolus_list_method_key),"0");
+        mMetodoDeDosagem = Integer.parseInt(s);
+        String[] listName = getResources().getStringArray(R.array.bolus_method_names_array);
+        mMetodoTextView.setText(listName[mMetodoDeDosagem]);
+
+        //Carregando o sppiner
+        MealDAO mealDAO = new MealDAO(this);
+        final ArrayList<Meal> meals = mealDAO.fetchAll();
+
+        mRefeicaoSpinner.setAdapter(new ArrayAdapter<Meal>(this,R.layout.support_simple_spinner_dropdown_item,meals));
     }
 
+    //Utilizado quando o método de 'Cáculo de Bólus' esta selecionado em configurações.
     private void calcular(){
 
         hideKeyboard();
@@ -164,6 +195,11 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //Utilizado quando o método de 'Tabela de Insulina' está selecionado em configurações.
+    private void consultTable(){
+        //TODO codificar consulta
+    }
+
     private double adjustResult(double value, double graduation){
         double graduationFactor = 1/graduation;
 
@@ -187,9 +223,13 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         int id = v.getId();
 
         if (id == R.id.btn_calcular){
-            calcular();
+            switch (mMetodoDeDosagem){
+                case 0: consultTable(); break;
+                case  1: calcular(); break;
+                default:
+                    Log.e(TAG, "onClick: Valor de método não esperado", new IndexOutOfBoundsException());
+            }
         }
-
     }
 
     private void goToTimeBlockConfig(){
