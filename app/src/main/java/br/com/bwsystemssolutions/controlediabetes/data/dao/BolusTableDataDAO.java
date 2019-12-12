@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
+import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 
 public class BolusTableDataDAO {
 
@@ -104,6 +105,18 @@ public class BolusTableDataDAO {
 
     public BolusTableData fetchByGlucose(int glucose) {
         return fetchBy(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME, glucose);
+    }
+
+    public BolusTableData fetchLessThanOrEqualToGlucose(int glucose, int limit) {
+        String tableName = TABLE_NAME;
+        String selection = CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME + "<=?";
+        String[] selectionArgs = new String[] {glucose + ""};
+        String orderBy = CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME + " DESC";
+
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(tableName,null,selection,
+                selectionArgs,null,null,orderBy, String.valueOf(limit));
+        return parseToBolusTableDatas(cursor).get(0);
     }
 
     private BolusTableData fetchBy(String fiend, int value){

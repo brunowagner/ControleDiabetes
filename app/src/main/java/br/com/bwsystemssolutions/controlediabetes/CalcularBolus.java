@@ -34,10 +34,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableDataDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
 
 public class CalcularBolus extends AppCompatActivity implements View.OnClickListener {
@@ -198,6 +200,22 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     //Utilizado quando o método de 'Tabela de Insulina' está selecionado em configurações.
     private void consultTable(){
         //TODO codificar consulta
+
+        //pegar a glicemia e comparar com a glicemia da tabela
+        hideKeyboard();
+
+        if (mGlicemiaEditText.length() == 0 || mCarboidratosEditText.length() == 0){
+            return;
+        }
+
+        //"select * from TABLE where inicio < horaAtual orderBy inicio desc limit = 1"
+
+        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
+
+        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(this);
+
+        final BolusTableData bolusTableData = bolusTableDataDAO.fetchLessThanOrEqualToGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()), 1);
+
     }
 
     private double adjustResult(double value, double graduation){
