@@ -56,7 +56,6 @@ public class CalculoDeBolusContract {
 
     public static  final class BolusEntry implements BaseColumns{
         public static final String TABLE_NAME = "bolus";
-        public static final String COLUMN_GLUCOSE_ID_NAME = "glucose_id";
         public static final String COLUMN_GLUCOSE_NAME = "glucose";
         public static final String COLUMN_MEAL_ID_NAME = "meal_id";
         public static final String COLUMN_BOLUS_NAME = "bolus";
@@ -83,10 +82,10 @@ public class CalculoDeBolusContract {
                 "FROM " +
                         GlucoseEntry.TABLE_NAME + " " +
 
-                "INNER JOIN " +
-                        BolusEntry.TABLE_NAME + " on " +
-                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_GLUCOSE_ID_NAME + " = " +
-                        GlucoseEntry.TABLE_NAME + "." + GlucoseEntry._ID + " " +
+//                "INNER JOIN " +
+//                        BolusEntry.TABLE_NAME + " on " +
+//                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_GLUCOSE_ID_NAME + " = " +
+//                        GlucoseEntry.TABLE_NAME + "." + GlucoseEntry._ID + " " +
 
                 "INNER JOIN " +
                         MealEntry.TABLE_NAME + " on " +

@@ -6,6 +6,8 @@ public class Bolus {
     private int meal_id;
     private double bolus;
 
+    public static final String BUNDLE_STRING_KEY = Meal.class.toString();
+
     public int getId() {
         return id;
     }
