@@ -99,6 +99,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 BolusEntry.TABLE_NAME + "(" +
                 BolusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 BolusEntry.COLUMN_GLUCOSE_ID_NAME + " INTEGER NOT NULL," +
+                BolusEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL," +
                 BolusEntry.COLUMN_MEAL_ID_NAME + " INTEGER NOT NULL," +
                 BolusEntry.COLUMN_INSULIN_NAME + " REAL NOT NULL" +
                 ");";
@@ -152,6 +153,8 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 ");";
         String updateVersion3e = getPopulateMealTableString();
 
+        String updateVersion3f = "ALTER TABLE " + BolusEntry.TABLE_NAME + " ADD COLUMN " + BolusEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL DEFAULT 0";
+
         switch (oldVersion){
             case 1:
                 db.execSQL(updateVersion2a);
@@ -165,6 +168,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 db.execSQL(updateVersion3c);
                 db.execSQL(updateVersion3d);
                 db.execSQL(updateVersion3e);
+                db.execSQL(updateVersion3f);
         }
     }
 
@@ -214,6 +218,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
     *       - Foi adicionada a coluna 'RecordEntry.COLUMN_MEAL_NAME' na tabela 'Records'
     *       - Foi adicionada a coluna 'RecordEntry.COLUMN_MEAL_TIME_NAME' na tabela 'Events'
     *       - Foi adicionada a coluna 'EventEntry.COLUMN_SORT_NAME' na tabela 'Events'
+    *       - Foi adicionada a coluna  'BolusEntry.COLUMN_GLUCOSE_NAME' na tabela Bolus
     *       - Foi criada a tabela Meals
     *       - Foi implementado o SQL_POPULATE_MEAL_TABLE para popular com valores padrões a tabela Meals
     *       - Foi reescrito o SQL_POPULATE_EVENT_TABLE para popular com os novos valores padrões a tabela Events
