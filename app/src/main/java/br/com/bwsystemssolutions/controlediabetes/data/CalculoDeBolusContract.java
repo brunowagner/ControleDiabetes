@@ -2,8 +2,6 @@ package br.com.bwsystemssolutions.controlediabetes.data;
 
 import android.provider.BaseColumns;
 
-import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
-
 /**
  * Classe que define as Tabelas
  */
@@ -61,7 +59,7 @@ public class CalculoDeBolusContract {
         public static final String COLUMN_GLUCOSE_ID_NAME = "glucose_id";
         public static final String COLUMN_GLUCOSE_NAME = "glucose";
         public static final String COLUMN_MEAL_ID_NAME = "meal_id";
-        public static final String COLUMN_INSULIN_NAME = "insulin";
+        public static final String COLUMN_BOLUS_NAME = "bolus";
     }
 
     public  static final class BolusTableEntry implements BaseColumns{
@@ -80,7 +78,7 @@ public class CalculoDeBolusContract {
                         GlucoseEntry.TABLE_NAME + "." + GlucoseEntry.COLUMN_GLUCOSE_NAME + " AS " + BolusTableEntry.COLUMN_GLUCOSE_NAME + ", " +
                         MealEntry.TABLE_NAME + "." + MealEntry._ID + " AS " + BolusTableEntry.COLUMN_MEAL_ID_NAME + ", " +
                         MealEntry.TABLE_NAME + "." + MealEntry.COLUMN_MEAL_NAME + " AS " + BolusTableEntry.COLUMN_MEAL_NAME + ", " +
-                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_INSULIN_NAME + " AS " + BolusTableEntry.COLUMN_INSULIN_NAME + " " +
+                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_BOLUS_NAME + " AS " + BolusTableEntry.COLUMN_INSULIN_NAME + " " +
 
                 "FROM " +
                         GlucoseEntry.TABLE_NAME + " " +

@@ -101,7 +101,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 BolusEntry.COLUMN_GLUCOSE_ID_NAME + " INTEGER NOT NULL," +
                 BolusEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL," +
                 BolusEntry.COLUMN_MEAL_ID_NAME + " INTEGER NOT NULL," +
-                BolusEntry.COLUMN_INSULIN_NAME + " REAL NOT NULL" +
+                BolusEntry.COLUMN_BOLUS_NAME + " REAL NOT NULL" +
                 ");";
 
         final String SQL_CREATE_BOLUS_TABLE_2 = "CREATE TABLE IF NOT EXISTS " +
