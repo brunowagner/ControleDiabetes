@@ -98,7 +98,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_BOLUS_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 BolusEntry.TABLE_NAME + "(" +
                 BolusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                BolusEntry.COLUMN_GLUCOSE_ID_NAME + " INTEGER NOT NULL," +
+                //BolusEntry.COLUMN_GLUCOSE_ID_NAME + " INTEGER NOT NULL," +
                 BolusEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL," +
                 BolusEntry.COLUMN_MEAL_ID_NAME + " INTEGER NOT NULL," +
                 BolusEntry.COLUMN_BOLUS_NAME + " REAL NOT NULL" +
@@ -180,7 +180,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                     EventEntry.COLUMN_EVENT_NAME + "," + EventEntry.COLUMN_SORT_NAME + "," + EventEntry.COLUMN_SOURCE_NAME + ") VALUES ");
 
             for (int i = 0; i < array.length; i++){
-                sb.append("('"  + array[i] + "','" + i + "','app')");
+                sb.append("('"  + array[i] + "','" + i + "','" + EventEntry.SOURCE_VALUE_APP + "')");
                 if (i < array.length -1 ) sb.append(",");
             }
             sb.append(";");
@@ -196,7 +196,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 MealEntry.COLUMN_MEAL_NAME + "," + MealEntry.COLUMN_SORT_NAME + "," + MealEntry.COLUMN_SOURCE_NAME + ") VALUES ");
 
         for (int i = 0; i < array.length; i++){
-            sb.append("('"  + array[i] + "','" + i + "','app')");
+            sb.append("('"  + array[i] + "','" + i + "','" + MealEntry.SOURCE_VALUE_APP + "')");
             if (i < array.length -1 ) sb.append(",");
         }
         sb.append(";");

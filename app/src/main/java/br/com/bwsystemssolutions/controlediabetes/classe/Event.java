@@ -8,7 +8,7 @@ public class Event {
 
     public static final String BUNDLE_STRING_KEY = Event.class.toString();
     public static final String SOURCE_FROM_APP = "app";
-    public static final String SOURCE_FROM_user = "user";
+    public static final String SOURCE_FROM_USER = "user";
 
 
     public Event(){
