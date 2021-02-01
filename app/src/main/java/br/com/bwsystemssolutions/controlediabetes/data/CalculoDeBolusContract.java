@@ -65,40 +65,41 @@ public class CalculoDeBolusContract {
         public static final String COLUMN_BOLUS_NAME = "bolus";
     }
 
-    public  static final class BolusTableEntry implements BaseColumns{
-        public static final String COLUMN_GLUCOSE_ID_NAME = "glucose_id";
-        public static final String COLUMN_GLUCOSE_NAME = "glucose";
-        public static final String COLUMN_MEAL_ID_NAME = "meal_id";
-        public static final String COLUMN_MEAL_NAME = "meal";
-        public static final String COLUMN_INSULIN_NAME = "insulin";
-    }
-
-    public static final class BolusTableQuery{
-
-        public static final String FETCH_ALL_DATA =
-                "SELECT " +
-                        GlucoseEntry.TABLE_NAME + "." + GlucoseEntry._ID + " AS " + BolusTableEntry.COLUMN_GLUCOSE_ID_NAME + ", " +
-                        GlucoseEntry.TABLE_NAME + "." + GlucoseEntry.COLUMN_GLUCOSE_NAME + " AS " + BolusTableEntry.COLUMN_GLUCOSE_NAME + ", " +
-                        MealEntry.TABLE_NAME + "." + MealEntry._ID + " AS " + BolusTableEntry.COLUMN_MEAL_ID_NAME + ", " +
-                        MealEntry.TABLE_NAME + "." + MealEntry.COLUMN_MEAL_NAME + " AS " + BolusTableEntry.COLUMN_MEAL_NAME + ", " +
-                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_BOLUS_NAME + " AS " + BolusTableEntry.COLUMN_INSULIN_NAME + " " +
-
-                "FROM " +
-                        GlucoseEntry.TABLE_NAME + " " +
-
+    //BolusTable2 sendo usado no lugar
+//    public  static final class BolusTableEntry implements BaseColumns{
+//        public static final String COLUMN_GLUCOSE_ID_NAME = "glucose_id";
+//        public static final String COLUMN_GLUCOSE_NAME = "glucose";
+//        public static final String COLUMN_MEAL_ID_NAME = "meal_id";
+//        public static final String COLUMN_MEAL_NAME = "meal";
+//        public static final String COLUMN_INSULIN_NAME = "insulin";
+//    }
+//
+//    public static final class BolusTableQuery{
+//
+//        public static final String FETCH_ALL_DATA =
+//                "SELECT " +
+//                        GlucoseEntry.TABLE_NAME + "." + GlucoseEntry._ID + " AS " + BolusTableEntry.COLUMN_GLUCOSE_ID_NAME + ", " +
+//                        GlucoseEntry.TABLE_NAME + "." + GlucoseEntry.COLUMN_GLUCOSE_NAME + " AS " + BolusTableEntry.COLUMN_GLUCOSE_NAME + ", " +
+//                        MealEntry.TABLE_NAME + "." + MealEntry._ID + " AS " + BolusTableEntry.COLUMN_MEAL_ID_NAME + ", " +
+//                        MealEntry.TABLE_NAME + "." + MealEntry.COLUMN_MEAL_NAME + " AS " + BolusTableEntry.COLUMN_MEAL_NAME + ", " +
+//                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_BOLUS_NAME + " AS " + BolusTableEntry.COLUMN_INSULIN_NAME + " " +
+//
+//                "FROM " +
+//                        GlucoseEntry.TABLE_NAME + " " +
+//
+////                "INNER JOIN " +
+////                        BolusEntry.TABLE_NAME + " on " +
+////                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_GLUCOSE_ID_NAME + " = " +
+////                        GlucoseEntry.TABLE_NAME + "." + GlucoseEntry._ID + " " +
+//
 //                "INNER JOIN " +
-//                        BolusEntry.TABLE_NAME + " on " +
-//                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_GLUCOSE_ID_NAME + " = " +
-//                        GlucoseEntry.TABLE_NAME + "." + GlucoseEntry._ID + " " +
-
-                "INNER JOIN " +
-                        MealEntry.TABLE_NAME + " on " +
-                        MealEntry.TABLE_NAME + "." + MealEntry._ID + " = " +
-                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_MEAL_ID_NAME + " " +
-
-                "ORDER BY " +
-                        BolusTableEntry.COLUMN_GLUCOSE_ID_NAME + ", " +
-                        BolusTableEntry.COLUMN_MEAL_ID_NAME + ";";
+//                        MealEntry.TABLE_NAME + " on " +
+//                        MealEntry.TABLE_NAME + "." + MealEntry._ID + " = " +
+//                        BolusEntry.TABLE_NAME + "." + BolusEntry.COLUMN_MEAL_ID_NAME + " " +
+//
+//                "ORDER BY " +
+//                        BolusTableEntry.COLUMN_GLUCOSE_ID_NAME + ", " +
+//                        BolusTableEntry.COLUMN_MEAL_ID_NAME + ";";
 
 
 //        String sqlQuery =
@@ -110,7 +111,7 @@ public class CalculoDeBolusContract {
 //                        "inner join meals on meals._id = bolusTable.meal_id " +
 //                        "order by " +
 //                        "glucose_id,meal_id;";
-    }
+//    }
 
     public  static final class BolusTable2Entry implements BaseColumns{
         public static final String TABLE_NAME = "bolusTable2";
