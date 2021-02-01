@@ -53,10 +53,10 @@ public class CalculoDeBolusContract {
         public static final String SOURCE_VALUE_APP = "app";
     }
 
-    public static  final class GlucoseEntry implements BaseColumns{
-        public static final String TABLE_NAME = "glucoses";
-        public static final String COLUMN_GLUCOSE_NAME = "glucose";
-    }
+//    public static  final class GlucoseEntry implements BaseColumns{
+//        public static final String TABLE_NAME = "glucoses";
+//        public static final String COLUMN_GLUCOSE_NAME = "glucose";
+//    }
 
     public static  final class BolusEntry implements BaseColumns{
         public static final String TABLE_NAME = "bolus";

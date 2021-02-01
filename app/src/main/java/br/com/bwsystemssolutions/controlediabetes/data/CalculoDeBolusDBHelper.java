@@ -89,11 +89,11 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 MealEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL" +
                 ");";
 
-        final String SQL_CREATE_GLUCOSES_TABLE = "CREATE TABLE IF NOT EXISTS " +
-                GlucoseEntry.TABLE_NAME + "(" +
-                GlucoseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                GlucoseEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL UNIQUE" +
-                ");";
+//        final String SQL_CREATE_GLUCOSES_TABLE = "CREATE TABLE IF NOT EXISTS " +
+//                GlucoseEntry.TABLE_NAME + "(" +
+//                GlucoseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+//                GlucoseEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL UNIQUE" +
+//                ");";
 
 //        final String SQL_CREATE_BOLUS_TABLE = "CREATE TABLE IF NOT EXISTS " +
 //                BolusEntry.TABLE_NAME + "(" +
@@ -126,7 +126,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_MEALS_TABLE);
         db.execSQL(SQL_POPULATE_EVENT_TABLE);
         db.execSQL(SQL_POPULATE_MEAL_TABLE);
-        db.execSQL(SQL_CREATE_GLUCOSES_TABLE);
+//        db.execSQL(SQL_CREATE_GLUCOSES_TABLE);
 //        db.execSQL(SQL_CREATE_BOLUS_TABLE);
         db.execSQL(SQL_CREATE_BOLUS_TABLE_2);
 
