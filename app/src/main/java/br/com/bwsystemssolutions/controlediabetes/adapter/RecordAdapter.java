@@ -89,7 +89,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 				record.setBasalInsulin(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME)));
 				record.setEvent(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME)));
 				record.setMeal(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME)));
-				record.setMealTime(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_TIME_NAME)));
 				record.setNote(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME)));
 				record.setSick(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME))>0);
 				record.setMedicament(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME))>0);
@@ -196,10 +195,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		registrosAdapterViewHolder.mDataDiaSemanaTextView.setText(record.getDateWeekDayString() );
 		registrosAdapterViewHolder.mHoraTextView.setText( record.getTime() );
 		registrosAdapterViewHolder.mGlicemiaTextView.setText(String.valueOf(record.getGlucose()));
-		String mealtime = "";
-		if (!record.getMealTime().equals("")) mealtime = "(" + record.getMealTime() +")";
-		registrosAdapterViewHolder.mRefeicaoTextView.setText(mealtime + record.getMeal());
-
+		registrosAdapterViewHolder.mRefeicaoTextView.setText(record.getMeal());
 		registrosAdapterViewHolder.mEventoTextView.setText(record.getEvent());
 		registrosAdapterViewHolder.mCarboidratoTextView.setText(String.valueOf(record.getCarbohydrate()));
 		registrosAdapterViewHolder.mInsulinaRapidaTextView.setText(String.valueOf(record.getFastInsulin()));

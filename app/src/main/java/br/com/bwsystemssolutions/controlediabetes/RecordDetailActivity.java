@@ -43,7 +43,6 @@ public class RecordDetailActivity extends AppCompatActivity {
     //public  EditText mEventoEditText;
     public  Spinner mEventSpinner;
     public  Spinner mMealSpinner;
-    public  Spinner mMealTimeSpinner;
     public  EditText mCarboidratoEditText;
     public  EditText mInsulinaRapidaEditText;
     public  EditText mInsulinaBasalEditText;
@@ -74,7 +73,6 @@ public class RecordDetailActivity extends AppCompatActivity {
         //mEventoEditText = (EditText) findViewById(R.id.et_evento_record);
         mEventSpinner = findViewById(R.id.sp_evento);
         mMealSpinner = findViewById(R.id.sp_refeicao);
-        mMealTimeSpinner = findViewById(R.id.sp_refeicao_momento);
         mCarboidratoEditText = (EditText) findViewById(R.id.et_carboidrato_record);
         mInsulinaRapidaEditText = (EditText) findViewById(R.id.et_insulina_rapida_record);
         mInsulinaBasalEditText = (EditText) findViewById(R.id.et_insulina_basal_record);
@@ -107,7 +105,7 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         loadEventsSpinner();
         loadMealsSpinner();
-        loadMealsTimeSpinner();
+
         if (mRecord == null){
             mDataEditText.setText(Utilidades.convertDateToString(new Date(), Utilidades.DEFAULT_DATE_FORMAT));
             mHoraEditText.setText(Utilidades.convertTimeToString(new Date(), Utilidades.DEFAULT_TIME_FORMAT));
@@ -129,11 +127,6 @@ public class RecordDetailActivity extends AppCompatActivity {
             positionMealSpinner = getSpinnerPositionByString(mMealSpinner, "");
         }
         mMealSpinner.setSelection(positionMealSpinner);
-        int positionMealTimeSpinner = getSpinnerPositionByString(mMealTimeSpinner, mRecord.getMealTime());
-        if (positionMealTimeSpinner == -1) {
-            positionMealTimeSpinner = getSpinnerPositionByString(mMealTimeSpinner, "");
-        }
-        mMealTimeSpinner.setSelection(positionMealTimeSpinner);
         mCarboidratoEditText.setText(String.valueOf(mRecord.getCarbohydrate()));
         mInsulinaRapidaEditText.setText(String.valueOf(mRecord.getFastInsulin()));
         mInsulinaBasalEditText.setText(String.valueOf(mRecord.getBasalInsulin()));
@@ -197,16 +190,6 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         ArrayAdapter<String> mealsArrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,mealsList);
         mMealSpinner.setAdapter(mealsArrayAdapter);
-    }
-
-    private void loadMealsTimeSpinner(){
-
-        String array[] = getResources().getStringArray(R.array.meal_time_names_array);
-
-        List<String> mealTimeList = new ArrayList<String>(Arrays.asList(array));
-
-        ArrayAdapter<String> mealsArrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,mealTimeList);
-        mMealTimeSpinner.setAdapter(mealsArrayAdapter);
     }
 
     /**
@@ -313,7 +296,6 @@ public class RecordDetailActivity extends AppCompatActivity {
         //cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, String.valueOf(mEventSpinner.getSelectedItem()));
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME, String.valueOf(mMealSpinner.getSelectedItem()));
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_TIME_NAME, String.valueOf(mMealTimeSpinner.getSelectedItem()));
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
@@ -349,7 +331,6 @@ public class RecordDetailActivity extends AppCompatActivity {
                         //cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, String.valueOf(mEventSpinner.getSelectedItem()));
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME, String.valueOf(mMealSpinner.getSelectedItem()));
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_TIME_NAME, String.valueOf(mMealTimeSpinner.getSelectedItem()));
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
                         cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());

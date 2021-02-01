@@ -38,12 +38,6 @@
         <item>@string/meals_name_dawn</item>
     </string-array>
 
-    <string-array name="meal_time_names_array">
-        <item></item>
-        <item>Antes</item>
-        <item>Depois</item>
-    </string-array>
-
     <string-array name="event_names_array">
         <item></item>
         <item>Antes do exercício</item>

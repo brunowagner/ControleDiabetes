@@ -20,6 +20,7 @@ import static br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusCont
 
 public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
     //TODO mudar o nome do arquivo do banco se o app mudar de nome.
+    // TODO remover as diversas versoes de banco
     /**
      * O nome do banco será o nome do arquivo local no dispositivo que armazenará todos os dados.
      */
@@ -63,7 +64,6 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 RecordEntry.COLUMN_DATE_TIME_NAME + " TEXT NOT NULL," +
                 RecordEntry.COLUMN_GLUCOSE_NAME + " INTEGER," +
                 RecordEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL," +
-                RecordEntry.COLUMN_MEAL_TIME_NAME + " TEXT NOT NULL," +
                 RecordEntry.COLUMN_EVENT_NAME + " TEXT NOT NULL," +
                 RecordEntry.COLUMN_CARBOHYDRATE_NAME + " INTEGER," +
                 RecordEntry.COLUMN_FAST_INSULIN_NAME + " REAL," +
@@ -107,6 +107,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_BOLUS_TABLE_2 = "CREATE TABLE IF NOT EXISTS " +
                 BolusTable2Entry.TABLE_NAME + "(" +
                 BolusTable2Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                BolusTable2Entry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL," +
                 BolusTable2Entry.COLUMN_BREAKFAST_NAME + " REAL NOT NULL," +
                 BolusTable2Entry.COLUMN_BRUNCH_NAME + " REAL NOT NULL," +
                 BolusTable2Entry.COLUMN_LUNCH_NAME + " REAL NOT NULL," +
@@ -139,10 +140,9 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
           db.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
 //        onCreate(db);
 
-        String updateVersion2a = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL DEFAULT ''";
+        String updateVersion2a = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_SOURCE_NAME + " TEXT  DEFAULT ''";
         String updateVersion2b = getPopulateEventTableString();
         String updateVersion3a = "ALTER TABLE " + RecordEntry.TABLE_NAME + " ADD COLUMN " + RecordEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL DEFAULT ''";
-        String updateVersion3b = "ALTER TABLE " + RecordEntry.TABLE_NAME + " ADD COLUMN " + RecordEntry.COLUMN_MEAL_TIME_NAME + " TEXT NOT NULL DEFAULT ''";
         String updateVersion3c = "ALTER TABLE " + EventEntry.TABLE_NAME + " ADD COLUMN " + EventEntry.COLUMN_SORT_NAME + " INTEGER NOT NULL DEFAULT 0";
         String updateVersion3d = "CREATE TABLE " +
                 MealEntry.TABLE_NAME + "(" +
@@ -155,20 +155,31 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
 
         String updateVersion3f = "ALTER TABLE " + BolusEntry.TABLE_NAME + " ADD COLUMN " + BolusEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL DEFAULT 0";
 
+        final String SQL_CREATE_EVENTS_TABLE = "CREATE TABLE IF NOT EXISTS " +
+                EventEntry.TABLE_NAME + "(" +
+                EventEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                EventEntry.COLUMN_EVENT_NAME + " TEXT NOT NULL," +
+                EventEntry.COLUMN_SORT_NAME + " INTEGER NOT NULL," +
+                EventEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL" +
+                ");";
+
         switch (oldVersion){
             case 1:
                 db.execSQL(updateVersion2a);
                 db.execSQL(updateVersion2b);
                 break;
             default:
-                db.execSQL(updateVersion2a);
-                db.execSQL(updateVersion2b);
+                //db.execSQL(updateVersion2a);
+                //db.execSQL(updateVersion2b);
                 db.execSQL(updateVersion3a);
-                db.execSQL(updateVersion3b);
-                db.execSQL(updateVersion3c);
+                //db.execSQL(updateVersion3b); removido mealTime
+                //db.execSQL(updateVersion3c);
                 db.execSQL(updateVersion3d);
                 db.execSQL(updateVersion3e);
-                db.execSQL(updateVersion3f);
+                //db.execSQL(updateVersion3f);
+                db.execSQL(SQL_CREATE_EVENTS_TABLE);
+                final String SQL_POPULATE_EVENT_TABLE = getPopulateEventTableString();
+                db.execSQL(SQL_POPULATE_EVENT_TABLE);
         }
     }
 
