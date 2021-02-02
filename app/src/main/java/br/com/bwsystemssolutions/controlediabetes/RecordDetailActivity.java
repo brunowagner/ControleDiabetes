@@ -147,9 +147,7 @@ public class RecordDetailActivity extends AppCompatActivity {
     private Cursor fetchAllMeals(){
 
         return mDb.query(CalculoDeBolusContract.MealEntry.TABLE_NAME,
-                null, null, null, null,null,
-                CalculoDeBolusContract.MealEntry.COLUMN_MEAL_NAME);
-
+                null, null, null, null,null, CalculoDeBolusContract.MealEntry.COLUMN_SORT_NAME);
     }
 
     private void loadEventsSpinner(){
