@@ -86,6 +86,7 @@ public class BolusTableDataDAO {
     private ArrayList<BolusTableData> parseToBolusTableDatas(Cursor cursor){
         ArrayList<BolusTableData> bolusTableDatas = new ArrayList<>();
 
+
         while(cursor.moveToNext()){
             BolusTableData bolusTableData = new BolusTableData();
             bolusTableData.setId(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry._ID)));
@@ -116,7 +117,8 @@ public class BolusTableDataDAO {
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(tableName,null,selection,
                 selectionArgs,null,null,orderBy, String.valueOf(limit));
-        return parseToBolusTableDatas(cursor).get(0);
+
+        return cursor.getCount() == 0? null: parseToBolusTableDatas(cursor).get(0);
     }
 
     private BolusTableData fetchBy(String fiend, int value){

@@ -216,6 +216,31 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
         final BolusTableData bolusTableData = bolusTableDataDAO.fetchLessThanOrEqualToGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()), 1);
 
+        if (bolusTableData == null){
+            String message = "Não existem dados na tabela de bolus.\n" +
+                    "Deseja preencher a tabela de bolus agora?";
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(message)
+                    .setTitle("Atenção!")
+                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //TODO inserir método para ir até a configuração da tabela de bolus
+                            //goToTimeBlockConfig();
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
     }
 
     private double adjustResult(double value, double graduation){
