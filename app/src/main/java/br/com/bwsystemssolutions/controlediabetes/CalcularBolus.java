@@ -30,11 +30,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableData2DAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
 
@@ -208,12 +210,15 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
 
-        BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(this);
+        //BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(this);
+        BolusDAO bolusDAO = new BolusDAO(this);
 
-        final BolusTableData bolusTableData = bolusTableData2DAO.fetchLessThanOrEqualToGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()), 1);
+        //final BolusTableData bolusTableData = bolusTableData2DAO.fetchLessThanOrEqualToGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()), 1);
+        final Bolus bolus = bolusDAO.fetchLessThanOrEqualToGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()), mRefeicaoSpinner.getSelectedItem().toString(),1);
 
-        if (bolusTableData == null){
-            String message = "Não existem dados na tabela de bolus.\n" +
+        // if (bolusTableData == null){
+        if (bolus == null){
+            String message = "A tabela de bolus não possui informação para esta refeição ou não existem dados na tabela de bolus.\n" +
                     "Deseja preencher a tabela de bolus agora?";
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -235,6 +240,8 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
             AlertDialog alert = builder.create();
             alert.show();
+        } else {
+            mResultado .setText(String.valueOf(bolus.getBolus()));
         }
 
     }

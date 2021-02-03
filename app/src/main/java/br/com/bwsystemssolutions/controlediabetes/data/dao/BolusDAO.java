@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
@@ -32,6 +33,20 @@ public class BolusDAO {
 //        INNER JOIN meals
 //        on bolusTable.meal_id = meals.id;
 
+    }
+
+    public Bolus fetchLessThanOrEqualToGlucose(int glucose, String meal, int limit) {
+        String tableName = TABLE_NAME;
+        String selection = CalculoDeBolusContract.BolusEntry.COLUMN_GLUCOSE_NAME + "<=?" +
+                " and " + CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_NAME + "=?";
+        String[] selectionArgs = new String[] {glucose + "", meal};
+        String orderBy = CalculoDeBolusContract.BolusEntry.COLUMN_GLUCOSE_NAME + " DESC";
+
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(tableName,null,selection,
+                selectionArgs,null,null,orderBy, String.valueOf(limit));
+
+        return cursor.getCount() == 0? null: parseToBolus(cursor).get(0);
     }
 
 
