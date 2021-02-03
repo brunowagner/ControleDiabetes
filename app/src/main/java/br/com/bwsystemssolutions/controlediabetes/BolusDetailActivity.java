@@ -1,10 +1,8 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -15,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
-import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableDataDAO;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableData2DAO;
 import br.com.bwsystemssolutions.controlediabetes.util.Alert;
 import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 import br.com.bwsystemssolutions.controlediabetes.util.Filters;
@@ -23,7 +21,7 @@ import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 public class BolusDetailActivity extends AppCompatActivity {
 
     private BolusTableData mBolusTableData;
-    private BolusTableDataDAO mBolusTableDataDAO;
+    private BolusTableData2DAO mBolusTableData2DAO;
     private boolean mEditAction = false;
 
     private EditText mGlucoseEditText;
@@ -51,7 +49,7 @@ public class BolusDetailActivity extends AppCompatActivity {
             mEditAction = true;
         }
 
-        mBolusTableDataDAO = new BolusTableDataDAO(this);
+        mBolusTableData2DAO = new BolusTableData2DAO(this);
 
         initComponents();
         setFilters();
@@ -123,7 +121,7 @@ public class BolusDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 fillObjectWithActivityData(mBolusTableData);
-                final boolean updated = mBolusTableDataDAO.update(mBolusTableData);
+                final boolean updated = mBolusTableData2DAO.update(mBolusTableData);
                 if (updated){
                     Toast.makeText(BolusDetailActivity.this,"Alterado com sucesso!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -135,7 +133,7 @@ public class BolusDetailActivity extends AppCompatActivity {
     }
 
     private void save(){
-        mBolusTableData = mBolusTableDataDAO.fetchByGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
+        mBolusTableData = mBolusTableData2DAO.fetchByGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
 
         //Se já existir a glicemia
         if (mBolusTableData != null) {
@@ -150,7 +148,7 @@ public class BolusDetailActivity extends AppCompatActivity {
         } else {
             mBolusTableData = new BolusTableData();
             fillObjectWithActivityData(mBolusTableData);
-             mBolusTableDataDAO.add(mBolusTableData);
+             mBolusTableData2DAO.add(mBolusTableData);
             Toast.makeText(BolusDetailActivity.this,"Salvo com sucesso!", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -168,7 +166,7 @@ public class BolusDetailActivity extends AppCompatActivity {
         }
 
         fillObjectWithActivityData(mBolusTableData);
-        boolean updated = mBolusTableDataDAO.update(mBolusTableData);
+        boolean updated = mBolusTableData2DAO.update(mBolusTableData);
         if (updated) {
             Toast.makeText(BolusDetailActivity.this,"Editado com sucesso!", Toast.LENGTH_SHORT).show();
             finish();
@@ -179,7 +177,7 @@ public class BolusDetailActivity extends AppCompatActivity {
     }
 
     private boolean existsGlucose(int glucose){
-        return mBolusTableDataDAO.fetchByGlucose(glucose) != null;
+        return mBolusTableData2DAO.fetchByGlucose(glucose) != null;
     }
 
     private void fillObjectWithActivityData(BolusTableData bolusTableData) {

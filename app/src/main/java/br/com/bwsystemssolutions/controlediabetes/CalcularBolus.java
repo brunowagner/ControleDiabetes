@@ -17,29 +17,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
-import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableDataDAO;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableData2DAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
 
 public class CalcularBolus extends AppCompatActivity implements View.OnClickListener {
@@ -212,9 +208,9 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
 
-        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(this);
+        BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(this);
 
-        final BolusTableData bolusTableData = bolusTableDataDAO.fetchLessThanOrEqualToGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()), 1);
+        final BolusTableData bolusTableData = bolusTableData2DAO.fetchLessThanOrEqualToGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()), 1);
 
         if (bolusTableData == null){
             String message = "Não existem dados na tabela de bolus.\n" +

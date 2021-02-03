@@ -23,7 +23,7 @@ import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
-import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableDataDAO;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusTableData2DAO;
 
 public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.BolusTableAdapterViewHolder> implements View.OnClickListener {
 
@@ -330,8 +330,8 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     }
 
     public void refreshData(){
-        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
-        ArrayList<BolusTableData> bolusTableDatas = bolusTableDataDAO.fetchAll();
+        BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(context);
+        ArrayList<BolusTableData> bolusTableDatas = bolusTableData2DAO.fetchAll();
         setBolusTableData(bolusTableDatas);
     }
 
@@ -353,12 +353,12 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     }
 
     public int deleteSelectedItems() {
-        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
+        BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(context);
         HashMap<Integer,Integer> selecteds = new HashMap<>(mSelectedItems);
         int cont = 0;
         for (Map.Entry<Integer,Integer> item : selecteds.entrySet()){
             final int id = mBolusTableData.get(item.getKey()).getId();
-            if (bolusTableDataDAO.delete(id)) {
+            if (bolusTableData2DAO.delete(id)) {
                 mSelectedItems.remove(item.getKey());
                 cont+=1;
                 Log.d(TAG, "deleteSelectedItems: qtd selecionados: " + mSelectedItems.size());
@@ -377,7 +377,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 //            Log.d(TAG, "updateClickedItem: mselectedItens diferente de 1");
 //            return false;
 //        }
-//        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
+//        BolusTableData2DAO bolusTableDataDAO = new BolusTableData2DAO(context);
 //        return bolusTableDataDAO.updateInsulineField(mBolusTableData.get(mClickedItem),fieldName,insuline);
 //    }
 
@@ -388,8 +388,8 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             return false;
         }
 
-        BolusTableDataDAO bolusTableDataDAO = new BolusTableDataDAO(context);
-        boolean updated = bolusTableDataDAO.updateInsulineField(bolusTableData,fieldName,insuline);
+        BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(context);
+        boolean updated = bolusTableData2DAO.updateInsulineField(bolusTableData,fieldName,insuline);
         if (updated) refreshData();
         return updated;
     }

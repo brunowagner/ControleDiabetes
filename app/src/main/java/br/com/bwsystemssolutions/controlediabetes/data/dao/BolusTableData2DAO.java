@@ -13,13 +13,13 @@ import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 
-public class BolusTableDataDAO {
+public class BolusTableData2DAO {
 
     private CalculoDeBolusDBHelper dbHelper;
     private String TABLE_NAME = CalculoDeBolusContract.BolusTable2Entry.TABLE_NAME;
     private String COLUMN_ID_NAME = CalculoDeBolusContract.BolusTable2Entry._ID;
 
-    public BolusTableDataDAO(Context context){
+    public BolusTableData2DAO(Context context){
         dbHelper = new CalculoDeBolusDBHelper(context);
     }
 
