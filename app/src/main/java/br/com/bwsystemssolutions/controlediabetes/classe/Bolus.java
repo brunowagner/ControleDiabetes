@@ -3,7 +3,8 @@ package br.com.bwsystemssolutions.controlediabetes.classe;
 public class Bolus {
     private int id;
     private int glucose;
-    private int meal_id;
+    //private int meal_id;
+    private Meal meal;
     private double bolus;
 
     public static final String BUNDLE_STRING_KEY = Meal.class.toString();
@@ -24,12 +25,20 @@ public class Bolus {
         this.glucose = glucose;
     }
 
-    public int getMeal_id() {
-        return meal_id;
+//    public int getMeal_id() {
+//        return meal_id;
+//    }
+//
+//    public void setMeal_id(int meal_id) {
+//        this.meal_id = meal_id;
+//    }
+
+    public Meal getMeal() {
+        return meal;
     }
 
-    public void setMeal_id(int meal_id) {
-        this.meal_id = meal_id;
+    public void setMeal(Meal meal_id) {
+        this.meal = meal_id;
     }
 
     public double getBolus() {

@@ -26,7 +26,15 @@ public class BolusDAO {
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         final Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + CalculoDeBolusContract.BolusEntry.COLUMN_GLUCOSE_NAME,null);
         return parseToBolus(cursor);
+//        Seleciona todos as registros da tabela bolusTable linkando com a tabela meals.
+//        select bolusTable.id as bolus_id, bolus.bolus, bolus.glucose, meals.id as meal_id, meals.meal, meals.sort, meals.source
+//        from bolusTable
+//        INNER JOIN meals
+//        on bolusTable.meal_id = meals.id;
+
     }
+
+
 
     public boolean add (Bolus bolus){
         final SQLiteDatabase db = dbHelper.getWritableDatabase();

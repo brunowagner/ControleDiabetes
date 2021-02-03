@@ -95,14 +95,13 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
 //                GlucoseEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL UNIQUE" +
 //                ");";
 
-//        final String SQL_CREATE_BOLUS_TABLE = "CREATE TABLE IF NOT EXISTS " +
-//                BolusEntry.TABLE_NAME + "(" +
-//                BolusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-//                //BolusEntry.COLUMN_GLUCOSE_ID_NAME + " INTEGER NOT NULL," +
-//                BolusEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL," +
-//                BolusEntry.COLUMN_MEAL_ID_NAME + " INTEGER NOT NULL," +
-//                BolusEntry.COLUMN_BOLUS_NAME + " REAL NOT NULL" +
-//                ");";
+        final String SQL_CREATE_BOLUS_TABLE = "CREATE TABLE IF NOT EXISTS " +
+                BolusEntry.TABLE_NAME + "(" +
+                BolusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                BolusEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL," +
+                BolusEntry.COLUMN_MEAL_ID_NAME + " INTEGER NOT NULL," +
+                BolusEntry.COLUMN_BOLUS_NAME + " REAL NOT NULL" +
+                ");";
 
         final String SQL_CREATE_BOLUS_TABLE_2 = "CREATE TABLE IF NOT EXISTS " +
                 BolusTable2Entry.TABLE_NAME + "(" +
@@ -128,7 +127,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_POPULATE_EVENT_TABLE);
         db.execSQL(SQL_POPULATE_MEAL_TABLE);
 //        db.execSQL(SQL_CREATE_GLUCOSES_TABLE);
-//        db.execSQL(SQL_CREATE_BOLUS_TABLE);
+        db.execSQL(SQL_CREATE_BOLUS_TABLE);
         db.execSQL(SQL_CREATE_BOLUS_TABLE_2);
 
     }
