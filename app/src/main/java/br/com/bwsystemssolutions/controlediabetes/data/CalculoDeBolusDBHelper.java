@@ -100,6 +100,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
                 BolusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 BolusEntry.COLUMN_GLUCOSE_NAME + " INTEGER NOT NULL," +
                 BolusEntry.COLUMN_MEAL_ID_NAME + " INTEGER NOT NULL," +
+                BolusEntry.COLUMN_MEAL_NAME + " TEXT NOT NULL," +
                 BolusEntry.COLUMN_BOLUS_NAME + " REAL NOT NULL" +
                 ");";
 

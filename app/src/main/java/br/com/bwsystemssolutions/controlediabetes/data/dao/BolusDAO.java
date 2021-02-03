@@ -76,6 +76,7 @@ public class BolusDAO {
             bolus.setId(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusEntry._ID)));
             bolus.setGlucose(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusEntry.COLUMN_GLUCOSE_NAME)));
             bolus.setMeal_id(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_ID_NAME)));
+            bolus.setMeal(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_NAME)));
             bolus.setBolus(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusEntry.COLUMN_BOLUS_NAME)));
             boluss.add(bolus);
         }
@@ -88,6 +89,7 @@ public class BolusDAO {
         ContentValues cv = new ContentValues();
         cv.put(CalculoDeBolusContract.BolusEntry.COLUMN_GLUCOSE_NAME, bolus.getGlucose());
         cv.put(CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_ID_NAME, bolus.getMeal_id());
+        cv.put(CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_NAME, bolus.getMeal());
         cv.put(CalculoDeBolusContract.BolusEntry.COLUMN_BOLUS_NAME, bolus.getBolus());
         return cv;
     }

@@ -61,6 +61,7 @@ public class CalculoDeBolusContract {
         public static final String TABLE_NAME = "bolus";
         public static final String COLUMN_GLUCOSE_NAME = "glucose";
         public static final String COLUMN_MEAL_ID_NAME = "meal_id";
+        public static final String COLUMN_MEAL_NAME = "meal";
         public static final String COLUMN_BOLUS_NAME = "bolus";
     }
 
