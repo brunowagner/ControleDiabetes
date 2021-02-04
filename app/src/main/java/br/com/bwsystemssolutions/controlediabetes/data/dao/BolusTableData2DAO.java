@@ -8,10 +8,9 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable2Data;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
-import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 
 public class BolusTableData2DAO {
 
@@ -23,15 +22,15 @@ public class BolusTableData2DAO {
         dbHelper = new CalculoDeBolusDBHelper(context);
     }
 
-    public ArrayList<BolusTableData> fetchAll(){
+    public ArrayList<BolusTable2Data> fetchAll(){
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         final Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME,null);
         return parseToBolusTableDatas(cursor);
     }
 
-    public boolean add (BolusTableData bolusTableData){
+    public boolean add (BolusTable2Data bolusTable2Data){
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues cv = parseToContentValues(bolusTableData);
+        ContentValues cv = parseToContentValues(bolusTable2Data);
         boolean inserted = db.insert(TABLE_NAME, null, cv) > 0;
         db.close();
         return inserted;
@@ -46,21 +45,21 @@ public class BolusTableData2DAO {
         return deleted;
     }
 
-    public boolean update (BolusTableData bolusTableData){
+    public boolean update (BolusTable2Data bolusTable2Data){
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues cv = parseToContentValues(bolusTableData);
-        return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolusTableData.getId() + ""}) > 0;
+        ContentValues cv = parseToContentValues(bolusTable2Data);
+        return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolusTable2Data.getId() + ""}) > 0;
     }
 
-    public boolean updateInsulineField (BolusTableData bolusTableData, String fieldName, Double value){
+    public boolean updateInsulineField (BolusTable2Data bolusTable2Data, String fieldName, Double value){
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(fieldName, value);
-        return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolusTableData.getId() + ""}) > 0;
+        return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolusTable2Data.getId() + ""}) > 0;
     }
 
 
-    public BolusTableData fetchById(int id){
+    public BolusTable2Data fetchById(int id){
         return fetchBy(COLUMN_ID_NAME, id);
 //        final SQLiteDatabase db = dbHelper.getReadableDatabase();
 //        String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID_NAME + " = ?";
@@ -70,45 +69,45 @@ public class BolusTableData2DAO {
     }
 
     @NonNull
-    private ContentValues parseToContentValues(BolusTableData bolusTableData) {
+    private ContentValues parseToContentValues(BolusTable2Data bolusTable2Data) {
         ContentValues cv = new ContentValues();
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME, bolusTableData.getGlucose());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BREAKFAST_NAME, bolusTableData.getInsulin1());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME, bolusTableData.getInsulin2());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME, bolusTableData.getInsulin3());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME, bolusTableData.getInsulin4());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME, bolusTableData.getInsulin5());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME, bolusTableData.getInsulin6());
-        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME, bolusTableData.getInsulin7());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME, bolusTable2Data.getGlucose());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BREAKFAST_NAME, bolusTable2Data.getInsulin1());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME, bolusTable2Data.getInsulin2());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME, bolusTable2Data.getInsulin3());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME, bolusTable2Data.getInsulin4());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME, bolusTable2Data.getInsulin5());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME, bolusTable2Data.getInsulin6());
+        cv.put(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME, bolusTable2Data.getInsulin7());
         return cv;
     }
 
-    private ArrayList<BolusTableData> parseToBolusTableDatas(Cursor cursor){
-        ArrayList<BolusTableData> bolusTableDatas = new ArrayList<>();
+    private ArrayList<BolusTable2Data> parseToBolusTableDatas(Cursor cursor){
+        ArrayList<BolusTable2Data> bolusTable2DataArrayList = new ArrayList<>();
 
 
         while(cursor.moveToNext()){
-            BolusTableData bolusTableData = new BolusTableData();
-            bolusTableData.setId(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry._ID)));
-            bolusTableData.setGlucose(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME)));
-            bolusTableData.setInsulin1(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BREAKFAST_NAME)));
-            bolusTableData.setInsulin2(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME)));
-            bolusTableData.setInsulin3(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME)));
-            bolusTableData.setInsulin4(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME)));
-            bolusTableData.setInsulin5(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME)));
-            bolusTableData.setInsulin6(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME)));
-            bolusTableData.setInsulin7(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME)));
-            bolusTableDatas.add(bolusTableData);
+            BolusTable2Data bolusTable2Data = new BolusTable2Data();
+            bolusTable2Data.setId(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry._ID)));
+            bolusTable2Data.setGlucose(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME)));
+            bolusTable2Data.setInsulin1(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BREAKFAST_NAME)));
+            bolusTable2Data.setInsulin2(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_BRUNCH_NAME)));
+            bolusTable2Data.setInsulin3(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_LUNCH_NAME)));
+            bolusTable2Data.setInsulin4(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_TEA_NAME)));
+            bolusTable2Data.setInsulin5(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DINNER_NAME)));
+            bolusTable2Data.setInsulin6(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_SUPPER_NAME)));
+            bolusTable2Data.setInsulin7(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusTable2Entry.COLUMN_DAWN_NAME)));
+            bolusTable2DataArrayList.add(bolusTable2Data);
         }
         cursor.close();
-        return bolusTableDatas;
+        return bolusTable2DataArrayList;
     }
 
-    public BolusTableData fetchByGlucose(int glucose) {
+    public BolusTable2Data fetchByGlucose(int glucose) {
         return fetchBy(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME, glucose);
     }
 
-    public BolusTableData fetchLessThanOrEqualToGlucose(int glucose, int limit) {
+    public BolusTable2Data fetchLessThanOrEqualToGlucose(int glucose, int limit) {
         String tableName = TABLE_NAME;
         String selection = CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME + "<=?";
         String[] selectionArgs = new String[] {glucose + ""};
@@ -121,16 +120,16 @@ public class BolusTableData2DAO {
         return cursor.getCount() == 0? null: parseToBolusTableDatas(cursor).get(0);
     }
 
-    private BolusTableData fetchBy(String fiend, int value){
+    private BolusTable2Data fetchBy(String fiend, int value){
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + fiend + " = ?";
         final Cursor cursor = db.rawQuery(sqlString, new String[] {String.valueOf(value)});
-        final ArrayList<BolusTableData> bolusTableDatas = parseToBolusTableDatas(cursor);
+        final ArrayList<BolusTable2Data> bolusTable2Data = parseToBolusTableDatas(cursor);
         db.close();
-        if (bolusTableDatas.size() == 0){
+        if (bolusTable2Data.size() == 0){
             return null;
         }
-        return bolusTableDatas.get(0);
+        return bolusTable2Data.get(0);
 
     }
 }

@@ -49,6 +49,7 @@ public class CalculoDeBolusDBHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //TODO - 2021 mudar essas 'final Strings' para variável de classe (variáveis estaticas)?
         final String SQL_CREATE_TIME_BLOCK_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 TimeBlockEntry.TABLE_NAME + "(" +
                 TimeBlockEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +

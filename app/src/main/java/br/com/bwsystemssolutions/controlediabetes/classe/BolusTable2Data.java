@@ -3,7 +3,7 @@ package br.com.bwsystemssolutions.controlediabetes.classe;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BolusTableData implements Serializable {
+public class BolusTable2Data implements Serializable {
 
     public static final String BUNDLE_STRING_KEY = Record.class.toString();
 

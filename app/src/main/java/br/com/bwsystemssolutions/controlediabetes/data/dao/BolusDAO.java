@@ -9,8 +9,6 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
-import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
@@ -59,6 +57,18 @@ public class BolusDAO {
         return inserted;
     }
 
+    public boolean add (ArrayList<Bolus> bolusTableData){
+        boolean allInserted = true;
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        for (Bolus b : bolusTableData) {
+            ContentValues cv = parseToContentValues(b);
+            boolean inserted = db.insert(TABLE_NAME, null, cv) > 0;
+            if (!inserted) { allInserted = false; }
+        }
+        db.close();
+        return allInserted;
+    }
+
     public boolean delete (int id){
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         String whereClause = COLUMN_ID_NAME + " = ?";
@@ -84,7 +94,7 @@ public class BolusDAO {
     }
 
     private ArrayList<Bolus> parseToBolus(Cursor cursor){
-        ArrayList<Bolus> boluss = new ArrayList<>();
+        ArrayList<Bolus> bolusArrayList = new ArrayList<>();
 
         while(cursor.moveToNext()){
             Bolus bolus = new Bolus();
@@ -93,10 +103,10 @@ public class BolusDAO {
             bolus.setMeal_id(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_ID_NAME)));
             bolus.setMeal(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_NAME)));
             bolus.setBolus(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.BolusEntry.COLUMN_BOLUS_NAME)));
-            boluss.add(bolus);
+            bolusArrayList.add(bolus);
         }
         cursor.close();
-        return boluss;
+        return bolusArrayList;
     }
 
     @NonNull

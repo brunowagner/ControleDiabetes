@@ -10,11 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -23,7 +21,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable2Data;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 import br.com.bwsystemssolutions.controlediabetes.util.Filters;
@@ -37,7 +35,7 @@ public class BolusTableActivity extends AppCompatActivity {
     RecyclerView.OnScrollListener[] scrollListeners = new RecyclerView.OnScrollListener[2];
     boolean mEnableActionDelete = false;
     boolean mEnableActionEdit = false;
-    private BolusTableData mSelectedItem;
+    private BolusTable2Data mSelectedItem;
     //private HashMap<Integer,Integer> mSelectedItems;
 
 
@@ -103,7 +101,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
         final BolusTableAdapter.BolusTableAdapterOnClickHandler handler = new BolusTableAdapter.BolusTableAdapterOnClickHandler() {
             @Override
-            public void onClick(final BolusTableData bolusTableData, int itemSelected, int selectedItems, final String mealName, final BolusTableAdapter.FieldId fieldId) {
+            public void onClick(final BolusTable2Data bolusTableData, int itemSelected, int selectedItems, final String mealName, final BolusTableAdapter.FieldId fieldId) {
 
                 if (mEnableActionDelete){
                     mEnableActionDelete = selectedItems > 0;
@@ -127,7 +125,7 @@ public class BolusTableActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongClick(HashMap<Integer, Integer> selectedItems, BolusTableData bolusTableData) {
+            public void onLongClick(HashMap<Integer, Integer> selectedItems, BolusTable2Data bolusTableData) {
                 mEnableActionDelete = selectedItems.size() > 0;
                 mEnableActionEdit = selectedItems.size() == 1;
                 mSelectedItem = bolusTableData;
@@ -142,8 +140,8 @@ public class BolusTableActivity extends AppCompatActivity {
         return handler;
     }
 
-    private void editFast(final BolusTableData bolusTableData, final String mealName, final BolusTableAdapter.FieldId fieldId){
-        String glucose = String.valueOf(bolusTableData.getGlucose());
+    private void editFast(final BolusTable2Data bolusTable2Data, final String mealName, final BolusTableAdapter.FieldId fieldId){
+        String glucose = String.valueOf(bolusTable2Data.getGlucose());
         AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
         builder.setTitle("Insira a nova quantidade de insulina (U):");
 
@@ -168,7 +166,7 @@ public class BolusTableActivity extends AppCompatActivity {
                     return; // n~ao faz nada
                 }
                 Double newValue = Converter.toDouble(editText.getText().toString());
-                boolean updated = mBolusTableAdapter.updateItem(bolusTableData, fieldId.getColumnName(),newValue);
+                boolean updated = mBolusTableAdapter.updateItem(bolusTable2Data, fieldId.getColumnName(),newValue);
                 String message = "";
                 message = updated ? "Insulina alterada!" : "Erro ao alterar!";
                 Toast.makeText(BolusTableActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -226,7 +224,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
                 //Empacotando o objeto
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(BolusTableData.BUNDLE_STRING_KEY, mSelectedItem);
+                bundle.putSerializable(BolusTable2Data.BUNDLE_STRING_KEY, mSelectedItem);
 
                 //passando o objeto na Intent
                 intent1.putExtras(bundle);
