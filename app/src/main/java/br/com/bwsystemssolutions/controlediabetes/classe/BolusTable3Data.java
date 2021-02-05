@@ -8,10 +8,11 @@ public class BolusTable3Data implements Serializable {
     public static final String BUNDLE_STRING_KEY = Record.class.toString();
 
     private ArrayList<Integer> ids;
+    private int id;
     private int glucose;
 //    private ArrayList<BolusTableDataMeals> bolusTableDataMeals;
 
-    private Bolus bolus1CafeDaManha
+    private Bolus bolus1CafeDaManha;
     private Bolus bolus2Colacao;
     private Bolus bolus3Almoco;
     private Bolus bolus4Lanche;
@@ -35,6 +36,14 @@ public class BolusTable3Data implements Serializable {
 //        this.bolusTableDataMeals = bolusTableDataMeals;
 //    }
 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public ArrayList<Integer> getIds() {
         return ids;
@@ -103,6 +112,8 @@ public class BolusTable3Data implements Serializable {
     public void setBolus7Madrugada(Bolus bolus7Madrugada) {
         this.bolus7Madrugada = bolus7Madrugada;
     }
+
+
 
 
     //Queries
