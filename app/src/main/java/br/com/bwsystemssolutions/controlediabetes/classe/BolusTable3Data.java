@@ -54,6 +54,9 @@ public class BolusTable3Data implements Serializable {
     }
 
     public void addId(int id) {
+        if (this.ids == null) {
+            this.ids = new ArrayList<>();
+        }
         this.ids.add(id);
     }
 

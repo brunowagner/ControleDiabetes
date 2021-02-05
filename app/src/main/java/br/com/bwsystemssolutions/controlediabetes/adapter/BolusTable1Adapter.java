@@ -21,7 +21,6 @@ import java.util.Map;
 import br.com.bwsystemssolutions.controlediabetes.BolusTableActivity;
 import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable2Data;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable3Data;
 import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
@@ -43,7 +42,7 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
     private int mSelectedItem = ITEN_SELECT_NONE;
     private int mClickedItem;
     private HashMap<Integer, Integer> mSelectedItems;
-    private FieldId fieldClicked;
+    private Bolus bolusClicked;
 
     public static final int ITEN_SELECT_NONE = -1;
 
@@ -156,22 +155,22 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
         viewHolder.mInsul6.setText(String.valueOf(bolusTable3Data.getBolus6Ceia().getBolus()));
         viewHolder.mInsul7.setText(String.valueOf(bolusTable3Data.getBolus7Madrugada().getBolus()));
 
-//        viewHolder.mCard1.setTag(bolusTable3Data.getBolus1CafeDaManha().getBolus());
-//        viewHolder.mCard2.setTag(bolusTable3Data.getBolus2Colacao().getBolus());
-//        viewHolder.mCard3.setTag(bolusTable3Data.getBolus3Almoco().getBolus());
-//        viewHolder.mCard4.setTag(bolusTable3Data.getBolus4Lanche().getBolus());
-//        viewHolder.mCard5.setTag(bolusTable3Data.getBolus5Jantar().getBolus());
-//        viewHolder.mCard6.setTag(bolusTable3Data.getBolus6Ceia().getBolus());
-//        viewHolder.mCard7.setTag(bolusTable3Data.getBolus7Madrugada().getBolus());
+        viewHolder.mCard1.setTag(bolusTable3Data.getBolus1CafeDaManha().getBolus());
+        viewHolder.mCard2.setTag(bolusTable3Data.getBolus2Colacao().getBolus());
+        viewHolder.mCard3.setTag(bolusTable3Data.getBolus3Almoco().getBolus());
+        viewHolder.mCard4.setTag(bolusTable3Data.getBolus4Lanche().getBolus());
+        viewHolder.mCard5.setTag(bolusTable3Data.getBolus5Jantar().getBolus());
+        viewHolder.mCard6.setTag(bolusTable3Data.getBolus6Ceia().getBolus());
+        viewHolder.mCard7.setTag(bolusTable3Data.getBolus7Madrugada().getBolus());
 
 
-        viewHolder.mCard1.setTag(new FieldId(bolusTable3Data.getBolus1CafeDaManha().getId(),bolusTable3Data.getBolus1CafeDaManha().getMeal()));
-        viewHolder.mCard2.setTag(new FieldId(bolusTable3Data.getBolus2Colacao().getId(),bolusTable3Data.getBolus2Colacao().getMeal()));
-        viewHolder.mCard3.setTag(new FieldId(bolusTable3Data.getBolus3Almoco().getId(),bolusTable3Data.getBolus3Almoco().getMeal()));
-        viewHolder.mCard4.setTag(new FieldId(bolusTable3Data.getBolus4Lanche().getId(),bolusTable3Data.getBolus4Lanche().getMeal()));
-        viewHolder.mCard5.setTag(new FieldId(bolusTable3Data.getBolus5Jantar().getId(),bolusTable3Data.getBolus5Jantar().getMeal()));
-        viewHolder.mCard6.setTag(new FieldId(bolusTable3Data.getBolus6Ceia().getId(),bolusTable3Data.getBolus6Ceia().getMeal()));
-        viewHolder.mCard7.setTag(new FieldId(bolusTable3Data.getBolus7Madrugada().getId(),bolusTable3Data.getBolus7Madrugada().getMeal()));
+//        viewHolder.mCard1.setTag(new FieldId(bolusTable3Data.getBolus1CafeDaManha().getId(),bolusTable3Data.getBolus1CafeDaManha().getMeal()));
+//        viewHolder.mCard2.setTag(new FieldId(bolusTable3Data.getBolus2Colacao().getId(),bolusTable3Data.getBolus2Colacao().getMeal()));
+//        viewHolder.mCard3.setTag(new FieldId(bolusTable3Data.getBolus3Almoco().getId(),bolusTable3Data.getBolus3Almoco().getMeal()));
+//        viewHolder.mCard4.setTag(new FieldId(bolusTable3Data.getBolus4Lanche().getId(),bolusTable3Data.getBolus4Lanche().getMeal()));
+//        viewHolder.mCard5.setTag(new FieldId(bolusTable3Data.getBolus5Jantar().getId(),bolusTable3Data.getBolus5Jantar().getMeal()));
+//        viewHolder.mCard6.setTag(new FieldId(bolusTable3Data.getBolus6Ceia().getId(),bolusTable3Data.getBolus6Ceia().getMeal()));
+//        viewHolder.mCard7.setTag(new FieldId(bolusTable3Data.getBolus7Madrugada().getId(),bolusTable3Data.getBolus7Madrugada().getMeal()));
     }
 
     @Override
@@ -270,7 +269,7 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
         public void onClick(View v) {
             int position = getAdapterPosition();
             mClickedItem = position;
-            fieldClicked = null;
+            bolusClicked = null;
             if (mSelectedItems.size() > 0) {
                 if (mSelectedItems.containsKey(position)) {
                     mSelectedItems.remove(position);
@@ -291,18 +290,18 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
             LinearLayout linearLayout = (LinearLayout) cardView.getChildAt(0);
             TextView textView = (TextView) linearLayout.getChildAt(0);
             String mealName = textView.getText().toString();
-            fieldClicked = (FieldId) cardView.getTag();
+            bolusClicked = (Bolus) cardView.getTag();
             mSelectedItem = position;
 
             BolusTable3Data bolusTable3Data = mBolusTableData.get(position);
-            mClickHandler.onClick(bolusTable3Data, mClickedItem, 0, mealName, fieldClicked);
+            mClickHandler.onClick(bolusTable3Data, mClickedItem, 0, mealName, bolusClicked);
         }
 
         @Override
         public boolean onLongClick(View v) {
             int clickedItem = getAdapterPosition();
             mSelectedItem = ITEN_SELECT_NONE;
-            fieldClicked = null;
+            bolusClicked = null;
             if (mSelectedItems.containsKey(clickedItem)){
                 mSelectedItems.remove(clickedItem);
             } else {
@@ -344,11 +343,11 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
                 bolusTable3Data = new BolusTable3Data();
                 id ++;
                 bolusTable3Data.setId(id);
+                bolusTable3Datas.add(bolusTable3Data);
             }
 
             bolusTable3Data.addId(b.getId());
             bolusTable3Data.setGlucose(b.getGlucose());
-            bolusTable3Data.setBolus1CafeDaManha(b);
 
             switch (b.getMeal_id()){
                 case 1: bolusTable3Data.setBolus1CafeDaManha(b);
@@ -367,7 +366,7 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
                 default:
             }
 
-            bolusTable3Datas.add(bolusTable3Data);
+            //bolusTable3Datas.add(bolusTable3Data);
 
             previousGlucose = b.getGlucose();
         }
@@ -441,7 +440,7 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
 //        return bolusTableDataDAO.updateInsulineField(mBolusTableData.get(mClickedItem),fieldName,insuline);
 //    }
 
-    public boolean updateItem(BolusTable3Data bolusTable3Data, String fieldName, Double insuline){
+    public boolean updateItem(BolusTable3Data bolusTable3Data, Bolus bolus, Double insuline){
         int id = bolusTable3Data.getId();
         if (id <= 0){
             Log.d("Error", "updateItem: Item have no id.");
@@ -451,7 +450,7 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
         BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(context);
         BolusDAO bolusDAO = new BolusDAO(context);
 
-        boolean updated = bolusDAO.updateInsulineField(bolusTable3Data,fieldName,insuline);
+        boolean updated = bolusDAO.updateInsulineField(bolusTable3Data,bolus,insuline);
         if (updated) refreshData();
         return updated;
     }
@@ -484,7 +483,7 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
     }
 
     public interface BolusTable1AdapterOnClickHandler {
-        void onClick(BolusTable3Data bolusTable3Data, int clickedItem, int SelectedItems, String mealName, FieldId fieldId);
+        void onClick(BolusTable3Data bolusTable3Data, int clickedItem, int SelectedItems, String mealName, Bolus bolus);
         void onLongClick(HashMap<Integer, Integer> selectedItens, BolusTable3Data bolusTable3Data);
     }
 

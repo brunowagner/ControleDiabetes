@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTable1Adapter;
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
+import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable2Data;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable3Data;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
@@ -103,7 +104,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
         final BolusTable1Adapter.BolusTable1AdapterOnClickHandler handler = new BolusTable1Adapter.BolusTable1AdapterOnClickHandler() {
             @Override
-            public void onClick(final BolusTable3Data bolusTableData, int itemSelected, int selectedItems, final String mealName, final BolusTable1Adapter.FieldId fieldId) {
+            public void onClick(final BolusTable3Data bolusTableData, int itemSelected, int selectedItems, final String mealName, final Bolus bolus) {
 
                 if (mEnableActionDelete){
                     mEnableActionDelete = selectedItems > 0;
@@ -118,7 +119,7 @@ public class BolusTableActivity extends AppCompatActivity {
                         .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                editFast(bolusTableData,mealName,fieldId);
+                                editFast(bolusTableData,mealName,bolus);
                             }
                         })
                         .setNegativeButton("Não", null)
@@ -142,7 +143,7 @@ public class BolusTableActivity extends AppCompatActivity {
         return handler;
     }
 
-    private void editFast(final BolusTable3Data bolusTable3Data, final String mealName, final BolusTable1Adapter.FieldId fieldId){
+    private void editFast(final BolusTable3Data bolusTable3Data, final String mealName, final Bolus bolus){
         String glucose = String.valueOf(bolusTable3Data.getGlucose());
         AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
         builder.setTitle("Insira a nova quantidade de insulina (U):");
@@ -168,7 +169,7 @@ public class BolusTableActivity extends AppCompatActivity {
                     return; // n~ao faz nada
                 }
                 Double newValue = Converter.toDouble(editText.getText().toString());
-                boolean updated = mBolusTableAdapter.updateItem(bolusTable3Data, fieldId.getColumnName(),newValue);
+                boolean updated = mBolusTableAdapter.updateItem(bolusTable3Data, bolus,newValue);
                 String message = "";
                 message = updated ? "Insulina alterada!" : "Erro ao alterar!";
                 Toast.makeText(BolusTableActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -226,7 +227,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
                 //Empacotando o objeto
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(BolusTable2Data.BUNDLE_STRING_KEY, mSelectedItem);
+                bundle.putSerializable(BolusTable3Data.BUNDLE_STRING_KEY, mSelectedItem);
 
                 //passando o objeto na Intent
                 intent1.putExtras(bundle);
