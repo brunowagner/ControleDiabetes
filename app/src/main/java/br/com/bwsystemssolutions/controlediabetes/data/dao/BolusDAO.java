@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable2Data;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable3Data;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
@@ -91,6 +93,14 @@ public class BolusDAO {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = parseToContentValues(bolus);
         return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolus.getId() + ""}) > 0;
+    }
+
+
+    public boolean updateInsulineField (BolusTable3Data bolusTable3Data, String fieldName, Double value){
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(fieldName, value);
+        return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolusTable2Data.getId() + ""}) > 0;
     }
 
     private ArrayList<Bolus> parseToBolus(Cursor cursor){

@@ -20,8 +20,10 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTable1Adapter;
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
 import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable2Data;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable3Data;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 import br.com.bwsystemssolutions.controlediabetes.util.Filters;
@@ -31,11 +33,11 @@ public class BolusTableActivity extends AppCompatActivity {
 
     RecyclerView mBolusRecyclerView;
     RecyclerView mGlucoseRecyclerView;
-    BolusTableAdapter mBolusTableAdapter;
+    BolusTable1Adapter mBolusTableAdapter;
     RecyclerView.OnScrollListener[] scrollListeners = new RecyclerView.OnScrollListener[2];
     boolean mEnableActionDelete = false;
     boolean mEnableActionEdit = false;
-    private BolusTable2Data mSelectedItem;
+    private BolusTable3Data mSelectedItem;
     //private HashMap<Integer,Integer> mSelectedItems;
 
 
@@ -78,7 +80,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
     private void configureRecyclerView(){
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mBolusTableAdapter = new BolusTableAdapter(this,dbHelper, clickHandler());
+        mBolusTableAdapter = new BolusTable1Adapter(this,dbHelper, clickHandler());
         mBolusRecyclerView.setAdapter(mBolusTableAdapter);
         mGlucoseRecyclerView.setAdapter(mBolusTableAdapter);
 
@@ -97,11 +99,11 @@ public class BolusTableActivity extends AppCompatActivity {
         configureScrollListeners();
     }
 
-    public BolusTableAdapter.BolusTableAdapterOnClickHandler clickHandler(){
+    public BolusTable1Adapter.BolusTable1AdapterOnClickHandler clickHandler(){
 
-        final BolusTableAdapter.BolusTableAdapterOnClickHandler handler = new BolusTableAdapter.BolusTableAdapterOnClickHandler() {
+        final BolusTable1Adapter.BolusTable1AdapterOnClickHandler handler = new BolusTable1Adapter.BolusTable1AdapterOnClickHandler() {
             @Override
-            public void onClick(final BolusTable2Data bolusTableData, int itemSelected, int selectedItems, final String mealName, final BolusTableAdapter.FieldId fieldId) {
+            public void onClick(final BolusTable3Data bolusTableData, int itemSelected, int selectedItems, final String mealName, final BolusTable1Adapter.FieldId fieldId) {
 
                 if (mEnableActionDelete){
                     mEnableActionDelete = selectedItems > 0;
@@ -125,7 +127,7 @@ public class BolusTableActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongClick(HashMap<Integer, Integer> selectedItems, BolusTable2Data bolusTableData) {
+            public void onLongClick(HashMap<Integer, Integer> selectedItems, BolusTable3Data bolusTableData) {
                 mEnableActionDelete = selectedItems.size() > 0;
                 mEnableActionEdit = selectedItems.size() == 1;
                 mSelectedItem = bolusTableData;
@@ -140,8 +142,8 @@ public class BolusTableActivity extends AppCompatActivity {
         return handler;
     }
 
-    private void editFast(final BolusTable2Data bolusTable2Data, final String mealName, final BolusTableAdapter.FieldId fieldId){
-        String glucose = String.valueOf(bolusTable2Data.getGlucose());
+    private void editFast(final BolusTable3Data bolusTable3Data, final String mealName, final BolusTable1Adapter.FieldId fieldId){
+        String glucose = String.valueOf(bolusTable3Data.getGlucose());
         AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
         builder.setTitle("Insira a nova quantidade de insulina (U):");
 
@@ -166,7 +168,7 @@ public class BolusTableActivity extends AppCompatActivity {
                     return; // n~ao faz nada
                 }
                 Double newValue = Converter.toDouble(editText.getText().toString());
-                boolean updated = mBolusTableAdapter.updateItem(bolusTable2Data, fieldId.getColumnName(),newValue);
+                boolean updated = mBolusTableAdapter.updateItem(bolusTable3Data, fieldId.getColumnName(),newValue);
                 String message = "";
                 message = updated ? "Insulina alterada!" : "Erro ao alterar!";
                 Toast.makeText(BolusTableActivity.this, message, Toast.LENGTH_SHORT).show();
