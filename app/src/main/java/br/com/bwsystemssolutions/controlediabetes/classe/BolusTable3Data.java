@@ -116,6 +116,19 @@ public class BolusTable3Data implements Serializable {
         this.bolus7Madrugada = bolus7Madrugada;
     }
 
+    public ArrayList<Bolus> getBolusArrayList(){
+        ArrayList<Bolus> bolusArrayList = new ArrayList<>();
+
+        bolusArrayList.add(bolus1CafeDaManha);
+        bolusArrayList.add(bolus2Colacao);
+        bolusArrayList.add(bolus3Almoco);
+        bolusArrayList.add(bolus4Lanche);
+        bolusArrayList.add(bolus5Jantar);
+        bolusArrayList.add(bolus6Ceia);
+        bolusArrayList.add(bolus7Madrugada);
+        return bolusArrayList;
+    }
+
 
 
 

@@ -49,6 +49,23 @@ public class BolusDAO {
         return cursor.getCount() == 0? null: parseToBolus(cursor).get(0);
     }
 
+    public BolusTable3Data fetchByGlucose(int glucose) {
+        return fetchBy(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME, glucose);
+    }
+
+    private Bolus fetchBy(String field, int value){
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + field + " = ?";
+        final Cursor cursor = db.rawQuery(sqlString, new String[] {String.valueOf(value)});
+        final ArrayList<Bolus> bolusArrayList = parseToBolusTableDatas(cursor);
+        db.close();
+        if (bolusArrayList.size() == 0){
+            return null;
+        }
+        return bolusArrayList.get(0);
+
+    }
+
 
 
     public boolean add (Bolus bolus){
@@ -59,10 +76,10 @@ public class BolusDAO {
         return inserted;
     }
 
-    public boolean add (ArrayList<Bolus> bolusTableData){
+    public boolean add (ArrayList<Bolus> bolusArrayList){
         boolean allInserted = true;
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
-        for (Bolus b : bolusTableData) {
+        for (Bolus b : bolusArrayList) {
             ContentValues cv = parseToContentValues(b);
             boolean inserted = db.insert(TABLE_NAME, null, cv) > 0;
             if (!inserted) { allInserted = false; }
@@ -93,6 +110,18 @@ public class BolusDAO {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = parseToContentValues(bolus);
         return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolus.getId() + ""}) > 0;
+    }
+
+    public boolean update (ArrayList<Bolus> bolusArrayList){
+        boolean allUpdated = true;
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        for (Bolus b : bolusArrayList) {
+            ContentValues cv = parseToContentValues(b);
+            boolean updated = db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {b.getId() + ""}) > 0;
+            if (!updated) { allUpdated = false; }
+        }
+        db.close();
+        return allUpdated;
     }
 
 
