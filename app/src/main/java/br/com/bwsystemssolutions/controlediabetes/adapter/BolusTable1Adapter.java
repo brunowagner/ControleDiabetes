@@ -332,7 +332,7 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
     private ArrayList<BolusTable3Data> parseBolusToBolusTable3Data(ArrayList<Bolus> bolusArrayList){
         ArrayList<BolusTable3Data> bolusTable3Datas = new ArrayList<>();
         BolusTable3Data bolusTable3Data = new BolusTable3Data();
-        int id = 0;
+        //int id = 0;
 
         int previousGlucose = 0;
 
@@ -341,12 +341,12 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
             //se a glicose for diferente da anterior entao cria-se novo objeto
             if (previousGlucose != b.getGlucose()) {
                 bolusTable3Data = new BolusTable3Data();
-                id ++;
-                bolusTable3Data.setId(id);
+                //id ++;
+                bolusTable3Data.setId(b.getGlucose());
                 bolusTable3Datas.add(bolusTable3Data);
             }
 
-            bolusTable3Data.addId(b.getId());
+            bolusTable3Data.addBolusIds(b.getId());
             bolusTable3Data.setGlucose(b.getGlucose());
 
             switch (b.getMeal_id()){

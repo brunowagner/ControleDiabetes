@@ -49,20 +49,34 @@ public class BolusDAO {
         return cursor.getCount() == 0? null: parseToBolus(cursor).get(0);
     }
 
-    public BolusTable3Data fetchByGlucose(int glucose) {
-        return fetchBy(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME, glucose);
+    public ArrayList<Bolus> fetchByGlucose(int glucose) {
+        //TODO 2021 - mudar o objeto retornado pelo fetch
+        return fetchBolusArrayBy(CalculoDeBolusContract.BolusTable2Entry.COLUMN_GLUCOSE_NAME, glucose);
     }
 
-    private Bolus fetchBy(String field, int value){
+    private Bolus fetchBolusBy(String field, int value){
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + field + " = ?";
         final Cursor cursor = db.rawQuery(sqlString, new String[] {String.valueOf(value)});
-        final ArrayList<Bolus> bolusArrayList = parseToBolusTableDatas(cursor);
+        final ArrayList<Bolus> bolusArrayList = parseToBolus(cursor);
         db.close();
         if (bolusArrayList.size() == 0){
             return null;
         }
         return bolusArrayList.get(0);
+
+    }
+
+    private ArrayList<Bolus> fetchBolusArrayBy(String field, int value){
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sqlString = "SELECT * FROM " + TABLE_NAME + " WHERE " + field + " = ?";
+        final Cursor cursor = db.rawQuery(sqlString, new String[] {String.valueOf(value)});
+        final ArrayList<Bolus> bolusArrayList = parseToBolus(cursor);
+        db.close();
+        if (bolusArrayList.size() == 0){
+            return null;
+        }
+        return bolusArrayList;
 
     }
 

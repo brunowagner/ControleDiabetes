@@ -1,13 +1,15 @@
 package br.com.bwsystemssolutions.controlediabetes.classe;
 
-public class Bolus {
+import java.io.Serializable;
+
+public class Bolus implements Serializable {
     private int id;
     private int glucose;
     private int meal_id;
     private String meal;
     private double bolus;
 
-    public static final String BUNDLE_STRING_KEY = Meal.class.toString();
+    public static final String BUNDLE_STRING_KEY = Bolus.class.toString();
 
     public int getId() {
         return id;

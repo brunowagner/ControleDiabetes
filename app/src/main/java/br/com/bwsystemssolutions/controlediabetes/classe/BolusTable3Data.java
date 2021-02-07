@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class BolusTable3Data implements Serializable {
 
-    public static final String BUNDLE_STRING_KEY = Record.class.toString();
+    public static final String BUNDLE_STRING_KEY = BolusTable3Data.class.toString();
 
-    private ArrayList<Integer> ids;
+    private ArrayList<Integer> bolusIds;
     private int id;
     private int glucose;
 //    private ArrayList<BolusTableDataMeals> bolusTableDataMeals;
@@ -45,19 +45,19 @@ public class BolusTable3Data implements Serializable {
         this.id = id;
     }
 
-    public ArrayList<Integer> getIds() {
-        return ids;
+    public ArrayList<Integer> getBolusIds() {
+        return bolusIds;
     }
 
-    public void setIds(ArrayList<Integer> ids) {
-        this.ids = ids;
+    public void setBolusIds(ArrayList<Integer> bolusIds) {
+        this.bolusIds = bolusIds;
     }
 
-    public void addId(int id) {
-        if (this.ids == null) {
-            this.ids = new ArrayList<>();
+    public void addBolusIds(int id) {
+        if (this.bolusIds == null) {
+            this.bolusIds = new ArrayList<>();
         }
-        this.ids.add(id);
+        this.bolusIds.add(id);
     }
 
     public Bolus getBolus1CafeDaManha() {
@@ -129,10 +129,29 @@ public class BolusTable3Data implements Serializable {
         return bolusArrayList;
     }
 
+    public void setBolusArrayList(ArrayList<Bolus> bolusArrayList) {
+            for (Bolus b : bolusArrayList){
 
+                this.setId(b.getGlucose());
+                this.addBolusIds(b.getId());
+                this.setGlucose(b.getGlucose());
 
-
-    //Queries
-
-
+                switch (b.getMeal_id()){
+                    case 1: this.setBolus1CafeDaManha(b);
+                        break;
+                    case 2: this.setBolus2Colacao(b);
+                        break;
+                    case 3: this.setBolus3Almoco(b);
+                        break;
+                    case 4: this.setBolus4Lanche(b);
+                        break;
+                    case 5: this.setBolus5Jantar(b);
+                        break;
+                    case 6: this.setBolus6Ceia(b);
+                        break;
+                    case 7: this.setBolus7Madrugada(b);
+                    default:
+                }
+            }
+    }
 }

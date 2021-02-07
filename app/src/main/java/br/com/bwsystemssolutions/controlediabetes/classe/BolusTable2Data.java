@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class BolusTable2Data implements Serializable {
 
-    public static final String BUNDLE_STRING_KEY = Record.class.toString();
+    public static final String BUNDLE_STRING_KEY = BolusTable2Data.class.toString();
 
     private int id;
     private int glucose;
