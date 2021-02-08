@@ -28,7 +28,7 @@
 
     <!-- used to database values-->
     <string-array name="meal_names_array">
-        <item></item>
+<!--        <item></item>--> retirado para que a tabela da base de dados n~ao tenha valor vazio.
         <item>@string/meals_name_breakfast</item>
         <item>@string/meals_name_brunch</item>
         <item>@string/meals_name_Lunch</item>

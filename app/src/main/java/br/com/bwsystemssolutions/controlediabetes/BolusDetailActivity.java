@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -88,13 +89,13 @@ public class BolusDetailActivity extends AppCompatActivity {
         if (mBolusTable3Data == null) return;
 
         mGlucoseEditText.setText(String.valueOf(mBolusTable3Data.getGlucose()));
-        mBreakFastEditText.setText(String.valueOf(mBolusTable3Data.getBolus1CafeDaManha().getBolus()));
-        mBrunchEditText.setText(String.valueOf(mBolusTable3Data.getBolus2Colacao().getBolus()));
-        mLunchEditText.setText(String.valueOf(mBolusTable3Data.getBolus3Almoco().getBolus()));
-        mTeaEditText.setText(String.valueOf(mBolusTable3Data.getBolus4Lanche().getBolus()));
-        mDinnerEditText.setText(String.valueOf(mBolusTable3Data.getBolus5Jantar().getBolus()));
-        mSupperEditText.setText(String.valueOf(mBolusTable3Data.getBolus6Ceia().getBolus()));
-        mDawnEditText.setText(String.valueOf(mBolusTable3Data.getBolus7Madrugada().getBolus()));
+        mBreakFastEditText.setText(String.valueOf(mBolusTable3Data.getBolus1CafeDaManha()));
+        mBrunchEditText.setText(String.valueOf(mBolusTable3Data.getBolus2Colacao()));
+        mLunchEditText.setText(String.valueOf(mBolusTable3Data.getBolus3Almoco()));
+        mTeaEditText.setText(String.valueOf(mBolusTable3Data.getBolus4Lanche()));
+        mDinnerEditText.setText(String.valueOf(mBolusTable3Data.getBolus5Jantar()));
+        mSupperEditText.setText(String.valueOf(mBolusTable3Data.getBolus6Ceia()));
+        mDawnEditText.setText(String.valueOf(mBolusTable3Data.getBolus7Madrugada()));
     }
 
     @Override
@@ -158,6 +159,7 @@ public class BolusDetailActivity extends AppCompatActivity {
             mBolusTable3Data = new BolusTable3Data();
             fillObjectWithActivityData(mBolusTable3Data);
             bolusArrayList = mBolusTable3Data.getBolusArrayList();
+
             mBolusDAO.add(bolusArrayList);
             Toast.makeText(BolusDetailActivity.this,"Salvo com sucesso!", Toast.LENGTH_SHORT).show();
             finish();
@@ -193,6 +195,7 @@ public class BolusDetailActivity extends AppCompatActivity {
 
     private void fillObjectWithActivityData(BolusTable3Data bolusTable3Data) {
         MealDAO mealDAO = new MealDAO(this);
+        ArrayList<Bolus> bolusArrayList = new ArrayList<>();
         ArrayList<Meal> meals = mealDAO.fetchAll();
 
         Bolus bolusCafeDaManha = new Bolus();
@@ -201,11 +204,13 @@ public class BolusDetailActivity extends AppCompatActivity {
         bolusCafeDaManha.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
         bolusCafeDaManha.setBolus(Converter.toDouble(mBreakFastEditText.getText().toString()));
 
+
         Bolus bolusColacao = new Bolus();
         bolusColacao.setMeal_id(2);
         bolusColacao.setMeal(meals.get(1).getMeal());
         bolusColacao.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
         bolusColacao.setBolus(Converter.toDouble(mBrunchEditText.getText().toString()));
+
 
         Bolus bolusAlmoco = new Bolus();
         bolusAlmoco.setMeal_id(3);
@@ -213,39 +218,44 @@ public class BolusDetailActivity extends AppCompatActivity {
         bolusAlmoco.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
         bolusAlmoco.setBolus(Converter.toDouble(mLunchEditText.getText().toString()));
 
+
         Bolus bolusLanche = new Bolus();
         bolusLanche.setMeal_id(4);
         bolusLanche.setMeal(meals.get(3).getMeal());
         bolusLanche.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
         bolusLanche.setBolus(Converter.toDouble(mTeaEditText.getText().toString()));
 
+
         Bolus bolusJantar = new Bolus();
-        bolusLanche.setMeal_id(5);
-        bolusLanche.setMeal(meals.get(4).getMeal());
-        bolusLanche.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
-        bolusLanche.setBolus(Converter.toDouble(mDinnerEditText.getText().toString()));
+        bolusJantar.setMeal_id(5);
+        bolusJantar.setMeal(meals.get(4).getMeal());
+        bolusJantar.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
+        bolusJantar.setBolus(Converter.toDouble(mDinnerEditText.getText().toString()));
 
         Bolus bolusCeia = new Bolus();
-        bolusLanche.setMeal_id(6);
-        bolusLanche.setMeal(meals.get(5).getMeal());
-        bolusLanche.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
-        bolusLanche.setBolus(Converter.toDouble(mSupperEditText.getText().toString()));
+        bolusCeia.setMeal_id(6);
+        bolusCeia.setMeal(meals.get(5).getMeal());
+        bolusCeia.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
+        bolusCeia.setBolus(Converter.toDouble(mSupperEditText.getText().toString()));
 
         Bolus bolusMadrugada = new Bolus();
-        bolusLanche.setMeal_id(7);
-        bolusLanche.setMeal(meals.get(6).getMeal());
-        bolusLanche.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
-        bolusLanche.setBolus(Converter.toDouble(mDawnEditText.getText().toString()));
+        bolusMadrugada.setMeal_id(7);
+        bolusMadrugada.setMeal(meals.get(6).getMeal());
+        bolusMadrugada.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
+        bolusMadrugada.setBolus(Converter.toDouble(mDawnEditText.getText().toString()));
 
 
         bolusTable3Data.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
-        bolusTable3Data.setBolus1CafeDaManha(bolusCafeDaManha);
-        bolusTable3Data.setBolus2Colacao(bolusColacao);
-        bolusTable3Data.setBolus3Almoco(bolusAlmoco);
-        bolusTable3Data.setBolus4Lanche(bolusLanche);
-        bolusTable3Data.setBolus5Jantar(bolusJantar);
-        bolusTable3Data.setBolus6Ceia(bolusCeia);
-        bolusTable3Data.setBolus7Madrugada(bolusMadrugada);
+
+        bolusArrayList.add(bolusCafeDaManha);
+        bolusArrayList.add(bolusColacao);
+        bolusArrayList.add(bolusAlmoco);
+        bolusArrayList.add(bolusLanche);
+        bolusArrayList.add(bolusJantar);
+        bolusArrayList.add(bolusCeia);
+        bolusArrayList.add(bolusMadrugada);
+
+        bolusTable3Data.setBolusArrayList(bolusArrayList);
     }
 
 }

@@ -174,6 +174,8 @@ public class RecordDetailActivity extends AppCompatActivity {
         Cursor cursor = fetchAllMeals();
 
         List<String> mealsList = new ArrayList<>();
+        //deixa o primeiro item vazio, caso o registro nao seja sobre uma refeicao.
+        mealsList.add(0,"");
 
         if (cursor.getCount() <= 0){
             //Do nothing

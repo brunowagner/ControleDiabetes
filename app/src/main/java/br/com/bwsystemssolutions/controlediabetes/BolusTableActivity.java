@@ -103,29 +103,29 @@ public class BolusTableActivity extends AppCompatActivity {
     public BolusTable1Adapter.BolusTable1AdapterOnClickHandler clickHandler(){
 
         final BolusTable1Adapter.BolusTable1AdapterOnClickHandler handler = new BolusTable1Adapter.BolusTable1AdapterOnClickHandler() {
-            @Override
-            public void onClick(final BolusTable3Data bolusTableData, int itemSelected, int selectedItems, final String mealName, final Bolus bolus) {
-
-                if (mEnableActionDelete){
-                    mEnableActionDelete = selectedItems > 0;
-                    mEnableActionEdit = selectedItems == 1;
-                    invalidateOptionsMenu();
-                    return;
-                }
-
-                new AlertDialog.Builder(BolusTableActivity.this)
-                        .setTitle("Glicemia a patir de " + bolusTableData.getGlucose() + "mg/dl")
-                        .setMessage("Deseja editar a insulina do(a) " + mealName + " ?")
-                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                editFast(bolusTableData,mealName,bolus);
-                            }
-                        })
-                        .setNegativeButton("Não", null)
-                        .create()
-                        .show();
-            }
+//            @Override
+//            public void onClick(final BolusTable3Data bolusTableData, int itemSelected, int selectedItems, final String mealName, final BolusTable1Adapter.FieldId fieldId) {
+//
+//                if (mEnableActionDelete){
+//                    mEnableActionDelete = selectedItems > 0;
+//                    mEnableActionEdit = selectedItems == 1;
+//                    invalidateOptionsMenu();
+//                    return;
+//                }
+//
+//                new AlertDialog.Builder(BolusTableActivity.this)
+//                        .setTitle("Glicemia a patir de " + bolusTableData.getGlucose() + "mg/dl")
+//                        .setMessage("Deseja editar a insulina do(a) " + mealName + " ?")
+//                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                editFast(bolusTableData,mealName,fieldId);
+//                            }
+//                        })
+//                        .setNegativeButton("Não", null)
+//                        .create()
+//                        .show();
+//            }
 
             @Override
             public void onLongClick(HashMap<Integer, Integer> selectedItems, BolusTable3Data bolusTableData) {
@@ -143,42 +143,42 @@ public class BolusTableActivity extends AppCompatActivity {
         return handler;
     }
 
-    private void editFast(final BolusTable3Data bolusTable3Data, final String mealName, final Bolus bolus){
-        String glucose = String.valueOf(bolusTable3Data.getGlucose());
-        AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
-        builder.setTitle("Insira a nova quantidade de insulina (U):");
-
-        FrameLayout container = new FrameLayout(BolusTableActivity.this);
-        FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        int px = Converter.toPx(BolusTableActivity.this, 30);
-        params.leftMargin = px;
-        params.rightMargin = px;
-
-        final EditText editText = new EditText(BolusTableActivity.this);
-        editText.setLayoutParams(params);
-        container.addView(editText);
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        editText.setFilters(new InputFilter[] {Filters.DecimalDigits(3, 1)});
-        builder.setView(container);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, "onClick: botao ok apertado -------------------------------------");
-                if (editText.getText().length() == 0){
-                    Log.d(TAG, "onClick: edittext e vazio --------------------------------------------------");
-                    return; // n~ao faz nada
-                }
-                Double newValue = Converter.toDouble(editText.getText().toString());
-                boolean updated = mBolusTableAdapter.updateItem(bolusTable3Data, bolus,newValue);
-                String message = "";
-                message = updated ? "Insulina alterada!" : "Erro ao alterar!";
-                Toast.makeText(BolusTableActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("Cancelar", null);
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
+//    private void editFast(final BolusTable3Data bolusTable3Data, final String mealName, final BolusTable1Adapter.FieldId fieldId){
+//        String glucose = String.valueOf(bolusTable3Data.getGlucose());
+//        AlertDialog.Builder builder = new AlertDialog.Builder(BolusTableActivity.this);
+//        builder.setTitle("Insira a nova quantidade de insulina (U):");
+//
+//        FrameLayout container = new FrameLayout(BolusTableActivity.this);
+//        FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        int px = Converter.toPx(BolusTableActivity.this, 30);
+//        params.leftMargin = px;
+//        params.rightMargin = px;
+//
+//        final EditText editText = new EditText(BolusTableActivity.this);
+//        editText.setLayoutParams(params);
+//        container.addView(editText);
+//        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//        editText.setFilters(new InputFilter[] {Filters.DecimalDigits(3, 1)});
+//        builder.setView(container);
+//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                Log.d(TAG, "onClick: botao ok apertado -------------------------------------");
+//                if (editText.getText().length() == 0){
+//                    Log.d(TAG, "onClick: edittext e vazio --------------------------------------------------");
+//                    return; // n~ao faz nada
+//                }
+//                Double newValue = Converter.toDouble(editText.getText().toString());
+//                boolean updated = mBolusTableAdapter.updateItem(bolusTable3Data, fieldId.getMealId(), newValue);
+//                String message = "";
+//                message = updated ? "Insulina alterada!" : "Erro ao alterar!";
+//                Toast.makeText(BolusTableActivity.this, message, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        builder.setNegativeButton("Cancelar", null);
+//        final AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+//    }
 
     private void configureScrollListeners(){
         scrollListeners[0] = new RecyclerView.OnScrollListener( )

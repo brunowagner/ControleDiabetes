@@ -139,12 +139,12 @@ public class BolusDAO {
     }
 
 
-    public boolean updateInsulineField (BolusTable3Data bolusTable3Data, Bolus bolus, Double value){
-        final SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(CalculoDeBolusContract.BolusEntry.COLUMN_BOLUS_NAME, value);
-        return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolus.getId() + ""}) > 0;
-    }
+//    public boolean updateInsulineField (BolusTable3Data bolusTable3Data, int mealId, Double value){
+//        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+//        ContentValues cv = new ContentValues();
+//        cv.put(CalculoDeBolusContract.BolusEntry.COLUMN_BOLUS_NAME, value);
+//        return db.update (TABLE_NAME, cv, COLUMN_ID_NAME + " = ?", new String[] {bolus.getId() + ""}) > 0;
+//    }
 
     private ArrayList<Bolus> parseToBolus(Cursor cursor){
         ArrayList<Bolus> bolusArrayList = new ArrayList<>();
