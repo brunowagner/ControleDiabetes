@@ -30,10 +30,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusDAO;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
 
 public class RecordDetailActivity extends AppCompatActivity {
 
@@ -192,6 +195,22 @@ public class RecordDetailActivity extends AppCompatActivity {
         mMealSpinner.setAdapter(mealsArrayAdapter);
     }
 
+    private void loadMealsSpinner2(){
+        MealDAO mealDAO = new MealDAO(this);
+        Meal mealEmpty = new Meal();
+
+        //deixa o primeiro item vazio, caso o registro nao seja sobre uma refeicao.
+        mealEmpty.setId(0);
+        mealEmpty.setMeal("");
+
+        List<Meal> meals = mealDAO.fetchAll();
+
+        meals.add(0,mealEmpty);
+
+        ArrayAdapter<Meal> mealsArrayAdapter = new ArrayAdapter<Meal>(this,R.layout.support_simple_spinner_dropdown_item,meals);
+        mMealSpinner.setAdapter(mealsArrayAdapter);
+    }
+
     /**
      * Method to shearch position of text in spinner.
      * @param spinner The spinner widget.
@@ -238,12 +257,12 @@ public class RecordDetailActivity extends AppCompatActivity {
         boolean validate = false;
         String message = "";
 
-        // se algum campo não for preenchido
+        // se data ou hora não for preenchido
         if (mDataEditText.getText().length() == 0 || mHoraEditText.getText().length() == 0 ) {
                 //mEventoEditText.getText().length() == 0) {
 
 
-            message = "A data, a hora ou o evento não foi preenchido!";
+            message = "A data ou a hora não foi preenchido!";
 
         } else if (mCarboidratoEditText.getText().length() == 0 && mGlicemiaEditText.getText().length() == 0 &&
                 mInsulinaBasalEditText.getText().length() == 0 && mInsulinaRapidaEditText.getText().length() == 0) {
@@ -253,8 +272,17 @@ public class RecordDetailActivity extends AppCompatActivity {
                     "- Glicemia\n" +
                     "- Insulina Rápida\n" +
                     "- Insulina Basal";
-        } else if (isToSave && mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRegister(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )){
+        } else if (isToSave && mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRegister(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )) {
             message = "Data e hora ja' existem.\nO registro não pôde ser salvo.";
+
+//        // se a refeição escolhida já existir para a data em questão.
+//            BolusDAO bolusDAO = new BolusDAO(this);
+//            mMealSpinner
+//            bolusDAO.fetchMealByDate(mMealSpinner.getSelectedItem().to)
+//        } else if (){
+//
+//            message = " XXXX já foi já existe para esta data.\n" +
+//                    "Escolha outra refeição ou edite a refeição desejada";
 
         } else {
             validate = true;
