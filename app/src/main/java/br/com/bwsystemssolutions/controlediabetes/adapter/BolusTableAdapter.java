@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
     private int mSelectedItem = ITEN_SELECT_NONE;
     private int mClickedItem;
     private HashMap<Integer, Integer> mSelectedItems;
-    private Bolus bolusClicked;
+    private FieldId fieldClicked;
 
     public static final int ITEN_SELECT_NONE = -1;
 
@@ -268,7 +269,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         public void onClick(View v) {
             int position = getAdapterPosition();
             mClickedItem = position;
-            bolusClicked = null;
+            fieldClicked = null;
             if (mSelectedItems.size() > 0) {
                 if (mSelectedItems.containsKey(position)) {
                     mSelectedItems.remove(position);
@@ -289,7 +290,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
             LinearLayout linearLayout = (LinearLayout) cardView.getChildAt(0);
             TextView textView = (TextView) linearLayout.getChildAt(0);
             String mealName = textView.getText().toString();
-            bolusClicked = (Bolus) cardView.getTag();
+            fieldClicked = (FieldId) cardView.getTag();
             mSelectedItem = position;
 
             BolusTableData bolusTableData = mBolusTableData.get(position);
@@ -300,7 +301,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
         public boolean onLongClick(View v) {
             int clickedItem = getAdapterPosition();
             mSelectedItem = ITEN_SELECT_NONE;
-            bolusClicked = null;
+            fieldClicked = null;
             if (mSelectedItems.containsKey(clickedItem)){
                 mSelectedItems.remove(clickedItem);
             } else {
