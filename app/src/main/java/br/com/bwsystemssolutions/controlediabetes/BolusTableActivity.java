@@ -1,44 +1,31 @@
 package br.com.bwsystemssolutions.controlediabetes;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import java.util.HashMap;
 
-import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTable1Adapter;
 import br.com.bwsystemssolutions.controlediabetes.adapter.BolusTableAdapter;
-import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable2Data;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable3Data;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
-import br.com.bwsystemssolutions.controlediabetes.util.Converter;
-import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 
 
 public class BolusTableActivity extends AppCompatActivity {
 
     RecyclerView mBolusRecyclerView;
     RecyclerView mGlucoseRecyclerView;
-    BolusTable1Adapter mBolusTableAdapter;
+    BolusTableAdapter mBolusTableAdapter;
     RecyclerView.OnScrollListener[] scrollListeners = new RecyclerView.OnScrollListener[2];
     boolean mEnableActionDelete = false;
     boolean mEnableActionEdit = false;
-    private BolusTable3Data mSelectedItem;
+    private BolusTableData mSelectedItem;
     //private HashMap<Integer,Integer> mSelectedItems;
 
 
@@ -81,7 +68,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
     private void configureRecyclerView(){
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mBolusTableAdapter = new BolusTable1Adapter(this,dbHelper, clickHandler());
+        mBolusTableAdapter = new BolusTableAdapter(this,dbHelper, clickHandler());
         mBolusRecyclerView.setAdapter(mBolusTableAdapter);
         mGlucoseRecyclerView.setAdapter(mBolusTableAdapter);
 
@@ -100,9 +87,9 @@ public class BolusTableActivity extends AppCompatActivity {
         configureScrollListeners();
     }
 
-    public BolusTable1Adapter.BolusTable1AdapterOnClickHandler clickHandler(){
+    public BolusTableAdapter.BolusTable1AdapterOnClickHandler clickHandler(){
 
-        final BolusTable1Adapter.BolusTable1AdapterOnClickHandler handler = new BolusTable1Adapter.BolusTable1AdapterOnClickHandler() {
+        final BolusTableAdapter.BolusTable1AdapterOnClickHandler handler = new BolusTableAdapter.BolusTable1AdapterOnClickHandler() {
 //            @Override
 //            public void onClick(final BolusTable3Data bolusTableData, int itemSelected, int selectedItems, final String mealName, final BolusTable1Adapter.FieldId fieldId) {
 //
@@ -128,7 +115,7 @@ public class BolusTableActivity extends AppCompatActivity {
 //            }
 
             @Override
-            public void onLongClick(HashMap<Integer, Integer> selectedItems, BolusTable3Data bolusTableData) {
+            public void onLongClick(HashMap<Integer, Integer> selectedItems, BolusTableData bolusTableData) {
                 mEnableActionDelete = selectedItems.size() > 0;
                 mEnableActionEdit = selectedItems.size() == 1;
                 mSelectedItem = bolusTableData;
@@ -227,7 +214,7 @@ public class BolusTableActivity extends AppCompatActivity {
 
                 //Empacotando o objeto
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(BolusTable3Data.BUNDLE_STRING_KEY, mSelectedItem);
+                bundle.putSerializable(BolusTableData.BUNDLE_STRING_KEY, mSelectedItem);
 
                 //passando o objeto na Intent
                 intent1.putExtras(bundle);

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,7 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable3Data;
+import br.com.bwsystemssolutions.controlediabetes.classe.BolusTableData;
 import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
@@ -26,7 +25,7 @@ import br.com.bwsystemssolutions.controlediabetes.util.Filters;
 
 public class BolusDetailActivity extends AppCompatActivity {
 
-    private BolusTable3Data mBolusTable3Data;
+    private BolusTableData mBolusTableData;
     private BolusDAO mBolusDAO;
     private boolean mEditAction = false;
 
@@ -49,9 +48,9 @@ public class BolusDetailActivity extends AppCompatActivity {
         //Verifica se veio objeto e set a variavel que informa que trata-se de edição ou não.
         Intent intentThatStartedThisActivity = getIntent();
 
-        if (intentThatStartedThisActivity.hasExtra(BolusTable3Data.BUNDLE_STRING_KEY)){
+        if (intentThatStartedThisActivity.hasExtra(BolusTableData.BUNDLE_STRING_KEY)){
             Bundle bundle = intentThatStartedThisActivity.getExtras();
-            mBolusTable3Data = (BolusTable3Data) bundle.getSerializable(BolusTable3Data.BUNDLE_STRING_KEY);
+            mBolusTableData = (BolusTableData) bundle.getSerializable(BolusTableData.BUNDLE_STRING_KEY);
             mEditAction = true;
         }
 
@@ -86,16 +85,16 @@ public class BolusDetailActivity extends AppCompatActivity {
     }
 
     private void fillComponents() {
-        if (mBolusTable3Data == null) return;
+        if (mBolusTableData == null) return;
 
-        mGlucoseEditText.setText(String.valueOf(mBolusTable3Data.getGlucose()));
-        mBreakFastEditText.setText(String.valueOf(mBolusTable3Data.getBolus1CafeDaManha()));
-        mBrunchEditText.setText(String.valueOf(mBolusTable3Data.getBolus2Colacao()));
-        mLunchEditText.setText(String.valueOf(mBolusTable3Data.getBolus3Almoco()));
-        mTeaEditText.setText(String.valueOf(mBolusTable3Data.getBolus4Lanche()));
-        mDinnerEditText.setText(String.valueOf(mBolusTable3Data.getBolus5Jantar()));
-        mSupperEditText.setText(String.valueOf(mBolusTable3Data.getBolus6Ceia()));
-        mDawnEditText.setText(String.valueOf(mBolusTable3Data.getBolus7Madrugada()));
+        mGlucoseEditText.setText(String.valueOf(mBolusTableData.getGlucose()));
+        mBreakFastEditText.setText(String.valueOf(mBolusTableData.getBolus1CafeDaManha()));
+        mBrunchEditText.setText(String.valueOf(mBolusTableData.getBolus2Colacao()));
+        mLunchEditText.setText(String.valueOf(mBolusTableData.getBolus3Almoco()));
+        mTeaEditText.setText(String.valueOf(mBolusTableData.getBolus4Lanche()));
+        mDinnerEditText.setText(String.valueOf(mBolusTableData.getBolus5Jantar()));
+        mSupperEditText.setText(String.valueOf(mBolusTableData.getBolus6Ceia()));
+        mDawnEditText.setText(String.valueOf(mBolusTableData.getBolus7Madrugada()));
     }
 
     @Override
@@ -126,8 +125,8 @@ public class BolusDetailActivity extends AppCompatActivity {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                fillObjectWithActivityData(mBolusTable3Data);
-                ArrayList<Bolus> bolusArrayList =  mBolusTable3Data.getBolusArrayList();
+                fillObjectWithActivityData(mBolusTableData);
+                ArrayList<Bolus> bolusArrayList =  mBolusTableData.getBolusArrayList();
                 final boolean updated = mBolusDAO.update(bolusArrayList);
                 if (updated){
                     Toast.makeText(BolusDetailActivity.this,"Alterado com sucesso!", Toast.LENGTH_SHORT).show();
@@ -142,11 +141,11 @@ public class BolusDetailActivity extends AppCompatActivity {
     private void save(){
         ArrayList<Bolus> bolusArrayList = mBolusDAO.fetchByGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
         if (bolusArrayList != null) {
-            mBolusTable3Data = new BolusTable3Data();
-            mBolusTable3Data.setBolusArrayList(bolusArrayList);
+            mBolusTableData = new BolusTableData();
+            mBolusTableData.setBolusArrayList(bolusArrayList);
         }
         //Se já existir a glicemia
-        if (mBolusTable3Data != null) {
+        if (mBolusTableData != null) {
             new AlertDialog.Builder(this)
                     .setTitle("Atenção!")
                     .setMessage("Glicemia informada já existe.\nDeseja substituir?")
@@ -156,9 +155,9 @@ public class BolusDetailActivity extends AppCompatActivity {
                     .show();
 
         } else {
-            mBolusTable3Data = new BolusTable3Data();
-            fillObjectWithActivityData(mBolusTable3Data);
-            bolusArrayList = mBolusTable3Data.getBolusArrayList();
+            mBolusTableData = new BolusTableData();
+            fillObjectWithActivityData(mBolusTableData);
+            bolusArrayList = mBolusTableData.getBolusArrayList();
 
             mBolusDAO.add(bolusArrayList);
             Toast.makeText(BolusDetailActivity.this,"Salvo com sucesso!", Toast.LENGTH_SHORT).show();
@@ -171,14 +170,14 @@ public class BolusDetailActivity extends AppCompatActivity {
 
         int glucose = Converter.toInt(mGlucoseEditText.getText().toString());
 
-        if (glucose != mBolusTable3Data.getGlucose() && existsGlucose(glucose)) {
+        if (glucose != mBolusTableData.getGlucose() && existsGlucose(glucose)) {
             Alert.ok(this,"Atenção!",
                     "Este valor de glicemia já está configurado.\nUtilize outro valor de glicemia que ainda não foi utilizado.", "Ok", null).show();
             return false;
         }
 
-        fillObjectWithActivityData(mBolusTable3Data);
-        ArrayList<Bolus> bolusArrayList = mBolusTable3Data.getBolusArrayList();
+        fillObjectWithActivityData(mBolusTableData);
+        ArrayList<Bolus> bolusArrayList = mBolusTableData.getBolusArrayList();
         boolean updated = mBolusDAO.update(bolusArrayList);
         if (updated) {
             Toast.makeText(BolusDetailActivity.this,"Editado com sucesso!", Toast.LENGTH_SHORT).show();
@@ -193,7 +192,7 @@ public class BolusDetailActivity extends AppCompatActivity {
         return mBolusDAO.fetchByGlucose(glucose) != null;
     }
 
-    private void fillObjectWithActivityData(BolusTable3Data bolusTable3Data) {
+    private void fillObjectWithActivityData(BolusTableData bolusTableData) {
         MealDAO mealDAO = new MealDAO(this);
         ArrayList<Bolus> bolusArrayList = new ArrayList<>();
         ArrayList<Meal> meals = mealDAO.fetchAll();
@@ -245,7 +244,7 @@ public class BolusDetailActivity extends AppCompatActivity {
         bolusMadrugada.setBolus(Converter.toDouble(mDawnEditText.getText().toString()));
 
 
-        bolusTable3Data.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
+        bolusTableData.setGlucose(Converter.toInt(mGlucoseEditText.getText().toString()));
 
         bolusArrayList.add(bolusCafeDaManha);
         bolusArrayList.add(bolusColacao);
@@ -255,7 +254,7 @@ public class BolusDetailActivity extends AppCompatActivity {
         bolusArrayList.add(bolusCeia);
         bolusArrayList.add(bolusMadrugada);
 
-        bolusTable3Data.setBolusArrayList(bolusArrayList);
+        bolusTableData.setBolusArrayList(bolusArrayList);
     }
 
 }

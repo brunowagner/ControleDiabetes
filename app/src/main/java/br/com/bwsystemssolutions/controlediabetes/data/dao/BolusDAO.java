@@ -9,8 +9,6 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable2Data;
-import br.com.bwsystemssolutions.controlediabetes.classe.BolusTable3Data;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 

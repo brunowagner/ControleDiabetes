@@ -3,9 +3,9 @@ package br.com.bwsystemssolutions.controlediabetes.classe;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BolusTable3Data implements Serializable {
+public class BolusTableData implements Serializable {
 
-    public static final String BUNDLE_STRING_KEY = BolusTable3Data.class.toString();
+    public static final String BUNDLE_STRING_KEY = BolusTableData.class.toString();
     public static final int MEAL_ID_CAFE_DA_MANHA = 1;
     public static final int MEAL_ID_COLACAO = 2;
     public static final int MEAL_ID_ALMOCO = 3;
