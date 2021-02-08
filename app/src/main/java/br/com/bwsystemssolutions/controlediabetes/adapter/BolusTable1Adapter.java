@@ -412,12 +412,12 @@ public class BolusTable1Adapter extends RecyclerView.Adapter<BolusTable1Adapter.
     }
 
     public int deleteSelectedItems() {
-        BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(context);
+        BolusDAO bolusDAO = new BolusDAO(context);
         HashMap<Integer,Integer> selecteds = new HashMap<>(mSelectedItems);
         int cont = 0;
         for (Map.Entry<Integer,Integer> item : selecteds.entrySet()){
-            final int id = mBolusTableData.get(item.getKey()).getId();
-            if (bolusTableData2DAO.delete(id)) {
+            final int glucose = mBolusTableData.get(item.getKey()).getGlucose();
+            if (bolusDAO.deleteByGlucose(glucose)) {
                 mSelectedItems.remove(item.getKey());
                 cont+=1;
                 Log.d(TAG, "deleteSelectedItems: qtd selecionados: " + mSelectedItems.size());
