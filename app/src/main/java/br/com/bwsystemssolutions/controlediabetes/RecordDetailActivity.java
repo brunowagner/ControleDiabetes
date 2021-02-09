@@ -125,10 +125,11 @@ public class RecordDetailActivity extends AppCompatActivity {
             positionEventSpinner = getSpinnerPositionByString(mEventSpinner, "Outro");
         }
         mEventSpinner.setSelection(positionEventSpinner);
-        int positionMealSpinner = getSpinnerPositionByString(mMealSpinner, mRecord.getMeal());
+        int positionMealSpinner = getMealSpinnerPositionByString(mMealSpinner, mRecord.getMeal());
         if (positionMealSpinner == -1) {
             positionMealSpinner = getSpinnerPositionByString(mMealSpinner, "");
         }
+
         mMealSpinner.setSelection(positionMealSpinner);
         mCarboidratoEditText.setText(String.valueOf(mRecord.getCarbohydrate()));
         mInsulinaRapidaEditText.setText(String.valueOf(mRecord.getFastInsulin()));
@@ -173,7 +174,7 @@ public class RecordDetailActivity extends AppCompatActivity {
     }
 
 
-    private void loadMealsSpinner(){
+    private void loadMealsSpinnerOld(){
         Cursor cursor = fetchAllMeals();
 
         List<String> mealsList = new ArrayList<>();
@@ -195,7 +196,7 @@ public class RecordDetailActivity extends AppCompatActivity {
         mMealSpinner.setAdapter(mealsArrayAdapter);
     }
 
-    private void loadMealsSpinner2(){
+    private void loadMealsSpinner(){
         MealDAO mealDAO = new MealDAO(this);
         Meal mealEmpty = new Meal();
 
@@ -231,6 +232,23 @@ public class RecordDetailActivity extends AppCompatActivity {
             return -1;
 
         }
+    }
+
+
+    private int getMealSpinnerPositionByString(Spinner spinner, String text){
+
+        ArrayAdapter spinnerAdapter = (ArrayAdapter) spinner.getAdapter();
+
+        for (int i=0; i<spinner.getCount();i++){
+            Meal meal = (Meal) spinnerAdapter.getItem(i);
+            if (meal.getMeal().equals(text)){
+                Log.d("bwvm", "getSpinnerPositionByString: texto procurado: " + text);
+                Log.d("bwvm", "getSpinnerPositionByString: valor do position: " + i);
+                return i;
+            }
+        }
+        Log.d("bwvm", "getSpinnerPositionByString: não achou position");
+        return -1;
     }
 
     private boolean saveData(){
