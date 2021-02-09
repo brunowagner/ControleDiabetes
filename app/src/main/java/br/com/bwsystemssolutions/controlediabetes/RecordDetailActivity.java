@@ -37,6 +37,7 @@ import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.RecordDAO;
 
 public class RecordDetailActivity extends AppCompatActivity {
 
@@ -334,23 +335,22 @@ public class RecordDetailActivity extends AppCompatActivity {
     }
 
     private void addRecord(){
+        RecordDAO recordDAO = new RecordDAO(this);
 
-        ContentValues cv = new ContentValues();
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
-        //cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, String.valueOf(mEventSpinner.getSelectedItem()));
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME, String.valueOf(mMealSpinner.getSelectedItem()));
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, mMedicamentoCheckBox.getText().toString());
-        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, mObservacaoEditText.getText().toString());
+        Record record = new Record();
+        record.setDateFromStringDateSqlite(Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString()));
+        record.setCarbohydrate(Integer.valueOf(mCarboidratoEditText.getText().toString()));
+        record.setGlucose(Integer.valueOf(mGlicemiaEditText.getText().toString()));
+        record.setEvent(String.valueOf(mEventSpinner.getSelectedItem()));
+        record.setMeal(String.valueOf(mMealSpinner.getSelectedItem()));
+        record.setFastInsulin(Double.valueOf(mInsulinaRapidaEditText.getText().toString()));
+        record.setBasalInsulin(Double.valueOf(mInsulinaBasalEditText.getText().toString()));
+        record.setSick(Boolean.valueOf(mDoenteCheckBox.getText().toString()));
+        record.setMedicament(Boolean.valueOf(mMedicamentoCheckBox.getText().toString()));
+        record.setNote(mObservacaoEditText.getText().toString());
 
-        long saveds =  mDb.insert(CalculoDeBolusContract.RecordEntry.TABLE_NAME, null, cv);
-
-        if (saveds > 0) {
+        boolean saved = recordDAO.add(record);
+        if (saved) {
             isSaved = true;
             Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
             finish();

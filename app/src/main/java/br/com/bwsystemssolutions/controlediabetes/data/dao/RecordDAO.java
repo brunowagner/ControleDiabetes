@@ -1,14 +1,18 @@
 package br.com.bwsystemssolutions.controlediabetes.data.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.classe.Bolus;
 import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
+import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
@@ -26,10 +30,26 @@ public class RecordDAO {
         final Cursor cursor  = db.query(CalculoDeBolusContract.RecordEntry.TABLE_NAME,
                 null, null, null, null,null,
                 CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + " DESC");
-
+        db.close();
         return parseToRecord(cursor);
     }
 
+    public boolean delete(Record record){
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        boolean deleted = db.delete(CalculoDeBolusContract.RecordEntry.TABLE_NAME, CalculoDeBolusContract.RecordEntry._ID + "= ?", new String[]{record.getId() + ""}) >0;
+        Log.d("bwvm", "deleteRecord: valor de delete: " + deleted);
+        db.close();
+        return deleted;
+    }
+
+    public boolean add(Record record){
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = parseToContentValues(record);
+        boolean inserted = db.insert(TABLE_NAME, null, cv) > 0;
+        db.close();
+        return inserted;
+
+    }
 
 
     //-- Parses --------------------------------------------------------------------------------
@@ -55,6 +75,23 @@ public class RecordDAO {
         cursor.close();
         return records;
     }
+
+    private ContentValues parseToContentValues(Record record){
+        ContentValues cv = new ContentValues();
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, String.valueOf(record.getCarbohydrate()));
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, String.valueOf(record.getGlucose()));
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, record.getEvent());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME, record.getMeal());
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, String.valueOf(record.getFastInsulin()));
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, String.valueOf(record.getBasalInsulin()));
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, String.valueOf(record.isSick()));
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, String.valueOf(record.isMedicament()));
+        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, record.getNote());
+        return cv;
+    }
+
+
 
 
 }

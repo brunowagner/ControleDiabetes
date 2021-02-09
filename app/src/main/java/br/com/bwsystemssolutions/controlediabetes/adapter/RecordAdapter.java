@@ -21,6 +21,7 @@ import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 import br.com.bwsystemssolutions.controlediabetes.data.Constants;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.RecordDAO;
 
 import static br.com.bwsystemssolutions.controlediabetes.SettingsActivity.*;
 
@@ -35,6 +36,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 	private boolean revert = false;
 	private int lastCollor;
 	private int mSelectedItem = ITEN_SELECT_NONE;
+	private Context mContext;
 
 	public static final int ITEN_SELECT_NONE = -1;
 	private static final int COLOR_RESOURSE_ITEM_PRIMARY = R.color.geloTransparente;
@@ -48,6 +50,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		mDbHelper = calculoDeBolusDBHelper;
 		mDb = mDbHelper.getWritableDatabase();
 		mClickHandler = clickHandler;
+		mContext = context;
 
 		SharedPreferences settings = sharedPreferences;
 
@@ -64,40 +67,10 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
         if (null == mRecords) return 0;
         return mRecords.size();
     }
-	
-	private Cursor getAllData() {
-		//TODO: modifcar a query para ordenar de forma descendente (do mais recente para o mais antigo)
-		return mDb.query(CalculoDeBolusContract.RecordEntry.TABLE_NAME,
-				null, null, null, null,null,
-				CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + " DESC");
-	}
 
 	public void refreshData(){
-
-		Cursor cursor = getAllData();
-		Log.d("bwvm", "refreshData: tamanho do cursor" + cursor.getCount());
-		if (cursor.getCount() <= 0) return;
-		ArrayList<Record> records = new ArrayList<Record>();
-		if (cursor.moveToFirst()){
-			do {
-				Record record = new Record();
-				record.setId(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry._ID)));
-				record.setDateFromStringDateSqlite(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME)));
-				record.setCarbohydrate(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME)));
-				record.setGlucose(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME)));
-				record.setFastInsulin(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME)));
-				record.setBasalInsulin(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME)));
-				record.setEvent(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME)));
-				record.setMeal(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME)));
-				record.setNote(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME)));
-				record.setSick(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME))>0);
-				record.setMedicament(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME))>0);
-
-				records.add(record);
-			}while(cursor.moveToNext());
-
-		}
-		cursor.close();
+		RecordDAO recordDAO = new RecordDAO(mContext);
+		ArrayList<Record> records = recordDAO.fetchAll();
 		setRecords(records);
 	}
 
@@ -111,10 +84,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 		if (mRecords.size()==1) return false;
 
 		Record record = mRecords.get(mSelectedItem);
-
-		int deleted = mDb.delete(CalculoDeBolusContract.RecordEntry.TABLE_NAME, CalculoDeBolusContract.RecordEntry._ID + "= ?", new String[]{record.getId() + ""});
-		Log.d("bwvm", "deleteRecord: valor de delete: " + deleted);
-		if (deleted > 0 ) {
+		RecordDAO recordDAO = new RecordDAO(mContext);
+		final boolean deleted = recordDAO.delete(record);
+		if (deleted ) {
 			setSelectedItem(ITEN_SELECT_NONE);
 			return true;
 		} else {

@@ -43,6 +43,17 @@ public class Utilidades {
         return convertedDateTime;
     }
 
+    public static Date convertStringToDate(String strDate){
+        String dtStart = strDate;
+        SimpleDateFormat format = new SimpleDateFormat("DEFAULT_DATE_FORMAT");
+        try {
+            Date date = format.parse(strDate);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     private static String converter(Date date, String format){
         if (date == null) return "";
