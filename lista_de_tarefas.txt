@@ -7,3 +7,5 @@ Registros
 
 DAOs
  - Implementar a interface BasicDAO em todos os DAO.
+
+ server 1 - teste de push.
