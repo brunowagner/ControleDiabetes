@@ -30,14 +30,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.com.bwsystemssolutions.controlediabetes.classe.Event;
 import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusDAO;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.EventDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.RecordDAO;
+import br.com.bwsystemssolutions.controlediabetes.util.Converter;
 
 public class RecordDetailActivity extends AppCompatActivity {
 
@@ -60,7 +63,7 @@ public class RecordDetailActivity extends AppCompatActivity {
     DatePickerDialog mDatePickerDialog;
 
     Record mRecord;
-    SQLiteDatabase mDb;
+    //SQLiteDatabase mDb;
 
     boolean isSaved = false;
 
@@ -95,15 +98,15 @@ public class RecordDetailActivity extends AppCompatActivity {
             mRecord = (Record) bundle.getSerializable(Record.BUNDLE_STRING_KEY);
         }
 
-        configureDb();
+//        configureDb();
 
         loadData();
     }
 
-    private void configureDb(){
-        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-        mDb = dbHelper.getWritableDatabase();
-    }
+//    private void configureDb(){
+//        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
+//        mDb = dbHelper.getWritableDatabase();
+//    }
 
     private void loadData(){
 
@@ -140,62 +143,52 @@ public class RecordDetailActivity extends AppCompatActivity {
         mObservacaoEditText.setText(mRecord.getNote());
     }
 
-
-    private Cursor fetchAllEvents(){
-
-        return mDb.query(CalculoDeBolusContract.EventEntry.TABLE_NAME,
-                null, null, null, null,null,
-                CalculoDeBolusContract.EventEntry.COLUMN_EVENT_NAME);
-
-    }
-
-    private Cursor fetchAllMeals(){
-
-        return mDb.query(CalculoDeBolusContract.MealEntry.TABLE_NAME,
-                null, null, null, null,null, CalculoDeBolusContract.MealEntry.COLUMN_SORT_NAME);
-    }
+//    private Cursor fetchAllMeals(){
+//        MealDAO mealDAO = new MealDAO(this);
+//        mealDAO.fetchAll();
+//
+//        return mDb.query(CalculoDeBolusContract.MealEntry.TABLE_NAME,
+//                null, null, null, null,null, CalculoDeBolusContract.MealEntry.COLUMN_SORT_NAME);
+//    }
 
     private void loadEventsSpinner(){
-        Cursor cursor = fetchAllEvents();
+        EventDAO eventDAO = new EventDAO(this);
+        Event eventEmpty = new Event();
 
-        List<String> eventsList = new ArrayList<>();
+        //deixa o primeiro item vazio, caso o registro nao seja sobre um evento.
+        eventEmpty.setId(0);
+        eventEmpty.setText("");
 
-        if (cursor.getCount() <= 0){
+        List<Event> events = eventDAO.fetchAll();
 
-        } else {
-            if (cursor.moveToFirst()){
-                do {
-                    eventsList.add(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.EventEntry.COLUMN_EVENT_NAME)));
-                }while(cursor.moveToNext());
-            }
-        }
-        cursor.close();
-        ArrayAdapter<String> eventsArrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,eventsList);
+        events.add(0,eventEmpty);
+
+        ArrayAdapter<Event> eventsArrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,events);
         mEventSpinner.setAdapter(eventsArrayAdapter);
     }
 
 
-    private void loadMealsSpinnerOld(){
-        Cursor cursor = fetchAllMeals();
-
-        List<String> mealsList = new ArrayList<>();
-        //deixa o primeiro item vazio, caso o registro nao seja sobre uma refeicao.
-        mealsList.add(0,"");
-
-        if (cursor.getCount() <= 0){
-            //Do nothing
-        } else {
-            if (cursor.moveToFirst()){
-                do {
-                    mealsList.add(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.MealEntry.COLUMN_MEAL_NAME)));
-                }while(cursor.moveToNext());
-            }
-        }
-        cursor.close();
-
-        ArrayAdapter<String> mealsArrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,mealsList);
-        mMealSpinner.setAdapter(mealsArrayAdapter);
-    }
+//    private void loadMealsSpinnerOld(){
+//        Cursor cursor = fetchAllMeals();
+//
+//        List<String> mealsList = new ArrayList<>();
+//        //deixa o primeiro item vazio, caso o registro nao seja sobre uma refeicao.
+//        mealsList.add(0,"");
+//
+//        if (cursor.getCount() <= 0){
+//            //Do nothing
+//        } else {
+//            if (cursor.moveToFirst()){
+//                do {
+//                    mealsList.add(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.MealEntry.COLUMN_MEAL_NAME)));
+//                }while(cursor.moveToNext());
+//            }
+//        }
+//        cursor.close();
+//
+//        ArrayAdapter<String> mealsArrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,mealsList);
+//        mMealSpinner.setAdapter(mealsArrayAdapter);
+//    }
 
     private void loadMealsSpinner(){
         MealDAO mealDAO = new MealDAO(this);
@@ -258,7 +251,7 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         if (mRecord == null || mRecord.getId() == 0){
             if (!validateFields(true)) { return false;}
-
+            Log.d("SAVE", "saveData: Entrou no addRecord()");
             addRecord();
 
         } else {
@@ -291,7 +284,7 @@ public class RecordDetailActivity extends AppCompatActivity {
                     "- Glicemia\n" +
                     "- Insulina Rápida\n" +
                     "- Insulina Basal";
-        } else if (isToSave && mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRegister(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )) {
+        } else if (isToSave && mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRecord(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )) {
             message = "Data e hora ja' existem.\nO registro não pôde ser salvo.";
 
 //        // se a refeição escolhida já existir para a data em questão.
@@ -325,31 +318,16 @@ public class RecordDetailActivity extends AppCompatActivity {
         return validate;
     }
 
-    private boolean existsRegister(String date, String time){
-        String selection = CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + "=?";
-        String[] args = new String[] { Utilidades.convertDateTimeToSQLiteFormat(date, time) };
-        Cursor cursor = mDb.query(CalculoDeBolusContract.RecordEntry.TABLE_NAME, new String[]{CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME}, selection, args, null, null, null);
-
-        Log.d("bwvm", "existsRegister: Tamanho do cursor: " + cursor.getCount());
-        return cursor.getCount() > 0 ? true : false;
+    private boolean existsRecord(String date, String time){
+        RecordDAO recordDAO = new RecordDAO(this);
+        return recordDAO.exists(date,time);
     }
 
     private void addRecord(){
         RecordDAO recordDAO = new RecordDAO(this);
-
-        Record record = new Record();
-        record.setDateFromStringDateSqlite(Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString()));
-        record.setCarbohydrate(Integer.valueOf(mCarboidratoEditText.getText().toString()));
-        record.setGlucose(Integer.valueOf(mGlicemiaEditText.getText().toString()));
-        record.setEvent(String.valueOf(mEventSpinner.getSelectedItem()));
-        record.setMeal(String.valueOf(mMealSpinner.getSelectedItem()));
-        record.setFastInsulin(Double.valueOf(mInsulinaRapidaEditText.getText().toString()));
-        record.setBasalInsulin(Double.valueOf(mInsulinaBasalEditText.getText().toString()));
-        record.setSick(Boolean.valueOf(mDoenteCheckBox.getText().toString()));
-        record.setMedicament(Boolean.valueOf(mMedicamentoCheckBox.getText().toString()));
-        record.setNote(mObservacaoEditText.getText().toString());
-
-        boolean saved = recordDAO.add(record);
+        mRecord = new Record();
+        fillObjectWithActivityData(mRecord);
+        boolean saved = recordDAO.add(mRecord);
         if (saved) {
             isSaved = true;
             Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
@@ -362,7 +340,7 @@ public class RecordDetailActivity extends AppCompatActivity {
 
     private void updateRecord(){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Deseja realmente alterar o registro?")
                 .setTitle("Atenção!")
                 .setNegativeButton("Cancelar", null)
@@ -370,25 +348,11 @@ public class RecordDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d("bwvm", "updateRecord: Iniciou");
-                        ContentValues cv = new ContentValues();
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME, Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString())  );
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_CARBOHYDRATE_NAME, mCarboidratoEditText.getText().toString());
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_GLUCOSE_NAME, mGlicemiaEditText.getText().toString());
-                        //cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, mEventoEditText.getText().toString());
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_EVENT_NAME, String.valueOf(mEventSpinner.getSelectedItem()));
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME, String.valueOf(mMealSpinner.getSelectedItem()));
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_FAST_INSULIN_NAME, mInsulinaRapidaEditText.getText().toString());
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_BASAL_INSULIN_NAME, mInsulinaBasalEditText.getText().toString());
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_SICK_NAME, mDoenteCheckBox.getText().toString());
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_MEDICAMENT_NAME, mMedicamentoCheckBox.getText().toString());
-                        cv.put(CalculoDeBolusContract.RecordEntry.COLUMN_NOTE_NAME, mObservacaoEditText.getText().toString());
-
-                        String where = CalculoDeBolusContract.RecordEntry._ID + "=" + mRecord.getId();
-
+                        RecordDAO recordDAO = new RecordDAO(builder.getContext());
+                        fillObjectWithActivityData(mRecord);
                         Log.d("bwvm", "onClick: fara o update!");
-                        int saveds = mDb.update(CalculoDeBolusContract.RecordEntry.TABLE_NAME, cv, where, null);
-
-                        if (saveds > 0) {
+                        boolean saveds = recordDAO.update(mRecord);
+                        if (saveds) {
                             isSaved = true;
                             Toast.makeText(getApplicationContext(), "Salvo!", Toast.LENGTH_SHORT).show();
                             finish();
@@ -396,19 +360,29 @@ public class RecordDetailActivity extends AppCompatActivity {
                             isSaved = false;
                             Toast.makeText(getApplicationContext(), "Não foi possível salvar!", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
-
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void fillObjectWithActivityData(Record record){
+        record.setDateFromStringDateSqlite(Utilidades.convertDateTimeToSQLiteFormat(mDataEditText.getText().toString(),  mHoraEditText.getText().toString()));
+        record.setCarbohydrate(Converter.toInt(mCarboidratoEditText.getText().toString()));
+        record.setGlucose(Converter.toInt(mGlicemiaEditText.getText().toString()));
+        record.setEvent(mEventSpinner.getSelectedItem().toString());
+        record.setMeal(mMealSpinner.getSelectedItem().toString());
+        record.setFastInsulin(Converter.toDouble(mInsulinaRapidaEditText.getText().toString()));
+        record.setBasalInsulin(Converter.toDouble(mInsulinaBasalEditText.getText().toString()));
+        record.setSick(mDoenteCheckBox.isChecked());
+        record.setMedicament(mMedicamentoCheckBox.isChecked());
+        record.setNote(mObservacaoEditText.getText().toString());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_save_delete, menu);
-
         return true;
     }
 
@@ -479,7 +453,5 @@ public class RecordDetailActivity extends AppCompatActivity {
             mDatePickerDialog = new DatePickerDialog(RecordDetailActivity.this, this, currentYear, currentMonth, currentDay);
             mDatePickerDialog.show();
         }
-
-
     }
 }

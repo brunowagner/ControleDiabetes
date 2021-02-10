@@ -24,6 +24,13 @@ public class Utilidades {
         return converter(dtData,format);
     }
 
+    public static String convertDateTimeToSQLiteFormat(Date dtDateTime){
+        SimpleDateFormat in = new SimpleDateFormat(SQLITE_DATETIME_FORMAT);
+        String convertedDateTime = in.format(dtDateTime);
+        Log.d("bwvm", "convertDateTimeToSQLiteFormat: Data Formatada  " + convertedDateTime);
+        return convertedDateTime;
+    }
+
     public static String convertDateTimeToSQLiteFormat(String date, String time){
 
         String dateTime = date + " " + time;

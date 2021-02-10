@@ -130,6 +130,9 @@ public class Record implements Serializable {
         this.note = note;
     }
 
+    /**
+     * @return Date String with the format 'EE', where EE is de weekday.
+     */
     public String getWeekDay() {
         Date date = getDate();
         if (date == null ){
@@ -142,6 +145,9 @@ public class Record implements Serializable {
         return sdf.format(date);
     }
 
+    /**
+     * @return Date Time String with the format 'dd/MM/yyyy HH:mm EE', where EE is de weekday.
+     */
     public String getDateTimeWeekDay(){
         Date date = getDate();
         if (date == null ){
@@ -154,6 +160,9 @@ public class Record implements Serializable {
         return sdf.format(date);
     }
 
+    /**
+     * @return Date String with the format 'dd/MM/yyyy    EE', where EE is de weekday.
+     */
     public String getDateWeekDayString(){
         Date date = getDate();
         if (date == null ){
@@ -166,6 +175,9 @@ public class Record implements Serializable {
         return sdf.format(date);
     }
 
+    /**
+     * @return Time String with the format 'HH:mm'.
+     */
     public String getTime(){
         Date date = getDate();
         if (date == null ){

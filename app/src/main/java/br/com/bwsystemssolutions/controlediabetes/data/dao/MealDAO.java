@@ -24,7 +24,9 @@ public class MealDAO {
     public ArrayList<Meal> fetchAll(){
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         //TODO - 2021 - trocar rawQuery por query (mais recomendado)
-        final Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME,null);
+        //final Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME,null);
+        final Cursor cursor = db.query(CalculoDeBolusContract.MealEntry.TABLE_NAME,
+                null, null, null, null,null, CalculoDeBolusContract.MealEntry.COLUMN_SORT_NAME);
         return parseToMeal(cursor);
     }
 

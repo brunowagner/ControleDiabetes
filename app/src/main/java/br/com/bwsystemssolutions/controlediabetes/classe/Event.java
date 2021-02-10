@@ -45,4 +45,11 @@ public class Event {
     public void setSort(int sort) {
         this.sort = sort;
     }
+
+    //Este método foi reescrito para ser utilizado em spinners sem a necessidade de criar novo adapter.
+    //O spinner utilizando do método toString para exibir o texto como item.
+    @Override
+    public String toString() {
+        return text;
+    }
 }
