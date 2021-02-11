@@ -9,3 +9,5 @@ DAOs
  - Implementar a interface BasicDAO em todos os DAO.
 
  server 1 - teste de push.
+
+ server 1 e 2 - teste de push.
