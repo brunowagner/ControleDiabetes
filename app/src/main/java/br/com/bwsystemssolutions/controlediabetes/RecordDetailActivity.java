@@ -303,9 +303,9 @@ public class RecordDetailActivity extends AppCompatActivity {
             message = "Data e hora ja' existem.\nO registro não pôde ser salvo.";
 
         // se a refeição escolhida já existir para a data em questão.
-        } else if (existsRecordWithMealatDate(mDataEditText.getText().toString(), mMealSpinner.getSelectedItem().toString())){
+        } else if (isToSave && existsRecordWithMealAtDate(mDataEditText.getText().toString(), mMealSpinner.getSelectedItem().toString())){
 
-            message = " A refeição " + mMealSpinner.getSelectedItem().toString() + " foi já existe para esta data.\n" +
+            message = " A refeição " + mMealSpinner.getSelectedItem().toString() + " já existe para esta data.\n" +
                     "Escolha outra refeição ou altere a refeição desejada.";
 
         } else {
@@ -335,7 +335,7 @@ public class RecordDetailActivity extends AppCompatActivity {
         return recordDAO.exists(date,time);
     }
 
-    private boolean existsRecordWithMealatDate(String date,String meal){
+    private boolean existsRecordWithMealAtDate(String date,String meal){
         RecordDAO recordDAO = new RecordDAO(this);
         return recordDAO.existsByDateAndMeal(date,meal);
     }

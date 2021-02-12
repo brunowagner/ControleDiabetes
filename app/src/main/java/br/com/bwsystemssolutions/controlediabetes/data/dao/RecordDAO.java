@@ -51,10 +51,14 @@ public class RecordDAO implements BasicDAO<Record> {
     }
 
     public boolean existsByDateAndMeal(String date, String meal){
+       // SELECT * FROM records WHERE date_time BETWEEN '2020-12-01' AND '2020-12-23 23:59:59' and event = 'Antes do jantar';
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selection = CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + "=? and " +
+        String initialDate = Utilidades.convertDateTimeToSQLiteFormat(date, " 00:00:00");
+        String finalDate = Utilidades.convertDateTimeToSQLiteFormat(date, " 23:59:59");
+        String fieldDateTime = CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME;
+        String selection = "(" + fieldDateTime  + " BETWEEN ? and ?) and " +
                 CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME + "=?" ;
-        String[] args = new String[] { Utilidades.convertDateTimeToSQLiteFormat(date, time), meal};
+        String[] args = new String[] { initialDate, finalDate, meal};
         final Cursor cursor = db.query(CalculoDeBolusContract.RecordEntry.TABLE_NAME, new String[]{CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME}, selection, args, null, null, null);
 
         boolean response = cursor.getCount() > 0 ? true : false;
