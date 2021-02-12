@@ -39,7 +39,7 @@
     </string-array>
 
     <string-array name="event_names_array">
-        <item></item>
+        <!--        <item></item>--> retirado para que a tabela da base de dados n~ao tenha valor vazio.
         <item>Antes do exercício</item>
         <item>Depois do exercício</item>
         <item>Medição Extra</item>
