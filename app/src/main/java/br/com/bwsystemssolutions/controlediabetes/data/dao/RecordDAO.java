@@ -50,6 +50,19 @@ public class RecordDAO implements BasicDAO<Record> {
         return response;
     }
 
+    public boolean existsByDateAndMeal(String date, String meal){
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selection = CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + "=? and " +
+                CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME + "=?" ;
+        String[] args = new String[] { Utilidades.convertDateTimeToSQLiteFormat(date, time), meal};
+        final Cursor cursor = db.query(CalculoDeBolusContract.RecordEntry.TABLE_NAME, new String[]{CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME}, selection, args, null, null, null);
+
+        boolean response = cursor.getCount() > 0 ? true : false;
+        cursor.close();
+        db.close();
+        return response;
+    }
+
     public boolean delete(Record record){
         boolean deleted = delete(record.getId());
         return deleted;

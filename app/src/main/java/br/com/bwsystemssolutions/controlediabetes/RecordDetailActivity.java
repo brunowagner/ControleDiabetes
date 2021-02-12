@@ -302,14 +302,11 @@ public class RecordDetailActivity extends AppCompatActivity {
         } else if (isToSave && mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRecord(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )) {
             message = "Data e hora ja' existem.\nO registro não pôde ser salvo.";
 
-//        // se a refeição escolhida já existir para a data em questão.
-//            BolusDAO bolusDAO = new BolusDAO(this);
-//            mMealSpinner
-//            bolusDAO.fetchMealByDate(mMealSpinner.getSelectedItem().to)
-//        } else if (){
-//
-//            message = " XXXX já foi já existe para esta data.\n" +
-//                    "Escolha outra refeição ou edite a refeição desejada";
+        // se a refeição escolhida já existir para a data em questão.
+        } else if (existsRecordWithMealatDate(mDataEditText.getText().toString(), mMealSpinner.getSelectedItem().toString())){
+
+            message = " A refeição " + mMealSpinner.getSelectedItem().toString() + " foi já existe para esta data.\n" +
+                    "Escolha outra refeição ou altere a refeição desejada.";
 
         } else {
             validate = true;
@@ -336,6 +333,11 @@ public class RecordDetailActivity extends AppCompatActivity {
     private boolean existsRecord(String date, String time){
         RecordDAO recordDAO = new RecordDAO(this);
         return recordDAO.exists(date,time);
+    }
+
+    private boolean existsRecordWithMealatDate(String date,String meal){
+        RecordDAO recordDAO = new RecordDAO(this);
+        return recordDAO.existsByDateAndMeal(date,meal);
     }
 
     private void addRecord(){
