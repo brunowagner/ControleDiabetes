@@ -124,14 +124,14 @@ public class RecordDetailActivity extends AppCompatActivity {
         mGlicemiaEditText.setText(String.valueOf(mRecord.getGlucose()));
         //mEventoEditText.setText(mRecord.getEvent());
         // Caso o evento náo exista mais (deletado da Base), utiliza o evento 'Outro';
-        int positionEventSpinner = getSpinnerPositionByString(mEventSpinner, mRecord.getEvent());
+        int positionEventSpinner = getEventSpinnerPositionByString(mEventSpinner, mRecord.getEvent());
         if (positionEventSpinner == -1) {
-            positionEventSpinner = getSpinnerPositionByString(mEventSpinner, "Outro");
+            positionEventSpinner = getEventSpinnerPositionByString(mEventSpinner, "Outro");
         }
         mEventSpinner.setSelection(positionEventSpinner);
         int positionMealSpinner = getMealSpinnerPositionByString(mMealSpinner, mRecord.getMeal());
         if (positionMealSpinner == -1) {
-            positionMealSpinner = getSpinnerPositionByString(mMealSpinner, "");
+            positionMealSpinner = getMealSpinnerPositionByString(mMealSpinner, "");
         }
 
         mMealSpinner.setSelection(positionMealSpinner);
@@ -228,6 +228,21 @@ public class RecordDetailActivity extends AppCompatActivity {
         }
     }
 
+    private int getEventSpinnerPositionByString(Spinner spinner, String text){
+
+        ArrayAdapter spinnerAdapter = (ArrayAdapter) spinner.getAdapter();
+
+        for (int i=0; i<spinner.getCount();i++){
+            Event event = (Event) spinnerAdapter.getItem(i);
+            if (event.getText().equals(text)){
+                Log.d("bwvm", "getEventSpinnerPositionByString: texto procurado: " + text);
+                Log.d("bwvm", "getEventSpinnerPositionByString: valor do position: " + i);
+                return i;
+            }
+        }
+        Log.d("bwvm", "getEventSpinnerPositionByString: não achou position");
+        return -1;
+    }
 
     private int getMealSpinnerPositionByString(Spinner spinner, String text){
 
@@ -236,12 +251,12 @@ public class RecordDetailActivity extends AppCompatActivity {
         for (int i=0; i<spinner.getCount();i++){
             Meal meal = (Meal) spinnerAdapter.getItem(i);
             if (meal.getMeal().equals(text)){
-                Log.d("bwvm", "getSpinnerPositionByString: texto procurado: " + text);
-                Log.d("bwvm", "getSpinnerPositionByString: valor do position: " + i);
+                Log.d("bwvm", "getMealSpinnerPositionByString: texto procurado: " + text);
+                Log.d("bwvm", "getMealSpinnerPositionByString: valor do position: " + i);
                 return i;
             }
         }
-        Log.d("bwvm", "getSpinnerPositionByString: não achou position");
+        Log.d("bwvm", "getMealSpinnerPositionByString: não achou position");
         return -1;
     }
 
