@@ -1,5 +1,4 @@
 Registros
- - Corrigir o o carregamento do spinner do evento no RecordDetail
  - Não deixar repetir refeicao em um dia.
  - Permitir selecionar multiplos registros para delecao.
  - Permitir deletar os registros até que não sobre mais nenhum (ainda fica um registro sem deletar).
