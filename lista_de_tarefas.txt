@@ -5,7 +5,6 @@ Registros
 
 Calculo de Bolus
  - Conferir e ajustar calculo de bolus.
- - Consultar tabela de bolus para retornar o bolus
 
 Configuracao
  - Colocar escolha de graduacao da insulina.
