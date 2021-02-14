@@ -93,6 +93,13 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     //Utilizado quando o método de 'Cáculo de Bólus' esta selecionado em configurações.
     private void calcular(){
 
+        // Referencias importantes para tomada de decisao de como será o cálculo
+        //https://www.diabetes.org.br/profissionais/component/banners/click/74
+        //https://www.diabetes.org.br/profissionais/images/2018/manual-de-contagem-de-carbo.pdf
+        //https://www.nationwidechildrens.org/family-resources-education/health-wellness-and-safety-resources/resources-for-parents-and-kids/managing-your-diabetes/chapter-seven-calculating-bolus-injections
+        //https://dtc.ucsf.edu/types-of-diabetes/type1/treatment-of-type-1-diabetes/medications-and-therapies/type-1-insulin-therapy/calculating-insulin-dose/
+        //https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4455388/
+
         hideKeyboard();
 
         if (mGlicemiaEditText.length() == 0 || mCarboidratosEditText.length() == 0){
@@ -206,13 +213,13 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
         //"select * from TABLE where inicio < horaAtual orderBy inicio desc limit = 1"
 
-        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-
         //BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(this);
         BolusDAO bolusDAO = new BolusDAO(this);
 
         //final Bolus bolus = bolusTableData2DAO.fetchLessThanOrEqualToGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()), 1);
-        final Bolus bolus = bolusDAO.fetchLessThanOrEqualToGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()), mRefeicaoSpinner.getSelectedItem().toString(),1);
+        int glucose = Integer.parseInt(mGlicemiaEditText.getText().toString());
+        String meal = mRefeicaoSpinner.getSelectedItem().toString();
+        final Bolus bolus = bolusDAO.fetchLessThanOrEqualToGlucoseByMeal(glucose, meal,1);
 
         // if (bolus == null){
         if (bolus == null){

@@ -33,7 +33,7 @@ public class BolusDAO {
 
     }
 
-    public Bolus fetchLessThanOrEqualToGlucose(int glucose, String meal, int limit) {
+    public Bolus fetchLessThanOrEqualToGlucoseByMeal(int glucose, String meal, int limit) {
         String tableName = TABLE_NAME;
         String selection = CalculoDeBolusContract.BolusEntry.COLUMN_GLUCOSE_NAME + "<=?" +
                 " and " + CalculoDeBolusContract.BolusEntry.COLUMN_MEAL_NAME + "=?";
