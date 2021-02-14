@@ -1,8 +1,14 @@
 Registros
- - Não deixar repetir refeicao em um dia.
  - Permitir selecionar multiplos registros para delecao.
  - Permitir deletar os registros até que não sobre mais nenhum (ainda fica um registro sem deletar).
  - Aparecer o icone de delecao apenas quando algum registro for selecionado.
+
+Calculo de Bolus
+ - Conferir e ajustar calculo de bolus.
+ - Consultar tabela de bolus para retornar o bolus
+
+Configuracao
+ - Colocar escolha de graduacao da insulina.
 
 DAOs
  - Implementar a interface BasicDAO em todos os DAO.
