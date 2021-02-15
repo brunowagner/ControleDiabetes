@@ -59,15 +59,22 @@
     <string name="pref_backup_restore_title">Recuperar Dados</string>
     <string name="pref_backup_restore_summary">Recuperar os dados apartir de um backup criado anteriormente.</string>
 
+
+    <string name="pref_bolus_select_graduation_category_key">bolus_select_graduation_category_key</string>
+    <string name="pref_bolus_select_graduation_category_title">Graduação de sua seringa ou caneta de insulina</string>
+    <string name="pref_bolus_select_graduation_key">bolus_select_graduation_key</string>
+    <string name="pref_bolus_select_graduation_title">Graduação Selecionada:</string>
+    <string name="pref_bolus_select_graduation_summary">Selecione de quanto em quanto é a marca sua seringa ou caneta de insulina: </string>
+
     <string name="pref_bolus_select_method_category_key">bolus_select_method_key</string>
-    <string name="pref_bolus_select_method_category_title">Seleção de método para encontrar a quantidade de insulina necessária para o bólus</string>
+    <string name="pref_bolus_select_method_category_title">Método para encontrar a quantidade de insulina</string>
+    <string name="pref_bolus_list_method_key">bolus_list_method_key</string>
+    <string name="pref_bolus_list_method_title">Método selecionado:</string>
+    <string name="pref_bolus_list_method_summary">Método utilizado para encontrar a quantidade de insulina necessária para o bólus: </string>
+
 
     <string name="pref_bolus_configure_method_category_key">bolus_configure_method_key</string>
     <string name="pref_bolus_configure_method_category_title">Configuração dos Métodos</string>
-
-    <string name="pref_bolus_list_method_key">bolus_list_method_key</string>
-    <string name="pref_bolus_list_method_title">Método</string>
-    <string name="pref_bolus_list_method_summary">Método utilizado para encontrar a quantidade de insulina necessária para o bólus: </string>
 
     <string name="pref_bolus_configure_table_key">bolus_configure_table_key</string>
     <string name="pref_bolus_configure_table_title">Tabela de Insulina</string>

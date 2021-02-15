@@ -27,6 +27,7 @@ public class BolusPreferenceActivity extends AppCompatActivity {
 
     public static class BolusFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
         Context mContext;
+        ListPreference mGraduationListPreference;
         ListPreference mMethodListPreference;
         Preference mConfigureTablePreference;
         Preference mConfigureCalculatePreference;
@@ -35,6 +36,8 @@ public class BolusPreferenceActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferencesFix(@Nullable Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.pref_bolus, rootKey);
+
+            mGraduationListPreference = (ListPreference) findPreference(getString(R.string.pref_bolus_select_graduation_key));
             mMethodListPreference = (ListPreference) findPreference(getString(R.string.pref_bolus_list_method_key));
             mConfigureCalculatePreference = findPreference(getString(R.string.pref_bolus_configure_calculate_key));
             mConfigureTablePreference = findPreference(getString(R.string.pref_bolus_configure_table_key));

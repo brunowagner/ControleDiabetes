@@ -21,8 +21,21 @@
     </string-array>
 
     <string-array name="bolus_method_values_array">
+        <item>0</item> <!--<item>Tabela de insulina</item>-->
+        <item>1</item> <!--<item>Calculo de bolus</item>-->
+    </string-array>
+
+    <string-array name="bolus_graduation_names_array">
+        <item>0.5 em 0.5 U</item> <!--<item>0</item>-->
+        <item>1.0 em 1.0 U</item> <!--<item>1</item>-->
+        <item>2.0 em 2.0 U</item> <!--<item>2</item>-->
+
+    </string-array>
+
+    <string-array name="bolus_graduation_values_array">
         <item>0</item> <!--<item>Diario</item>-->
         <item>1</item> <!--<item>Semanal</item>-->
+        <item>2</item> <!--<item>Semanal</item>-->
     </string-array>
 
 
