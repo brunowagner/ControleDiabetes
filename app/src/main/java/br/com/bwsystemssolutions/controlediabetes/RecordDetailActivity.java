@@ -302,8 +302,19 @@ public class RecordDetailActivity extends AppCompatActivity {
         } else if (isToSave && mDataEditText.getText().toString().length() > 0 && mDataEditText.getText().toString().length() > 0 && existsRecord(mDataEditText.getText().toString(), mHoraEditText.getText().toString()   )) {
             message = "Data e hora ja' existem.\nO registro não pôde ser salvo.";
 
-        // se a refeição escolhida já existir para a data em questão.
-        } else if (isToSave && existsRecordWithMealAtDate(mDataEditText.getText().toString(), mMealSpinner.getSelectedItem().toString())){
+        // se a refeição escolhida já existir para a data em questão.(se refeição não estiver vazio e for para salvamento.)
+        } else if (!mMealSpinner.getSelectedItem().toString().isEmpty()
+                && isToSave
+                && existsRecordWithMealAtDate(mDataEditText.getText().toString(), mMealSpinner.getSelectedItem().toString())){
+
+            message = " A refeição " + mMealSpinner.getSelectedItem().toString() + " já existe para esta data.\n" +
+                    "Escolha outra refeição ou altere a refeição desejada.";
+
+        //Se refeição não esta vazia e é uma alteração e refeição selecionado na spinner é diferente do objeto e a refeição já existe para a data, então entra mensagem.
+        } else if (!mMealSpinner.getSelectedItem().toString().isEmpty()
+                && !isToSave
+                && !mMealSpinner.getSelectedItem().toString().equals(mRecord.getMeal())
+                && existsRecordWithMealAtDate(mDataEditText.getText().toString(), mMealSpinner.getSelectedItem().toString())) {
 
             message = " A refeição " + mMealSpinner.getSelectedItem().toString() + " já existe para esta data.\n" +
                     "Escolha outra refeição ou altere a refeição desejada.";
