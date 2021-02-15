@@ -360,6 +360,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         record.setCarbohydrate(Integer.parseInt(mCarboidratosEditText.getText().toString()));
         record.setGlucose(Integer.parseInt(mGlicemiaEditText.getText().toString()));
         record.setFastInsulin(Double.parseDouble(mResultado.getText().toString()));
+        record.setMeal(mRefeicaoSpinner.getSelectedItem().toString());
 
         //Empacotando o objeto
         Bundle bundle = new Bundle();
