@@ -51,7 +51,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     Button mCalcularButton;
     SQLiteDatabase mDb;
 
-    final double mGraduacao = 0.5;
+    double mGraduacao = 0.5;
 
     boolean enableActionSave = false;
 
@@ -159,6 +159,10 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             Log.d("bwvm", "calcular: Resultado = " + resultado);
 
             //TODO encontrar o ponte de arredondamento
+
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+            String s = settings.getString(getString(R.string.pref_bolus_list_graduation_key),"0");
+            mGraduacao = Integer.parseInt(s);
 
 
             double resultadoAjustado = adjustResult(resultado, mGraduacao);

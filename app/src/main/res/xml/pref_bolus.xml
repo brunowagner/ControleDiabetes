@@ -6,9 +6,9 @@
         android:title="@string/pref_bolus_select_graduation_category_title">
 
     <ListPreference
-        android:key="@string/pref_bolus_select_graduation_key"
-        android:title="@string/pref_bolus_select_graduation_title"
-        android:summary="@string/pref_bolus_select_graduation_summary"
+        android:key="@string/pref_bolus_list_graduation_key"
+        android:title="@string/pref_bolus_list_graduation_title"
+        android:summary="@string/pref_bolus_list_graduation_summary"
         android:entries="@array/bolus_graduation_names_array"
         android:entryValues="@array/bolus_graduation_values_array"
         android:defaultValue="0"></ListPreference>

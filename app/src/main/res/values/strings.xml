@@ -62,9 +62,9 @@
 
     <string name="pref_bolus_select_graduation_category_key">bolus_select_graduation_category_key</string>
     <string name="pref_bolus_select_graduation_category_title">Graduação de sua seringa ou caneta de insulina</string>
-    <string name="pref_bolus_select_graduation_key">bolus_select_graduation_key</string>
-    <string name="pref_bolus_select_graduation_title">Graduação Selecionada:</string>
-    <string name="pref_bolus_select_graduation_summary">Selecione de quanto em quanto é a marca sua seringa ou caneta de insulina: </string>
+    <string name="pref_bolus_list_graduation_key">bolus_select_graduation_key</string>
+    <string name="pref_bolus_list_graduation_title">Graduação Selecionada:</string>
+    <string name="pref_bolus_list_graduation_summary">Selecione de quanto em quanto é a marca sua seringa ou caneta de insulina: </string>
 
     <string name="pref_bolus_select_method_category_key">bolus_select_method_key</string>
     <string name="pref_bolus_select_method_category_title">Método para encontrar a quantidade de insulina</string>
