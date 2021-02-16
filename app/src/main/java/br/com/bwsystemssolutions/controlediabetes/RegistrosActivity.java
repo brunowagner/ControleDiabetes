@@ -100,6 +100,7 @@ public class RegistrosActivity extends AppCompatActivity implements RecordAdapte
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_delete);
         item.setEnabled(enableActionDelete);
+        item.setVisible(enableActionDelete);
         return true;
     }
 	

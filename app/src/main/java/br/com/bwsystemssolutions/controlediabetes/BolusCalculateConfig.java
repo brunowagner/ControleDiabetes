@@ -131,6 +131,7 @@ public class BolusCalculateConfig extends AppCompatActivity implements BolusTime
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_delete);
         item.setEnabled(enableActionDelete);
+        item.setVisible(enableActionDelete);
         return true;
     }
 }
