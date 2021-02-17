@@ -6,8 +6,12 @@ Registros
 Calculo de Bolus
  - Conferir e ajustar calculo de bolus.
 
+Tabela de Bolus
+ - Após selecionar um ou mais itens, e então desmarcá-los,
+  o option menu continua com opcao de deleção e edição.
+
 Gráficos
- - Criar activity para exibicao de graficos. 
+ - Criar activity para exibicao de graficos.
 
 
 DAOs
