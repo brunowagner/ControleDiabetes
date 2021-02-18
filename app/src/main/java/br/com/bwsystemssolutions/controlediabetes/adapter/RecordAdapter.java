@@ -81,7 +81,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordAdap
 
 	public boolean deleteRecord(int itemToDelete){
 		if (itemToDelete != mSelectedItem || itemToDelete == ITEN_SELECT_NONE) return false;
-		if (mRecords.size()==1) return false;
 
 		Record record = mRecords.get(mSelectedItem);
 		RecordDAO recordDAO = new RecordDAO(mContext);
