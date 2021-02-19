@@ -4,16 +4,20 @@ Registros
  - ok Permitir deletar os registros até que não sobre mais nenhum (ainda fica um registro sem deletar).
  - ok Quando sair do RecordDetail, recolher o teclado.
 
+Configuração
+ - Retirar "Bloco de tempo" do activity principal de configuração. Já existe um dentro de "Calculo de Insulina"
 
 Calculo de Bolus
  - Conferir e ajustar calculo de bolus.
+ - Conferir a busca na tabela de bolus.
 
 Tabela de Bolus
- - Após selecionar um ou mais itens, e então desmarcá-los,
-  o option menu continua com opcao de deleção e edição.
+ - ok Após selecionar um ou mais itens, e então desmarcá-los, o option menu continua com opcao de deleção e edição.
 
 Gráficos
  - Criar activity para exibicao de graficos.
+
+
 
 
 DAOs
