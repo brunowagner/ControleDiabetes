@@ -9,7 +9,8 @@ Configuração
 
 Calculo de Bolus
  - Conferir e ajustar calculo de bolus.
- - Conferir a busca na tabela de bolus.
+ - ok Conferir a busca na tabela de bolus.
+ - Mudar o layout de acordo com o método de calculo escolhido.
 
 Tabela de Bolus
  - ok Após selecionar um ou mais itens, e então desmarcá-los, o option menu continua com opcao de deleção e edição.
