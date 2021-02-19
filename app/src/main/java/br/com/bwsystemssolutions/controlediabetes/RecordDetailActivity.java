@@ -3,17 +3,15 @@ package br.com.bwsystemssolutions.controlediabetes;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -24,8 +22,6 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,13 +30,11 @@ import br.com.bwsystemssolutions.controlediabetes.classe.Event;
 import br.com.bwsystemssolutions.controlediabetes.classe.Meal;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.classe.Utilidades;
-import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
-import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
-import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.EventDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.RecordDAO;
 import br.com.bwsystemssolutions.controlediabetes.util.Converter;
+import br.com.bwsystemssolutions.controlediabetes.util.SoftKeyboard;
 
 public class RecordDetailActivity extends AppCompatActivity {
 
@@ -72,6 +66,26 @@ public class RecordDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_detail);
 
+        configureComponents();
+
+        //verifica se esta activity foi startada com um objeto Record incluso para carregá-lo
+        Intent intentThatStartedThisActivity = getIntent();
+        if (intentThatStartedThisActivity.hasExtra(Record.BUNDLE_STRING_KEY)){
+            Bundle bundle = intentThatStartedThisActivity.getExtras();
+            mRecord = (Record) bundle.getSerializable(Record.BUNDLE_STRING_KEY);
+        }
+
+//        configureDb();
+
+        loadData();
+    }
+
+//    private void configureDb(){
+//        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
+//        mDb = dbHelper.getWritableDatabase();
+//    }
+
+    private void configureComponents(){
         mDataEditText = (EditText) findViewById(R.id.et_data_record);
         mTimePickerImageButton = (ImageButton) findViewById(R.id.ibtn_time_picker_record);
         mHoraEditText = (EditText) findViewById(R.id.et_hora_record);
@@ -87,26 +101,16 @@ public class RecordDetailActivity extends AppCompatActivity {
         mMedicamentoCheckBox = (CheckBox) findViewById(R.id.et_medicamento_record);
         mObservacaoEditText = (EditText) findViewById(R.id.et_observacao_record);
 
-        mTimePickerImageButton.setOnClickListener(new ClickHandler());
 
+        mTimePickerImageButton.setOnClickListener(new ClickHandler());
         mDatePickerImageButton.setOnClickListener(new ClickHandler());
 
-        Intent intentThatStartedThisActivity = getIntent();
-
-        if (intentThatStartedThisActivity.hasExtra(Record.BUNDLE_STRING_KEY)){
-            Bundle bundle = intentThatStartedThisActivity.getExtras();
-            mRecord = (Record) bundle.getSerializable(Record.BUNDLE_STRING_KEY);
-        }
-
-//        configureDb();
-
-        loadData();
+        //seta o spinner para quando for tocado, o  teclado se esconde
+        mMealSpinner.setOnTouchListener(SoftKeyboard.hideOnTouch(this));
+        mEventSpinner.setOnTouchListener(SoftKeyboard.hideOnTouch(this));
+        mDoenteCheckBox.setOnTouchListener(SoftKeyboard.hideOnTouch(this));
+        mMedicamentoCheckBox.setOnTouchListener(SoftKeyboard.hideOnTouch(this));
     }
-
-//    private void configureDb(){
-//        CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
-//        mDb = dbHelper.getWritableDatabase();
-//    }
 
     private void loadData(){
 
@@ -416,6 +420,7 @@ public class RecordDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        hideKeyboard();
         int id = item.getItemId();
 
         if (id == R.id.action_save){
@@ -424,6 +429,10 @@ public class RecordDetailActivity extends AppCompatActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void hideKeyboard(){
+        SoftKeyboard.hide(this);
     }
 
 

@@ -2,7 +2,7 @@ Registros
  - (Desisti desta ideia) Permitir selecionar multiplos registros para delecao. uma idéia seria colocar o onclick dentro do onBind. o link abaixo explica como:
  https://stackoverflow.com/questions/36369913/how-to-implement-multi-select-in-recyclerview
  - ok Permitir deletar os registros até que não sobre mais nenhum (ainda fica um registro sem deletar).
- - Quando sair do RecordDetail, recolher o teclado.
+ - ok Quando sair do RecordDetail, recolher o teclado.
 
 
 Calculo de Bolus
