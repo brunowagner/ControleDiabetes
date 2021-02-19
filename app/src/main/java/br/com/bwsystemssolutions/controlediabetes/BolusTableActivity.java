@@ -115,6 +115,11 @@ public class BolusTableActivity extends AppCompatActivity {
 //            }
 
             @Override
+            public void onClick(HashMap<Integer, Integer> selectedItens, BolusTableData bolusTableData) {
+                onLongClick(selectedItens, bolusTableData);
+            }
+
+            @Override
             public void onLongClick(HashMap<Integer, Integer> selectedItems, BolusTableData bolusTableData) {
                 mEnableActionDelete = selectedItems.size() > 0;
                 mEnableActionEdit = selectedItems.size() == 1;

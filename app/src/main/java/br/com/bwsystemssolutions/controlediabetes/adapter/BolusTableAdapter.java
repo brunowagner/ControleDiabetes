@@ -279,6 +279,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
                 mSelectedItem = ITEN_SELECT_NONE;
                 notifyDataSetChanged();
                 //mClickHandler.onClick(null, mClickedItem, mSelectedItems.size(), null, null);
+                mClickHandler.onClick(mSelectedItems,mBolusTableData.get(position));
                 return;
             }
 
@@ -484,6 +485,7 @@ public class BolusTableAdapter extends RecyclerView.Adapter<BolusTableAdapter.Bo
 
     public interface BolusTable1AdapterOnClickHandler {
         //void onClick(BolusTable3Data bolusTable3Data, int clickedItem, int SelectedItems, String mealName, FieldId fieldId);
+        void onClick(HashMap<Integer, Integer> selectedItens, BolusTableData bolusTableData);
         void onLongClick(HashMap<Integer, Integer> selectedItens, BolusTableData bolusTableData);
     }
 
