@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,17 @@ public class BolusDAO {
 //        INNER JOIN meals
 //        on bolusTable.meal_id = meals.id;
 
+    }
+
+    public int count(){
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        final Cursor cursor = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME,null);
+        Log.d("bwvm", "count registros: " + cursor.getCount() + "    qtd coluna = " + cursor.getColumnCount());
+        int count = 0;
+        while(cursor.moveToNext()){
+            count = cursor.getInt(0);
+        }
+        return count;
     }
 
     public Bolus fetchLessThanOrEqualToGlucoseByMeal(int glucose, String meal, int limit) {

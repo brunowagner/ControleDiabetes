@@ -231,6 +231,8 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             return;
         }
 
+        double bolusValue = 0.0;
+
         //"select * from TABLE where inicio < horaAtual orderBy inicio desc limit = 1"
 
         //BolusTableData2DAO bolusTableData2DAO = new BolusTableData2DAO(this);
@@ -243,32 +245,39 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
 
         // if (bolus == null){
         if (bolus == null){
-            String message = "A tabela de bolus não possui informação para esta refeição ou não existem dados na tabela de bolus.\n" +
-                    "Deseja preencher a tabela de bolus agora?";
+            int recordCount = bolusDAO.count();
+            if (recordCount == 0){
+                //Tabela vazia
+                String message = "Não existem dados na tabela de bolus.\n" +
+                        "Deseja preencher a tabela de bolus agora?";
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(message)
-                    .setTitle("Atenção!")
-                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //TODO inserir método para ir até a configuração da tabela de bolus
-                            //goToTimeBlockConfig();
-                        }
-                    });
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(message)
+                        .setTitle("Atenção!")
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO inserir método para ir até a configuração da tabela de bolus
+                                //goToTimeBlockConfig();
+                            }
+                        });
 
-            AlertDialog alert = builder.create();
-            alert.show();
+                AlertDialog alert = builder.create();
+                alert.show();
+            } else{
+                //possui registros, mas não é para aplicar nada.
+            }
         } else {
-            mResultado .setText(String.valueOf(bolus.getBolus()));
+            bolusValue = bolus.getBolus();
+            //mResultado.setText(String.valueOf(bolusValue));
         }
-
+        mResultado.setText(String.valueOf(bolusValue));
     }
 
     private double adjustResult(double value, double graduation){
