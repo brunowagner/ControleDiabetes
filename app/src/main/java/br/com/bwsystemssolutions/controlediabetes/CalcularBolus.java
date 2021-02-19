@@ -37,6 +37,7 @@ import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.BolusDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.MealDAO;
+import br.com.bwsystemssolutions.controlediabetes.util.SoftKeyboard;
 
 public class CalcularBolus extends AppCompatActivity implements View.OnClickListener {
 
@@ -62,6 +63,30 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calcular_bolus);
 
+        configureComponents();
+
+        loadComponents();
+    }
+
+    private void loadComponents() {
+        //verifica nas configuracoes, qual o método utilizado para obter a dosagem de insulina
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String s = settings.getString(getString(R.string.pref_bolus_list_method_key),"0");
+        mMetodoDeDosagem = Integer.parseInt(s);
+        String[] listName = getResources().getStringArray(R.array.bolus_method_names_array);
+        mMetodoTextView.setText(listName[mMetodoDeDosagem]);
+
+        loadMealSpinner();
+    }
+
+    private void loadMealSpinner() {
+        //Carregando o sppiner
+        MealDAO mealDAO = new MealDAO(this);
+        final ArrayList<Meal> meals = mealDAO.fetchAll();
+        mRefeicaoSpinner.setAdapter(new ArrayAdapter<Meal>(this,R.layout.support_simple_spinner_dropdown_item,meals));
+    }
+
+    private void configureComponents(){
         mGlicemiaEditText = (EditText) findViewById(R.id.et_glicemia);
         mCarboidratosEditText = (EditText) findViewById(R.id.et_carboidratos);
         mResultado = (TextView) findViewById(R.id.tv_resultado);
@@ -75,20 +100,11 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
         mGlicemiaEditText.addTextChangedListener(new OnTextEdit());
         mCarboidratosEditText.addTextChangedListener(new OnTextEdit());
 
-
-        //verifica nas configuracoes, qual o método utilizado para obter a dosagem de insulina
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String s = settings.getString(getString(R.string.pref_bolus_list_method_key),"0");
-        mMetodoDeDosagem = Integer.parseInt(s);
-        String[] listName = getResources().getStringArray(R.array.bolus_method_names_array);
-        mMetodoTextView.setText(listName[mMetodoDeDosagem]);
-
-        //Carregando o sppiner
-        MealDAO mealDAO = new MealDAO(this);
-        final ArrayList<Meal> meals = mealDAO.fetchAll();
-
-        mRefeicaoSpinner.setAdapter(new ArrayAdapter<Meal>(this,R.layout.support_simple_spinner_dropdown_item,meals));
+        mRefeicaoSpinner.setOnTouchListener(SoftKeyboard.hideOnTouch(this));
     }
+
+
+
 
     //Utilizado quando o método de 'Cáculo de Bólus' esta selecionado em configurações.
     private void calcular(){
@@ -262,11 +278,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     }
 
     private void hideKeyboard(){
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        SoftKeyboard.hide(this);
     }
 
     private String getHoraAtual(){
