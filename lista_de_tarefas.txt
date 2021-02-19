@@ -1,11 +1,11 @@
 Registros
  - (Desisti desta ideia) Permitir selecionar multiplos registros para delecao. uma idéia seria colocar o onclick dentro do onBind. o link abaixo explica como:
  https://stackoverflow.com/questions/36369913/how-to-implement-multi-select-in-recyclerview
- - ok Permitir deletar os registros até que não sobre mais nenhum (ainda fica um registro sem deletar).
- - ok Quando sair do RecordDetail, recolher o teclado.
+ - Mudar o textview de ":Insulina Rápida::" para ":Insulina Rápida:" (RecordDetail)
+ - acrescentar dois ícones nos itens do recyclerview representando doente e medicamento.
 
 Configuração
- - Retirar "Bloco de tempo" do activity principal de configuração. Já existe um dentro de "Calculo de Insulina"
+ - ok Retirar "Bloco de tempo" do activity principal de configuração. Já existe um dentro de "Calculo de Insulina"
 
 Calculo de Bolus
  - Conferir e ajustar calculo de bolus.
@@ -13,7 +13,10 @@ Calculo de Bolus
  - Mudar o layout de acordo com o método de calculo escolhido.
 
 Tabela de Bolus
- - ok Após selecionar um ou mais itens, e então desmarcá-los, o option menu continua com opcao de deleção e edição.
+ - colocar a navegação e título na activity de edicao e salvamento de glicemia e bolus.
+ - ajustar o focus dos editText na activity de edicao e salvamento de glicemia e bolus.
+ - colocar titulo e navegação na activity da tabela de bolus.
+ - Ajustar o tamanho dos textview dentro dos cards da tabela de bolus. No tablet do Vitor está cortando o texto.
 
 Gráficos
  - Criar activity para exibicao de graficos.
