@@ -19,14 +19,6 @@
     </Preference>
 
     <Preference
-        android:key="@string/pref_bloco_de_tempo_key"
-        android:title="@string/pref_bloco_de_tempo_title"
-        android:summary="@string/pref_bloco_de_tempo_summary">
-        <intent android:targetPackage="br.com.bwsystemssolutions.controlediabetes"
-            android:targetClass="br.com.bwsystemssolutions.controlediabetes.BolusCalculateConfig" />
-    </Preference>
-
-    <Preference
         android:key="@string/pref_backup_key"
         android:title="@string/pref_backup_title"
         android:summary="@string/pref_backup_summary">

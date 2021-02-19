@@ -41,7 +41,6 @@
             android:title="@string/pref_bolus_configure_calculate_title"
             android:summary="@string/pref_bolus_configure_calculate_summary"/>
 
-
     </PreferenceCategory>
 
 
