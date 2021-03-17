@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button mCalculoDeBolusButton;
     Button mRegistrosButton;
     Button mExportarData;
-    Button mCreateBK;
+    Button mReportsButton;
     SQLiteDatabase mDb;
     Context mContextMain = MainActivity.this;
 
@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCalculoDeBolusButton = (Button) findViewById(R.id.btn_calculo_de_bolus);
         mRegistrosButton = (Button) findViewById(R.id.btn_registros);
         mExportarData = (Button) findViewById(R.id.btn_export_data);
-        mCreateBK = (Button) findViewById(R.id.btn_bolus_table);
+        mReportsButton = (Button) findViewById(R.id.btn_reports);
 
         mCalculoDeBolusButton.setOnClickListener(this);//new ListenerEvents());
         mRegistrosButton.setOnClickListener(this);//new ListenerEvents());
         mExportarData.setOnClickListener(this);//new ListenerEvents());
-        mCreateBK.setOnClickListener(this);
+        mReportsButton.setOnClickListener(this);
 
 
         //mDb = dbHelper.getWritableDatabase();
@@ -170,9 +170,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                }
             }
 
-            if (id == R.id.btn_bolus_table) {
+            if (id == R.id.btn_reports) {
                 Context context = this;
-                Class destClass = BolusTableActivity.class;
+                Class destClass = GlucoseMealsReportActivity.class;
                 Intent intent = new Intent(context, destClass);
                 startActivity(intent);
             }
