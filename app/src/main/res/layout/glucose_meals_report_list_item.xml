@@ -165,7 +165,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_colacao"
+                android:id="@+id/tv_glicose_colacao"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_gravity="center"
@@ -236,7 +236,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_almoco"
+                android:id="@+id/tv_glicose_almoco"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_gravity="center"
@@ -307,7 +307,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_lanche"
+                android:id="@+id/tv_glicose_lanche"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_gravity="center"
@@ -378,7 +378,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_jantar"
+                android:id="@+id/tv_glicose_jantar"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_gravity="center"
@@ -449,7 +449,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_ceia"
+                android:id="@+id/tv_glicose_ceia"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_gravity="center"
@@ -520,7 +520,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_madrugada"
+                android:id="@+id/tv_glicose_madrugada"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_gravity="center"
