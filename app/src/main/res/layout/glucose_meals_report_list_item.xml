@@ -23,6 +23,7 @@
             android:layout_marginRight="10sp">
 
             <TextView
+                android:id="@+id/tv_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="09/09/21"
@@ -30,6 +31,7 @@
                 android:layout_gravity="center"/>
 
             <TextView
+                android:id="@+id/tv_data_dia_semana"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dom"
@@ -57,6 +59,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_insul_cafe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20.0" />
@@ -75,6 +78,7 @@
                     android:layout_gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_carbo_cafe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="900" />
@@ -90,7 +94,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_cafe_da_manha"
+                android:id="@+id/tv_glicose_cafe_da_manha"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_gravity="center"
@@ -126,6 +130,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_insul_colacao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20.0" />
@@ -144,6 +149,7 @@
                     android:layout_gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_carbo_colacao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="900" />
@@ -195,6 +201,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_insul_almoco"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20.0" />
@@ -213,6 +220,7 @@
                     android:layout_gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_carbo_almoco"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="900" />
@@ -264,6 +272,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_insul_lanche"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20.0" />
@@ -282,6 +291,7 @@
                     android:layout_gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_carbo_lanche"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="900" />
@@ -333,6 +343,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_insul_jantar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20.0" />
@@ -351,6 +362,7 @@
                     android:layout_gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_carbo_jantar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="900" />
@@ -402,6 +414,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_insul_ceia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20.0" />
@@ -420,6 +433,7 @@
                     android:layout_gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_carbo_ceia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="900" />
@@ -471,6 +485,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_insul_madrugada"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20.0" />
@@ -489,6 +504,7 @@
                     android:layout_gravity="right">
 
                     <TextView
+                        android:id="@+id/tv_carbo_madrugada"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="900" />
