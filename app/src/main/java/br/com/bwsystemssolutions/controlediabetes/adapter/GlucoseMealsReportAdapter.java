@@ -61,7 +61,7 @@ class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMealsReportA
         glucoseMealsReportAdapterViewHolder.mInsulLanche.setText(String.valueOf(glucoseMealsReport.getInsulLanche()));
         glucoseMealsReportAdapterViewHolder.mInsulJantar.setText(String.valueOf(glucoseMealsReport.getInsulJantar()));
         glucoseMealsReportAdapterViewHolder.mInsulCeia.setText(String.valueOf(glucoseMealsReport.getInsulCeia()));
-        glucoseMealsReportAdapterViewHolder.mInsulMadrugada.setText(String.valueOf(glucoseMealsReport.getInsulMadrugada());
+        glucoseMealsReportAdapterViewHolder.mInsulMadrugada.setText(String.valueOf(glucoseMealsReport.getInsulMadrugada()));
         glucoseMealsReportAdapterViewHolder.mCarboCafe.setText(glucoseMealsReport.getCarboCafe());
         glucoseMealsReportAdapterViewHolder.mCarboColacao.setText(glucoseMealsReport.getCarboColacao());
         glucoseMealsReportAdapterViewHolder.mCarboAlmoco.setText(glucoseMealsReport.getCarboAlmoco());
@@ -77,24 +77,49 @@ class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMealsReportA
         glucoseMealsReportAdapterViewHolder.mGlicoseCeia.setText(glucoseMealsReport.getGlicoseCeia());
         glucoseMealsReportAdapterViewHolder.mGlicoseMadrugada.setText(glucoseMealsReport.getGlicoseMadrugada());
 
-        int g = glucoseMealsReport.getGlicoseCafe();
+        int gCafe = glucoseMealsReport.getGlicoseCafe();
+        int gColacao = glucoseMealsReport.getGlicoseColacao();
+        int gAlmoco = glucoseMealsReport.getGlicoseAlmoco();
+        int gLanche = glucoseMealsReport.getGlicoseLanche();
+        int gJantar = glucoseMealsReport.getGlicoseJantar();
+        int gCeia = glucoseMealsReport.getGlicoseCeia();
+        int gMadrugada = glucoseMealsReport.getGlicoseMadrugada();
 
-        if (g == 0){
-            glucoseMealsReportAdapterViewHolder.mGlicemiaTextView.setVisibility(View.INVISIBLE);
+//        if (gCafe == 0){
+//            glucoseMealsReportAdapterViewHolder.mGlicoseCafe.setVisibility(View.INVISIBLE);
+//        } else {
+//            glucoseMealsReportAdapterViewHolder.mGlicoseCafe.setVisibility(View.VISIBLE);
+//        }
+
+//        //Seta cor do circulo do cafe
+//        if (gCafe <= mGlicemiaBaixa){
+//            glucoseMealsReportAdapterViewHolder.mGlicoseCafe.setBackgroundResource(R.drawable.circle_hipo);
+//        }  else if (gCafe > mGlicemiaBaixa && gCafe < mGlicemiaAlta){
+//            glucoseMealsReportAdapterViewHolder.mGlicoseCafe.setBackgroundResource(R.drawable.circle_normal);
+//        } else {
+//            glucoseMealsReportAdapterViewHolder.mGlicoseCafe.setBackgroundResource(R.drawable.circle_hiper);
+//        }
+
+        setGlucoseBackground(glucoseMealsReportAdapterViewHolder.mGlicoseCafe,      gCafe);
+        setGlucoseBackground(glucoseMealsReportAdapterViewHolder.mGlicoseColacao,   gColacao);
+        setGlucoseBackground(glucoseMealsReportAdapterViewHolder.mGlicoseAlmoco,    gAlmoco);
+        setGlucoseBackground(glucoseMealsReportAdapterViewHolder.mGlicoseLanche,    gLanche);
+        setGlucoseBackground(glucoseMealsReportAdapterViewHolder.mGlicoseJantar,    gJantar);
+        setGlucoseBackground(glucoseMealsReportAdapterViewHolder.mGlicoseCeia,      gCeia);
+        setGlucoseBackground(glucoseMealsReportAdapterViewHolder.mGlicoseMadrugada, gMadrugada);
+
+    }
+
+    //funcao utilizada no onBind para colorir o circulo do valor da clicose.
+    private void setGlucoseBackground(TextView glucoseView, int glucoseValue){
+        //Seta a cor do circulo da glicose
+        if (glucoseValue <= mGlicemiaBaixa){
+            glucoseView.setBackgroundResource(R.drawable.circle_hipo);
+        }  else if (glucoseValue > mGlicemiaBaixa && glucoseValue < mGlicemiaAlta){
+            glucoseView.setBackgroundResource(R.drawable.circle_normal);
         } else {
-            registrosAdapterViewHolder.mGlicemiaTextView.setVisibility(View.VISIBLE);
+            glucoseView.setBackgroundResource(R.drawable.circle_hiper);
         }
-
-        //if (g <= 65){
-        if (g <= mGlicemiaBaixa){
-            glucoseMealsReportAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hipo);
-        }  else if (g > mGlicemiaBaixa && g < mGlicemiaAlta){
-            registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_normal);
-        } else {
-            registrosAdapterViewHolder.mGlicemiaTextView.setBackgroundResource(R.drawable.circle_hiper);
-        }
-
-
     }
 
     @Override
