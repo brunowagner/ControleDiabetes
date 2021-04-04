@@ -12,13 +12,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import br.com.bwsystemssolutions.controlediabetes.adapter.GlucoseMealsReportAdapter;
 import br.com.bwsystemssolutions.controlediabetes.adapter.RecordAdapter;
+import br.com.bwsystemssolutions.controlediabetes.classe.GlucoseMealsReport;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
 class GlucoseMealsReportActivity extends AppCompatActivity {
     RecyclerView mGlucoseMealsReportRecyclerView;
-    RecordAdapter mGlucoseMealsReportAdapter;
+    GlucoseMealsReportAdapter mGlucoseMealsReportAdapter;
     boolean enableActionDelete = false;
     int mSelectedItem = RecordAdapter.ITEN_SELECT_NONE;
 
@@ -35,7 +37,7 @@ class GlucoseMealsReportActivity extends AppCompatActivity {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-        mGlucoseMealsReportAdapter = new RecordAdapter(dbHelper,this, this, sp);
+        mGlucoseMealsReportAdapter = new GlucoseMealsReportAdapter(sp,this);
 
         mGlucoseMealsReportRecyclerView.setAdapter(mGlucoseMealsReportAdapter);
 
@@ -105,35 +107,36 @@ class GlucoseMealsReportActivity extends AppCompatActivity {
     }
 
     //implementação do RecordAdapterOnClickHandler
-    @Override
-    public void onClick(Record record, int selectedItem) {
-        if (selectedItem >= 0) {
-            mGlucoseMealsReportAdapter.setSelectedItem(RecordAdapter.ITEN_SELECT_NONE);
-            setEnableActionDelete(false);
-            return;
-        }
+//    @Override
+//    public void onClick(Record record, int selectedItem) {
+//        if (selectedItem >= 0) {
+//            //TODO decidir se vai manter
+//            //mGlucoseMealsReportAdapter.setSelectedItem(RecordAdapter.ITEN_SELECT_NONE);
+//            setEnableActionDelete(false);
+//            return;
+//        }
+//
+//
+//        Context context = this;
+//        Intent intent = new Intent(context, RecordDetailActivity.class);
+//
+//        //Empacotando o objeto
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable(Record.BUNDLE_STRING_KEY, record);
+//
+//        //passando o objeto na Intent
+//        intent.putExtras(bundle);
+//
+//        startActivity(intent);
+//    }
 
-
-        Context context = this;
-        Intent intent = new Intent(context, RecordDetailActivity.class);
-
-        //Empacotando o objeto
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Record.BUNDLE_STRING_KEY, record);
-
-        //passando o objeto na Intent
-        intent.putExtras(bundle);
-
-        startActivity(intent);
-    }
-
-    @Override
-    public void onLongClick(int selectedItem) {
-        mSelectedItem = selectedItem;
-        if (selectedItem != RecordAdapter.ITEN_SELECT_NONE){
-            setEnableActionDelete(true);
-        } else {
-            setEnableActionDelete(false);
-        }
-    }
+//    @Override
+//    public void onLongClick(int selectedItem) {
+//        mSelectedItem = selectedItem;
+//        if (selectedItem != RecordAdapter.ITEN_SELECT_NONE){
+//            setEnableActionDelete(true);
+//        } else {
+//            setEnableActionDelete(false);
+//        }
+//    }
 }

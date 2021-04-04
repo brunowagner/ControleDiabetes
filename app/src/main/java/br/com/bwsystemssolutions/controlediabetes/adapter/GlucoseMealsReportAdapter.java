@@ -13,8 +13,10 @@ import java.util.ArrayList;
 
 import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.GlucoseMealsReport;
+import br.com.bwsystemssolutions.controlediabetes.classe.Record;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.RecordDAO;
 
-class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMealsReportAdapter.GlucoseMealsReportAdapterViewHolder> {
+public class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMealsReportAdapter.GlucoseMealsReportAdapterViewHolder> {
     private ArrayList<GlucoseMealsReport> mData;
 
     int mGlicemiaBaixa;
@@ -125,6 +127,18 @@ class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMealsReportA
     @Override
     public int getItemCount() {
         return mData == null ? 0: mData.size();
+    }
+
+    public void refreshData(){
+        //TODO implementar refresh
+        //RecordDAO recordDAO = new RecordDAO(mContext);
+        //ArrayList<Record> records = recordDAO.fetchAll();
+        //setRecords(records);
+    }
+
+    public boolean deleteRecord(int mSelectedItem) {
+        //TODO implementar
+        return false;
     }
 
 

@@ -278,6 +278,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
             //mResultado.setText(String.valueOf(bolusValue));
         }
         mResultado.setText(String.valueOf(bolusValue));
+        setEnableActionSave(true);
     }
 
     private double adjustResult(double value, double graduation){
@@ -369,6 +370,7 @@ public class CalcularBolus extends AppCompatActivity implements View.OnClickList
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_save);
         item.setEnabled(enableActionSave);
+        item.setVisible(enableActionSave);
         return true;
     }
 
