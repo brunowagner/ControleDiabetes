@@ -18,7 +18,7 @@ import br.com.bwsystemssolutions.controlediabetes.classe.GlucoseMealsReport;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusDBHelper;
 
-class GlucoseMealsReportActivity extends AppCompatActivity {
+public class GlucoseMealsReportActivity extends AppCompatActivity {
     RecyclerView mGlucoseMealsReportRecyclerView;
     GlucoseMealsReportAdapter mGlucoseMealsReportAdapter;
     boolean enableActionDelete = false;
