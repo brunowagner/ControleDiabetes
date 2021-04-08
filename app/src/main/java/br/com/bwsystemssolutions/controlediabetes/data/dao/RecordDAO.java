@@ -38,6 +38,20 @@ public class RecordDAO implements BasicDAO<Record> {
         return records;
     }
 
+    // select * from records where meal IS NOT NULL and meal <> "";
+    public ArrayList<Record> fetchWithMeals(boolean desc){
+        final String sort = desc ? " DESC" : " ASC";
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        final String selection = CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME + " ? or " + CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME + " <> ? ";
+        final String[] args = new String[] { "IS NOT NULL ", ""};
+        final Cursor cursor  = db.query(TABLE_NAME,
+                null, selection, args, null,null,
+                CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + " DESC");
+        ArrayList<Record> records = parseToRecord(cursor);
+        db.close();
+        return records;
+    }
+
     public boolean exists(String date, String time){
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selection = CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + "=?";

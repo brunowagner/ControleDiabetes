@@ -124,4 +124,38 @@ public class CalculoDeBolusContract {
         public static final String COLUMN_SUPPER_NAME = "supper"; //ceia
         public static final String COLUMN_DAWN_NAME = "dawn"; //madrugada
     }
+
+        public  static final class GlucoseMealsReportEntry{
+        //cafe, carboCafe, insulCafe, colacao, carboColacao,insulColacao,almoco,carboAlmoco,insulAlmoco,lanche,carboLanche,insulLanche,jantar,carboJantar,insulJantar,ceia,carboCeia,insulCeia,madrugada,carboMadrugada,insulMadrugada";
+        public static final String COLUMN_DATE_NAME = "date";
+        public static final String COLUMN_BREAKFAST_GLUCOSE_NAME = "breakfastGlucose"; //café da manhã
+        public static final String COLUMN_BRUNCH_GLUCOSE_NAME = "brunchGlucose"; // colação
+        public static final String COLUMN_LUNCH_GLUCOSE_NAME = "lunchGlucose"; //almoço
+        public static final String COLUMN_TEA_GLUCOSE_NAME = "teaGlucose"; //lanche da tarde
+        public static final String COLUMN_DINNER_GLUCOSE_NAME = "dinnerGlucose"; //jantar
+        public static final String COLUMN_SUPPER_GLUCOSE_NAME = "supperGlucose"; //ceia
+        public static final String COLUMN_DAWN_GLUCOSE_NAME = "dawnGlucose"; //madrugada
+
+        public static final String COLUMN_BREAKFAST_CARBO_NAME = "breakfastCarbo"; //café da manhã
+        public static final String COLUMN_BRUNCH_CARBO_NAME = "brunchCarbo"; // colação
+        public static final String COLUMN_LUNCH_CARBO_NAME = "lunchCarbo"; //almoço
+        public static final String COLUMN_TEA_CARBO_NAME = "teaCarbo"; //lanche da tarde
+        public static final String COLUMN_DINNER_CARBO_NAME = "dinnerCarbo"; //jantar
+        public static final String COLUMN_SUPPER_CARBO_NAME = "supperCarbo"; //ceia
+        public static final String COLUMN_DAWN_CARBO_NAME = "dawnCarbo"; //madrugada
+
+        public static final String COLUMN_BREAKFAST_INSUL_NAME = "breakfastInsul"; //café da manhã
+        public static final String COLUMN_BRUNCH_INSUL_NAME = "brunchInsul"; // colação
+        public static final String COLUMN_LUNCH_INSUL_NAME = "lunchInsul"; //almoço
+        public static final String COLUMN_TEA_INSUL_NAME = "teaInsul"; //lanche da tarde
+        public static final String COLUMN_DINNER_INSUL_NAME = "dinnerInsul"; //jantar
+        public static final String COLUMN_SUPPER_INSUL_NAME = "supperInsul"; //ceia
+        public static final String COLUMN_DAWN_INSUL_NAME = "dawnInsul"; //madrugada
+
+
+
+
+    }
+
+
 }

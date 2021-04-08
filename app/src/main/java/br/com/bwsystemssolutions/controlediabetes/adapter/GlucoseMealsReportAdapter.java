@@ -131,9 +131,9 @@ public class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMeals
 
     public void refreshData(){
         //TODO implementar refresh
-        //RecordDAO recordDAO = new RecordDAO(mContext);
-        //ArrayList<Record> records = recordDAO.fetchAll();
-        //setRecords(records);
+        RecordDAO recordDAO = new RecordDAO(mContext);
+        ArrayList<Record> records = recordDAO.fetchAll();
+        setRecords(records);
     }
 
     public boolean deleteRecord(int mSelectedItem) {
