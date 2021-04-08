@@ -17,6 +17,7 @@ import br.com.bwsystemssolutions.controlediabetes.interfaces.BasicDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.CalculoDeBolusContract;
 
 public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
+    private static final String TAG = "bwvm";
     private CalculoDeBolusDBHelper dbHelper;
     private Context mContext;
     //private String TABLE_NAME = CalculoDeBolusContract.RecordEntry.TABLE_NAME;
@@ -81,7 +82,7 @@ public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
 
         while(cursor.moveToNext()){
             GlucoseMealsReport glucoseMealsReport = new GlucoseMealsReport();
-            glucoseMealsReport.setData(Utilidades.convertStringToDate(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_DATE_NAME))));
+            glucoseMealsReport.setData(Utilidades.convertStringToDate(cursor.getString(cursor.getColumnIndex(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_DATE_NAME)),"dd-MM-yyyy"));
             glucoseMealsReport.setCarboCafe(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_BREAKFAST_CARBO_NAME)));
             glucoseMealsReport.setGlicoseCafe(cursor.getInt(cursor.getColumnIndex(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_BREAKFAST_GLUCOSE_NAME)));
             glucoseMealsReport.setInsulCafe(cursor.getDouble(cursor.getColumnIndex(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_BREAKFAST_INSUL_NAME)));

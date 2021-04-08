@@ -50,9 +50,10 @@ public class Utilidades {
         return convertedDateTime;
     }
 
-    public static Date convertStringToDate(String strDate){
+    public static Date convertStringToDate(String strDate, String strFormatReceived){
         String dtStart = strDate;
-        SimpleDateFormat format = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+        //SimpleDateFormat format = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+        SimpleDateFormat format = new SimpleDateFormat(strFormatReceived);
         try {
             Date date = format.parse(strDate);
             return date;
