@@ -43,6 +43,27 @@ public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
         return glucoseMealsReports;
     }
 
+
+
+
+
+
+    @Override
+    public boolean add(GlucoseMealsReport object) {
+        return false;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return false;
+    }
+
+    @Override
+    public boolean update(GlucoseMealsReport object) {
+        return false;
+    }
+
+
     //-- Parses --------------------------------------------------------------------------------
 
     private ArrayList<GlucoseMealsReport> parseToGlucoseMealsReports(Cursor cursor) {
@@ -78,9 +99,57 @@ public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
         return glucoseMealsReports;
     }
 
+    private ArrayList<GlucoseMealsReport> parceRecordsToGlucoseMealsReports(ArrayList<Record> records) {
+        ArrayList<GlucoseMealsReport> glucoseMealsReports = new ArrayList<>();
+
+        GlucoseMealsReport glucoseMealsReport=null;
+
+        String dataAnterior="";
+        for (Record r : records) {
+            if (!dataAnterior.equals(Utilidades.convertDateToString(r.getDate(), "dd/mm/YYY"))){
+                glucoseMealsReport = new GlucoseMealsReport();
+                glucoseMealsReports.add(glucoseMealsReport);
+            }
+
+            glucoseMealsReport.setData(r.getDate());
+            setGlucoseCarboAndInsulin(r, glucoseMealsReport);
+
+            dataAnterior = Utilidades.convertDateToString(r.getDate(), "dd/mm/YYY");
+        }
+        return glucoseMealsReports;
+    }
+
+    // -------- métodos auxiliares --------------------------------------
 
     private String getLeftJoinInstruction() {
-        final String colunas = "r.date, cafe, carboCafe, insulCafe, colacao, carboColacao,insulColacao,almoco,carboAlmoco,insulAlmoco,lanche,carboLanche,insulLanche,jantar,carboJantar,insulJantar,ceia,carboCeia,insulCeia,madrugada,carboMadrugada,insulMadrugada";
+
+        StringBuilder sbColunas = new StringBuilder();
+        sbColunas.append("r.date as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_DATE_NAME);
+        sbColunas.append(",cafe as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_BREAKFAST_GLUCOSE_NAME);
+        sbColunas.append(",carboCafe as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_BREAKFAST_CARBO_NAME);
+        sbColunas.append(",insulCafe as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_BREAKFAST_INSUL_NAME);
+        sbColunas.append(",colacao as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_BRUNCH_GLUCOSE_NAME);
+        sbColunas.append(",carboColacao as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_BRUNCH_CARBO_NAME);
+        sbColunas.append(",insulColacao as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_BRUNCH_INSUL_NAME);
+        sbColunas.append(",almoco as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_LUNCH_GLUCOSE_NAME);
+        sbColunas.append(",carboAlmoco as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_LUNCH_CARBO_NAME);
+        sbColunas.append(",insulAlmoco as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_LUNCH_INSUL_NAME);
+        sbColunas.append(",lanche as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_TEA_GLUCOSE_NAME);
+        sbColunas.append(",carboLanche as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_TEA_CARBO_NAME);
+        sbColunas.append(",insulLanche as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_TEA_INSUL_NAME);
+        sbColunas.append(",jantar as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_DINNER_GLUCOSE_NAME);
+        sbColunas.append(",carboJantar as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_DINNER_CARBO_NAME);
+        sbColunas.append(",insulJantar as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_DINNER_INSUL_NAME);
+        sbColunas.append(",ceia as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_SUPPER_GLUCOSE_NAME);
+        sbColunas.append(",carboCeia as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_SUPPER_CARBO_NAME);
+        sbColunas.append(",insulCeia as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_SUPPER_INSUL_NAME);
+        sbColunas.append(",madrugada as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_DAWN_GLUCOSE_NAME);
+        sbColunas.append(",carboMadrugada as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_DAWN_CARBO_NAME);
+        sbColunas.append(",insulMadrugada as ").append(CalculoDeBolusContract.GlucoseMealsReportEntry.COLUMN_DAWN_INSUL_NAME);
+
+
+        //final String colunas = "r.date, cafe, carboCafe, insulCafe, colacao, carboColacao,insulColacao,almoco,carboAlmoco,insulAlmoco,lanche,carboLanche,insulLanche,jantar,carboJantar,insulJantar,ceia,carboCeia,insulCeia,madrugada,carboMadrugada,insulMadrugada";
+        final String colunas = sbColunas.toString();
         final String tabelaDaEsquerda = "(select _id, strftime('%d-%m-%Y',date_time) as date, count(date_time) from records group by strftime('%m-%d-%Y',date_time)) r";
         final String tabelaCafe = "(select strftime('%d-%m-%Y',date_time) as date, glucose as cafe, carbohydrate as carboCafe, fast_insulin as insulCafe from records where meal like 'café da manhã' group by strftime('%m-%d-%Y',date_time)) cafe";
         final String tabelaColacao = "(select strftime('%d-%m-%Y',date_time) as date, glucose as colacao, carbohydrate as carboColacao, fast_insulin as insulColacao from records where meal like 'colação' group by strftime('%m-%d-%Y',date_time)) col";
@@ -101,25 +170,7 @@ public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
     }
 
 
-    private ArrayList<GlucoseMealsReport> parceRecordsToGlucoseMealsReports(ArrayList<Record> records) {
-        ArrayList<GlucoseMealsReport> glucoseMealsReports = new ArrayList<>();
 
-        GlucoseMealsReport glucoseMealsReport=null;
-
-        String dataAnterior="";
-        for (Record r : records) {
-            if (!dataAnterior.equals(Utilidades.convertDateToString(r.getDate(), "dd/mm/YYY"))){
-                glucoseMealsReport = new GlucoseMealsReport();
-                glucoseMealsReports.add(glucoseMealsReport);
-            }
-
-            glucoseMealsReport.setData(r.getDate());
-            setGlucoseCarboAndInsulin(r, glucoseMealsReport);
-
-            dataAnterior = Utilidades.convertDateToString(r.getDate(), "dd/mm/YYY");
-        }
-        return glucoseMealsReports;
-    }
 
     private void setGlucoseCarboAndInsulin(Record r, GlucoseMealsReport g){
         if (r.getMeal().equals(mContext.getResources().getString(R.string.meals_name_breakfast))){
@@ -151,21 +202,6 @@ public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
             g.setGlicoseMadrugada(r.getGlucose());
             g.setInsulMadrugada(r.getFastInsulin());
         }
-    }
-
-    @Override
-    public boolean add(GlucoseMealsReport object) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(int id) {
-        return false;
-    }
-
-    @Override
-    public boolean update(GlucoseMealsReport object) {
-        return false;
     }
 
 
