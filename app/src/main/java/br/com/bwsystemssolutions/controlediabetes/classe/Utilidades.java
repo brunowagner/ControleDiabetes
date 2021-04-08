@@ -52,7 +52,7 @@ public class Utilidades {
 
     public static Date convertStringToDate(String strDate){
         String dtStart = strDate;
-        SimpleDateFormat format = new SimpleDateFormat("DEFAULT_DATE_FORMAT");
+        SimpleDateFormat format = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
         try {
             Date date = format.parse(strDate);
             return date;

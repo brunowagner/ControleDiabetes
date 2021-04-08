@@ -3,6 +3,7 @@ package br.com.bwsystemssolutions.controlediabetes.data.dao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,15 @@ public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
         mContext = context;
     }
 
+    /***
+     * Busca todos os registros que possuam dados de refeição, e reponde em forma de relatório
+     * @deprecated Mais demorado que o fetchAllByLeftJoin
+     * @param
+     * @return Relatário das refeições organizadas por data. Retorna um ArrayList de
+     * GlucoseMealsReport contendo dados de glicose, carbohidrato e insulina de todas as refeições por data.
+     * Cada registro é uma data.
+     */
+    @Deprecated
     @Override
     public ArrayList<GlucoseMealsReport> fetchAll(){
         RecordDAO recordDAO = new RecordDAO(mContext);
@@ -99,6 +109,7 @@ public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
         return glucoseMealsReports;
     }
 
+
     private ArrayList<GlucoseMealsReport> parceRecordsToGlucoseMealsReports(ArrayList<Record> records) {
         ArrayList<GlucoseMealsReport> glucoseMealsReports = new ArrayList<>();
 
@@ -106,7 +117,7 @@ public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
 
         String dataAnterior="";
         for (Record r : records) {
-            if (!dataAnterior.equals(Utilidades.convertDateToString(r.getDate(), "dd/mm/YYY"))){
+            if (!dataAnterior.equals(Utilidades.convertDateToString(r.getDate(), Utilidades.DEFAULT_DATE_FORMAT))){
                 glucoseMealsReport = new GlucoseMealsReport();
                 glucoseMealsReports.add(glucoseMealsReport);
             }
@@ -114,7 +125,7 @@ public class GlucoseMealsReportDAO implements BasicDAO<GlucoseMealsReport> {
             glucoseMealsReport.setData(r.getDate());
             setGlucoseCarboAndInsulin(r, glucoseMealsReport);
 
-            dataAnterior = Utilidades.convertDateToString(r.getDate(), "dd/mm/YYY");
+            dataAnterior = Utilidades.convertDateToString(r.getDate(), Utilidades.DEFAULT_DATE_FORMAT);
         }
         return glucoseMealsReports;
     }

@@ -27,11 +27,9 @@ public class GlucoseMealsReportActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registros);
+        setContentView(R.layout.activity_glucose_meals_report);
 
-        mGlucoseMealsReportRecyclerView = (RecyclerView) findViewById(R.id.rv_registros);
-        LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        mGlucoseMealsReportRecyclerView.setLayoutManager(linearLayoutManager);
+        mGlucoseMealsReportRecyclerView = (RecyclerView) findViewById(R.id.rv_glucose_meals_report);
 
         CalculoDeBolusDBHelper dbHelper = new CalculoDeBolusDBHelper(this);
 
@@ -40,6 +38,10 @@ public class GlucoseMealsReportActivity extends AppCompatActivity {
         mGlucoseMealsReportAdapter = new GlucoseMealsReportAdapter(sp,this);
 
         mGlucoseMealsReportRecyclerView.setAdapter(mGlucoseMealsReportAdapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mGlucoseMealsReportRecyclerView.setLayoutManager(linearLayoutManager);
+
 
         //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRegistrosRecyclerView.getContext(),
         //        linearLayoutManager.getOrientation());

@@ -1,4 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        Títulos
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
     <string name="app_name">ControleDiabetes</string>
     <string name="title_calcular_bolus">Calcular Bolus</string>
     <string name="title_registros">Registros</string>
@@ -8,6 +12,7 @@
     <string name="title_eventos">Eventos</string>
     <string name="title_configuracao">Configuração</string>
     <string name="title_glicemias">Glicemias</string>
+    <string name="title_glucose_meal_report">Refeições</string>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             Utilizado pela preferencias (SharePreferences)

@@ -42,11 +42,11 @@ public class RecordDAO implements BasicDAO<Record> {
     public ArrayList<Record> fetchWithMeals(boolean desc){
         final String sort = desc ? " DESC" : " ASC";
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
-        final String selection = CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME + " ? or " + CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME + " <> ? ";
-        final String[] args = new String[] { "IS NOT NULL ", ""};
+        final String selection = CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME + " IS NOT NULL or " + CalculoDeBolusContract.RecordEntry.COLUMN_MEAL_NAME + " <> ? ";
+        final String[] args = new String[] { "''"};
         final Cursor cursor  = db.query(TABLE_NAME,
                 null, selection, args, null,null,
-                CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + " DESC");
+                CalculoDeBolusContract.RecordEntry.COLUMN_DATE_TIME_NAME + sort);
         ArrayList<Record> records = parseToRecord(cursor);
         db.close();
         return records;

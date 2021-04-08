@@ -4,20 +4,27 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import br.com.bwsystemssolutions.controlediabetes.R;
 import br.com.bwsystemssolutions.controlediabetes.classe.GlucoseMealsReport;
 import br.com.bwsystemssolutions.controlediabetes.classe.Record;
+import br.com.bwsystemssolutions.controlediabetes.data.dao.GlucoseMealsReportDAO;
 import br.com.bwsystemssolutions.controlediabetes.data.dao.RecordDAO;
 
 public class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMealsReportAdapter.GlucoseMealsReportAdapterViewHolder> {
     private ArrayList<GlucoseMealsReport> mData;
+
+    private Context mContext;
 
     int mGlicemiaBaixa;
     int mGlicemiaAlta;
@@ -25,6 +32,7 @@ public class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMeals
 
     public GlucoseMealsReportAdapter(SharedPreferences sharedPreferences, Context context){
         SharedPreferences settings = sharedPreferences;
+        mContext=context;
 
         String sGlicemiaBaixa = settings.getString( context.getString(R.string.pref_glicemia_baixa_key), context.getString(R.string.pref_glicemia_baixa_default_value));
         String sGlicemiaAlta = settings.getString( context.getString(R.string.pref_glicemia_alta_key), context.getString(R.string.pref_glicemia_alta_default_value));
@@ -64,20 +72,20 @@ public class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMeals
         glucoseMealsReportAdapterViewHolder.mInsulJantar.setText(String.valueOf(glucoseMealsReport.getInsulJantar()));
         glucoseMealsReportAdapterViewHolder.mInsulCeia.setText(String.valueOf(glucoseMealsReport.getInsulCeia()));
         glucoseMealsReportAdapterViewHolder.mInsulMadrugada.setText(String.valueOf(glucoseMealsReport.getInsulMadrugada()));
-        glucoseMealsReportAdapterViewHolder.mCarboCafe.setText(glucoseMealsReport.getCarboCafe());
-        glucoseMealsReportAdapterViewHolder.mCarboColacao.setText(glucoseMealsReport.getCarboColacao());
-        glucoseMealsReportAdapterViewHolder.mCarboAlmoco.setText(glucoseMealsReport.getCarboAlmoco());
-        glucoseMealsReportAdapterViewHolder.mCarboLanche.setText(glucoseMealsReport.getCarboLanche());
-        glucoseMealsReportAdapterViewHolder.mCarboJantar.setText(glucoseMealsReport.getCarboJantar());
-        glucoseMealsReportAdapterViewHolder.mCarboCeia.setText(glucoseMealsReport.getCarboCeia());
-        glucoseMealsReportAdapterViewHolder.mCarboMadrugada.setText(glucoseMealsReport.getCarboMadrugada());
-        glucoseMealsReportAdapterViewHolder.mGlicoseCafe.setText(glucoseMealsReport.getGlicoseCafe());
-        glucoseMealsReportAdapterViewHolder.mGlicoseColacao.setText(glucoseMealsReport.getGlicoseColacao());
-        glucoseMealsReportAdapterViewHolder.mGlicoseAlmoco.setText(glucoseMealsReport.getGlicoseAlmoco());
-        glucoseMealsReportAdapterViewHolder.mGlicoseLanche.setText(glucoseMealsReport.getGlicoseLanche());
-        glucoseMealsReportAdapterViewHolder.mGlicoseJantar.setText(glucoseMealsReport.getGlicoseJantar());
-        glucoseMealsReportAdapterViewHolder.mGlicoseCeia.setText(glucoseMealsReport.getGlicoseCeia());
-        glucoseMealsReportAdapterViewHolder.mGlicoseMadrugada.setText(glucoseMealsReport.getGlicoseMadrugada());
+        glucoseMealsReportAdapterViewHolder.mCarboCafe.setText(String.valueOf(glucoseMealsReport.getCarboCafe()));
+        glucoseMealsReportAdapterViewHolder.mCarboColacao.setText(String.valueOf(glucoseMealsReport.getCarboColacao()));
+        glucoseMealsReportAdapterViewHolder.mCarboAlmoco.setText(String.valueOf(glucoseMealsReport.getCarboAlmoco()));
+        glucoseMealsReportAdapterViewHolder.mCarboLanche.setText(String.valueOf(glucoseMealsReport.getCarboLanche()));
+        glucoseMealsReportAdapterViewHolder.mCarboJantar.setText(String.valueOf(glucoseMealsReport.getCarboJantar()));
+        glucoseMealsReportAdapterViewHolder.mCarboCeia.setText(String.valueOf(glucoseMealsReport.getCarboCeia()));
+        glucoseMealsReportAdapterViewHolder.mCarboMadrugada.setText(String.valueOf(glucoseMealsReport.getCarboMadrugada()));
+        glucoseMealsReportAdapterViewHolder.mGlicoseCafe.setText(String.valueOf(glucoseMealsReport.getGlicoseCafe()));
+        glucoseMealsReportAdapterViewHolder.mGlicoseColacao.setText(String.valueOf(glucoseMealsReport.getGlicoseColacao()));
+        glucoseMealsReportAdapterViewHolder.mGlicoseAlmoco.setText(String.valueOf(glucoseMealsReport.getGlicoseAlmoco()));
+        glucoseMealsReportAdapterViewHolder.mGlicoseLanche.setText(String.valueOf(glucoseMealsReport.getGlicoseLanche()));
+        glucoseMealsReportAdapterViewHolder.mGlicoseJantar.setText(String.valueOf(glucoseMealsReport.getGlicoseJantar()));
+        glucoseMealsReportAdapterViewHolder.mGlicoseCeia.setText(String.valueOf(glucoseMealsReport.getGlicoseCeia()));
+        glucoseMealsReportAdapterViewHolder.mGlicoseMadrugada.setText(String.valueOf(glucoseMealsReport.getGlicoseMadrugada()));
 
         int gCafe = glucoseMealsReport.getGlicoseCafe();
         int gColacao = glucoseMealsReport.getGlicoseColacao();
@@ -130,10 +138,9 @@ public class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMeals
     }
 
     public void refreshData(){
-        //TODO implementar refresh
-        RecordDAO recordDAO = new RecordDAO(mContext);
-        ArrayList<Record> records = recordDAO.fetchAll();
-        setRecords(records);
+        GlucoseMealsReportDAO glucoseMealsReportDAO = new GlucoseMealsReportDAO(mContext);
+        ArrayList<GlucoseMealsReport> glucoseMealsReports = glucoseMealsReportDAO.fetchAllByLeftJoin();
+        mData = glucoseMealsReports;
     }
 
     public boolean deleteRecord(int mSelectedItem) {
