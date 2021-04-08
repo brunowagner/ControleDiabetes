@@ -123,6 +123,12 @@ public class GlucoseMealsReportAdapter extends RecyclerView.Adapter<GlucoseMeals
     //funcao utilizada no onBind para colorir o circulo do valor da clicose.
     private void setGlucoseBackground(TextView glucoseView, int glucoseValue){
         //Seta a cor do circulo da glicose
+        if (glucoseValue == 0){
+            glucoseView.setVisibility(View.INVISIBLE);
+        } else {
+            glucoseView.setVisibility(View.VISIBLE);
+        }
+
         if (glucoseValue <= mGlicemiaBaixa){
             glucoseView.setBackgroundResource(R.drawable.circle_hipo);
         }  else if (glucoseValue > mGlicemiaBaixa && glucoseValue < mGlicemiaAlta){
