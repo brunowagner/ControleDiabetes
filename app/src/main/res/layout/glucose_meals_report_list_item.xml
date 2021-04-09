@@ -36,11 +36,25 @@
                 android:layout_gravity="center"/>
         </LinearLayout>
 
-        <!--cafe da manha-->
+        <!-- .................  cafe da manha ........................ -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_breakfast_title"
+            android:text="@string/meals_name_breakfast"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:tag="title"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -59,6 +73,7 @@
                         android:id="@+id/tv_insul_cafe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="20.0" />
 
                     <TextView
@@ -72,6 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:textSize="14sp"
                     android:layout_gravity="right">
 
                     <TextView
@@ -92,9 +108,9 @@
 
             <TextView
                 android:id="@+id/tv_glicose_cafe_da_manha"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_gravity="center"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_gravity="left"
                 android:layout_marginLeft="2sp"
                 android:background="@drawable/circle_normal"
                 android:gravity="center"
@@ -102,16 +118,32 @@
                 android:paddingRight="2dp"
                 android:text="600"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
-        <!--colacao-->
+    </LinearLayout>
+
+        <!-- ..................   colacao   ...................... -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_brunch_title"
+            android:text="@string/meals_name_brunch"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:tag="meal_title"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -130,6 +162,7 @@
                         android:id="@+id/tv_insul_colacao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="20.0" />
 
                     <TextView
@@ -149,6 +182,7 @@
                         android:id="@+id/tv_carbo_colacao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="900" />
 
                     <TextView
@@ -163,9 +197,9 @@
 
             <TextView
                 android:id="@+id/tv_glicose_colacao"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_gravity="center"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_gravity="left"
                 android:layout_marginLeft="2sp"
                 android:background="@drawable/circle_normal"
                 android:gravity="center"
@@ -173,16 +207,32 @@
                 android:paddingRight="2dp"
                 android:text="600"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+    </LinearLayout>
 
-        <!--almoco-->
+        <!-- ......................  almoco  ................... -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_lunch_title"
+            android:text="@string/meals_name_Lunch"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:tag="title"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -201,6 +251,7 @@
                         android:id="@+id/tv_insul_almoco"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="20.0" />
 
                     <TextView
@@ -220,6 +271,7 @@
                         android:id="@+id/tv_carbo_almoco"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="900" />
 
                     <TextView
@@ -234,9 +286,9 @@
 
             <TextView
                 android:id="@+id/tv_glicose_almoco"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_gravity="center"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_gravity="left"
                 android:layout_marginLeft="2sp"
                 android:background="@drawable/circle_normal"
                 android:gravity="center"
@@ -244,16 +296,31 @@
                 android:paddingRight="2dp"
                 android:text="600"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+    </LinearLayout>
 
-        <!--lanche-->
+        <!-- ......................  lanche  .................... -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_tea_title"
+            android:text="@string/meals_name_tea"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:tag="title"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -272,6 +339,7 @@
                         android:id="@+id/tv_insul_lanche"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="20.0" />
 
                     <TextView
@@ -291,6 +359,7 @@
                         android:id="@+id/tv_carbo_lanche"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="900" />
 
                     <TextView
@@ -305,9 +374,9 @@
 
             <TextView
                 android:id="@+id/tv_glicose_lanche"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_gravity="center"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_gravity="left"
                 android:layout_marginLeft="2sp"
                 android:background="@drawable/circle_normal"
                 android:gravity="center"
@@ -315,16 +384,30 @@
                 android:paddingRight="2dp"
                 android:text="600"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+    </LinearLayout>
 
-        <!--jantar-->
+        <!-- .........................  jantar  .................... -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_dinner_title"
+            android:text="@string/meals_name_dinner"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:tag="title"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -343,6 +426,7 @@
                         android:id="@+id/tv_insul_jantar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="20.0" />
 
                     <TextView
@@ -362,6 +446,7 @@
                         android:id="@+id/tv_carbo_jantar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="900" />
 
                     <TextView
@@ -376,9 +461,9 @@
 
             <TextView
                 android:id="@+id/tv_glicose_jantar"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_gravity="center"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_gravity="left"
                 android:layout_marginLeft="2sp"
                 android:background="@drawable/circle_normal"
                 android:gravity="center"
@@ -386,16 +471,31 @@
                 android:paddingRight="2dp"
                 android:text="600"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+    </LinearLayout>
 
-        <!--ceia-->
+        <!-- ......................  ceia  ....................... -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_supper_title"
+            android:text="@string/meals_name_supper"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:tag="title"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -414,6 +514,7 @@
                         android:id="@+id/tv_insul_ceia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="20.0" />
 
                     <TextView
@@ -433,6 +534,7 @@
                         android:id="@+id/tv_carbo_ceia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="900" />
 
                     <TextView
@@ -447,9 +549,9 @@
 
             <TextView
                 android:id="@+id/tv_glicose_ceia"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_gravity="center"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_gravity="left"
                 android:layout_marginLeft="2sp"
                 android:background="@drawable/circle_normal"
                 android:gravity="center"
@@ -457,16 +559,31 @@
                 android:paddingRight="2dp"
                 android:text="600"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+    </LinearLayout>
 
-        <!--madrugada-->
+        <!-- ..................  madrugada  .................... -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_dawn_title"
+            android:text="@string/meals_name_dawn"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:tag="title"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -485,6 +602,7 @@
                         android:id="@+id/tv_insul_madrugada"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="20.0" />
 
                     <TextView
@@ -504,6 +622,7 @@
                         android:id="@+id/tv_carbo_madrugada"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:text="900" />
 
                     <TextView
@@ -518,9 +637,9 @@
 
             <TextView
                 android:id="@+id/tv_glicose_madrugada"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_gravity="center"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_gravity="left"
                 android:layout_marginLeft="2sp"
                 android:background="@drawable/circle_normal"
                 android:gravity="center"
@@ -528,10 +647,11 @@
                 android:paddingRight="2dp"
                 android:text="600"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+    </LinearLayout>
 
 
 
